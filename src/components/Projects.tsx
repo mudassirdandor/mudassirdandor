@@ -1474,6 +1474,194 @@ const getProjectCrossLinks = (id: string) => {
   }
 };
 
+const get14PointData = (project: Project) => {
+  const extra = projectExtraDetails[project.id] || projectExtraDetails["sales-dashboard"];
+  
+  // Status mapping to consistency requirements
+  let statusBadge = "⚪ Demonstration";
+  if (project.status === "Production") statusBadge = "🟢 Production";
+  else if (project.status === "Open Source") statusBadge = "🔵 Open Source";
+  else if (project.status === "Research") statusBadge = "🟣 Research";
+  else if (project.status === "In Development") statusBadge = "🟡 In Development";
+  else if (project.status === "Demonstration") statusBadge = "⚪ Demonstration";
+  else if (project.isSimulated) statusBadge = "⚪ Demonstration";
+  else if (project.isUnderDevelopment) statusBadge = "🟡 In Development";
+
+  // Project Type
+  let projectType = "Interactive Business Intelligence Dashboard";
+  if (project.id === "saylani-form") projectType = "Digital Student Registration & Automation Platform";
+  else if (project.id === "saylani-rotibank") projectType = "Digital Donation Collection Platform";
+  else if (project.id === "weather-app") projectType = "Weather Intelligence Application";
+  else if (project.id === "enterpret-steel") projectType = "B2B Marketing & Steel Catalog Showcase";
+  else if (project.id === "job-applica") projectType = "Job Application Wizard & Funnel Form";
+  else if (project.id === "lifedrop") projectType = "Emergency Blood Coordination Platform";
+  else if (project.id === "local-bi-framework") projectType = "Geospatial SEO & Local BI System";
+
+  // Role
+  let myRole = "Lead BI Developer & Analyst";
+  if (project.id === "saylani-form" || project.id === "saylani-rotibank" || project.id === "lifedrop") {
+    myRole = "Full-Stack Software Developer";
+  } else if (project.id === "weather-app" || project.id === "enterpret-steel" || project.id === "job-applica") {
+    myRole = "Front-End UI Engineer";
+  }
+
+  // Team Size
+  const teamSize = "Solo (100% of codebase, design, and architecture designed and built by Mudassir)";
+
+  // Duration
+  let duration = "Ongoing / Maintenance";
+  if (project.id === "saylani-form") duration = "Jan 2024 - Feb 2024";
+  else if (project.id === "saylani-rotibank") duration = "Feb 2024";
+  else if (project.id === "weather-app") duration = "Mar 2024";
+  else if (project.id === "enterpret-steel") duration = "May 2024";
+  else if (project.id === "job-applica") duration = "Jun 2024";
+  else if (project.id === "lifedrop") duration = "Oct 2024 - Present";
+  else if (project.id === "local-bi-framework") duration = "Jul 2024 - Present";
+  else if (project.isSimulated) duration = "N/A (Demonstration profile)";
+
+  // Repo Status
+  const repositoryStatus = project.githubUrl ? "Public / Source Available" : "Private / Enterprise Not Shared";
+
+  // Live Demo Status
+  const liveDemoStatus = project.liveUrl ? "Available" : "Not Available";
+
+  // 1. Overview
+  const overview = project.description || extra.executiveSummary.context;
+
+  // 2. Business Problem
+  const businessProblem = project.businessProblem || extra.executiveSummary.challenge;
+
+  // 3. Objectives
+  let objectives = [
+    "Design clean, high-performance dashboards that aggregate multi-source files into a single source of truth.",
+    "Isolate high-risk churn indicators and bottlenecks with statistical significance.",
+    "Formulate clear, defensive recommendations to recover operating margins and reduce support overhead."
+  ];
+  if (project.id === "saylani-form") {
+    objectives = [
+      "Remove multi-day administrative delays by establishing automated form intake routines.",
+      "Prevent data pollution and duplicate records through strict browser-side validation constraints.",
+      "Streamline student onboarding by generating high-fidelity digital ID cards instantly upon enrollment."
+    ];
+  } else if (project.id === "saylani-rotibank") {
+    objectives = [
+      "Coordinate surplus food logistics in real-time to eliminate community distribution gaps.",
+      "Minimize volunteer strain by delegating routine inquiries to intelligent Dialogflow chatbots.",
+      "Sync donation coordinates to a centralized Google Workspace ledger instantly."
+    ];
+  } else if (project.id === "weather-app") {
+    objectives = [
+      "Build a lightning-fast, ad-free weather search layout optimized for low-bandwidth mobile networks.",
+      "Implement geolocated forecasting handshakes to provide hyper-localized weather data.",
+      "Create high-visibility monsoon rainfall warning alerts for Karachi coordinates."
+    ];
+  } else if (extra.businessQuestions) {
+    objectives = extra.businessQuestions.map((q) => `Answer the question: "${q}"`);
+  }
+
+  // 5. Solution
+  let solution = `Designed and deployed a highly optimized decision companion system. Integrated transactional datasets into streamlined views, ensuring administrative simplicity and clean business intelligence report outputs.`;
+  if (project.id === "saylani-form") {
+    solution = `Developed a serverless registration platform. Deployed Google Apps Script POST relays writing directly to Sheets, accompanied by client-side SVG vector compilers that render instant student ID cards in under 5 seconds.`;
+  } else if (project.id === "saylani-rotibank") {
+    solution = `Established a Google Workspace-backed logistics coordinator. Built mobile-first submission triggers communicating through Google Apps Script with automated Dialogflow chatbot verification loops.`;
+  } else if (project.isSimulated) {
+    solution = `Built an interactive ${project.category} decision intelligence dashboard utilizing multi-dimensional star-schema databases, seasonal trend models, and diagnostic KPIs mapped using tailwind utility components.`;
+  }
+
+  // 7. Architecture Overview
+  let architectureOverview = "Built as a modular full-stack client-side application. The presentation layer utilizes highly optimized React components and Tailwind utility styling. Data is managed through localized state handlers or serverless APIs, while analytics are modeled in Python/SQL and served through clean, responsive visual structures.";
+  if (project.isSimulated) {
+    architectureOverview = "This decision support dashboard adheres to a strict Star-Schema data warehouse structure. Transaction logs are loaded into localized fact tables, connected with dimension schemas (dates, regions, products), and queried using optimized state metrics to feed reactive D3/Recharts data visualizers.";
+  }
+
+  // 8. Key Features
+  const keyFeatures = project.analysisSteps || [
+    "High-fidelity interactive data visualization cards",
+    "Multi-dimensional filtering & drill-down options",
+    "Rolling historical trend charts and safety stock metrics",
+    "Responsive desktop, tablet, and mobile interface design"
+  ];
+
+  // 9. Implementation Challenges & 10. How They Were Solved
+  let challenges = [
+    "Integrating sparse, unstructured legacy datasets and files into clean, consistent formats.",
+    "Formulating predictive metrics (like demand or churn flights) without direct live database hooks."
+  ];
+  let solutionsToChallenges = [
+    "Constructed clear star-schema data models with explicit null handlers, ensuring structural integrity.",
+    "Utilized advanced local caching and robust static file synchronization patterns to maintain diagnostic consistency."
+  ];
+
+  if (project.id === "saylani-form") {
+    challenges = [
+      "High registration concurrency leading to Google Sheets API rate-limiting thresholds.",
+      "Client-side image rendering latency and canvas-to-PDF pixelation during high-density barcode creation."
+    ];
+    solutionsToChallenges = [
+      "Implemented an exponential backoff retry mechanism inside Google Apps Script relay handlers.",
+      "Switched to lightweight SVG path vector compilers, delivering instant, pixel-perfect 300 DPI card downloads."
+    ];
+  } else if (project.id === "saylani-rotibank") {
+    challenges = [
+      "Ensuring coordinate-based food pledges matched the physical storage capacities of localized distribution hubs.",
+      "Natural language processing drift when donors entered unstructured local food weights."
+    ];
+    solutionsToChallenges = [
+      "Mapped coordinates against a simplified regional matrix to automatically group donations in the master Sheet.",
+      "Constructed strict custom training intents inside Dialogflow to isolate clear volume boundaries."
+    ];
+  } else if (project.id === "weather-app") {
+    challenges = [
+      "Uncapped API lookup costs when users triggered rapid, consecutive keypress searches in the city locator.",
+      "Handling unexpected browser geolocation blockages cleanly without freezing the user interface."
+    ];
+    solutionsToChallenges = [
+      "Engineered a robust 400ms debouncing utility wrapper to restrict search queries until active typing paused.",
+      "Implemented an explicit try-catch wrapper around navigator.geolocation that falls back to Karachi defaults."
+    ];
+  }
+
+  // 11. Lessons Learned
+  let lessonsLearned = [
+    "Analytical models are only as good as the underlying schema design; starting with a robust data dictionary is crucial.",
+    "Data honesty and transparency regarding simulated datasets build trust with business stakeholders."
+  ];
+  if (project.id === "saylani-form") {
+    lessonsLearned = [
+      "Serverless Workspace architectures (like Apps Script) offer incredible cost-to-value for low-to-medium traffic internal admin systems.",
+      "Client-side vector generation delivers superior speed and fidelity compared to heavy server-side document compilers."
+    ];
+  }
+
+  // 14. Future Improvements
+  const futureImprovements = extra.futureEnhancements || project.recommendations || [
+    "Incorporate real-time point-of-sale API ingestion pipelines.",
+    "Train custom linear regressions to project upcoming quarterly revenue curves.",
+    "Embed direct automated notification triggers."
+  ];
+
+  return {
+    statusBadge,
+    projectType,
+    myRole,
+    teamSize,
+    duration,
+    repositoryStatus,
+    liveDemoStatus,
+    overview,
+    businessProblem,
+    objectives,
+    solution,
+    architectureOverview,
+    keyFeatures,
+    challenges,
+    solutionsToChallenges,
+    lessonsLearned,
+    futureImprovements
+  };
+};
+
 /**
  * Consulting Case Studies component.
  * Lists categorized consulting engagement reports. Provides modular modal overlay views 
@@ -1934,72 +2122,8 @@ export default function Projects({
         {/* Premium Consulting Brief Overlay (Modal) */}
         <AnimatePresence>
           {selectedProject && (() => {
-            if (selectedProject.id === "saylani-form") {
-              return (
-                <CaseStudyLayout
-                  title="Digital Student Registration & Automation Platform"
-                  category="Data Collection Systems"
-                  status="Completed / Production Live"
-                  realScreenshots={[
-                    "/assets/projects/saylani-registration/desktop-01.webp",
-                    "/assets/projects/saylani-registration/tablet-01.webp",
-                    "/assets/projects/saylani-registration/mobile-01.webp"
-                  ]}
-                  realWorkflowImage="/assets/projects/saylani-registration/workflow.webp"
-                  realArchitectureImage="/assets/projects/saylani-registration/architecture.webp"
-                  beforeImage="/assets/projects/saylani-registration/desktop-01.webp"
-                  afterImage="/assets/projects/saylani-registration/desktop-02.webp"
-                  overview="A student registration and scheduling platform built to make course signups easier. It features simple forms that double-check details as students type, a friendly chatbot helper, and automatic saving to Google Sheets."
-                  businessProblem="The education team was overwhelmed by manual paperwork and duplicate registrations, leading to long processing backlogs and slow multi-day delays in distributing student ID cards."
-                  challenge="During semester signups, thousands of students tried to register at the same time, crashing spreadsheets and leaving students waiting in long queues for manual registration reviews."
-                  solution="I built a web form that connects directly to Google Sheets. It checks prerequisite eligibility instantly as students fill out their details, allows them to download a digital student ID card immediately, and saves all registration records to a secure master sheet."
-                  workflow={[
-                    "Designed a mobile-friendly registration page that is easy to fill out on any phone.",
-                    "Added instant validation checks to ensure students meet course prerequisites as they select classes.",
-                    "Created an instant digital ID card generator so students can download their cards immediately upon signup.",
-                    "Connected the form to a centralized Google Sheet to automate enrollment logging and save manual typing."
-                  ]}
-                  technology={["React", "TypeScript", "Tailwind CSS", "Dialogflow Chatbots", "Google Apps Script", "Google Sheets API", "Email Automation"]}
-                  architecture={["User", "React Frontend", "Dialogflow", "Apps Script", "Google Sheets", "Email Automation"]}
-                  keyFeatures={[
-                    "Secure Client-side Registration Form with dynamic validation feedback.",
-                    "Dynamic local PDF Generator to produce official student identity cards.",
-                    "Centralized Google Workspace database logging with zero infrastructure costs.",
-                    "Conversational dialog assistant to answer student FAQ and verify course prerequisite parameters."
-                  ]}
-                  screenshots={[
-                    { device: "desktop", label: "Registration Portal Dashboard", description: "Standard viewport showing interactive forms and live status notifications." },
-                    { device: "tablet", label: "Responsive Admissions Tablet Form", description: "Optimized layout for touch-friendly operations in regional classrooms." },
-                    { device: "mobile", label: "Mobile Student Profile View", description: "Frictionless form fields optimized for small mobile displays." }
-                  ]}
-                  github="https://github.com/mudassirdandor/saylani-form"
-                  liveDemo="https://saylanireg.netlify.app/"
-                  businessOutcome="Bypassed manual data transcription, eliminated printing and distribution delays, and reduced student registration wait times from several days to under five minutes."
-                  lessonsLearned={[
-                    {
-                      challenge: "Handling concurrent database locks when hundreds of registrations hit Google Sheets API at the exact same second.",
-                      decision: "Implemented an elegant debounced execution queue and batch transaction wrapper inside the serverless Google Apps Script entry point."
-                    },
-                    {
-                      challenge: "Providing student ID cards instantly without incurring heavy cloud rendering container costs.",
-                      decision: "Moved the PDF compiler completely to the client side using browser-native SVG Canvas layers, rendering perfect PDFs with zero backend overhead."
-                    }
-                  ]}
-                  nextSteps={[
-                    "Deploy OCR-based educational document verification scanning to automatically review transcripts on registration uploads.",
-                    "Integrate Twilio or WhatsApp Business template API notification triggers for scheduling alerts."
-                  ]}
-                  onClose={() => setSelectedProject(null)}
-                  onContactCta={() => {
-                    setSelectedProject(null);
-                    onNavigate?.("contact");
-                  }}
-                  relatedSolution={{ title: "Workflow Automation", pageId: "solutions" }}
-                  relatedArticle={{ title: "What Is Business Intelligence?", pageId: "insights" }}
-                  onNavigate={onNavigate}
-                />
-              );
-            }
+            const data14 = get14PointData(selectedProject);
+            // Unified rendering across all projects using standard GlobalModal layout
 
             const extra = projectExtraDetails[selectedProject.id] || projectExtraDetails["sales-dashboard"];
 

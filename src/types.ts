@@ -26,6 +26,10 @@ export interface Project {
   };
   status?: "Production" | "Research" | "In Development" | "Demonstration" | "Personal Project" | "Open Source";
   repoStatus?: "Source Available" | "Private Repository";
+  projectType?: string;
+  myRole?: string;
+  teamSize?: string;
+  duration?: string;
 }
 
 export interface Certificate {
