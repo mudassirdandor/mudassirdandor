@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Lato", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Lato", "Inter", sans-serif;
+  --font-mono: "Lato", "Inter", sans-serif;
+  --font-hero: "Playfair Display", Georgia, serif;
+  
+  /* Brand Primary Colors */
+  --color-executive-blue: #2563EB;
+  
+  /* Executive Sage Palette */
+  --color-sage-950: #051F20;
+  --color-sage-900: #0B2B26;
+  --color-sage-800: #163832;
+  --color-sage-700: #235347;
+  --color-sage-400: #8EB69B;
+  --color-sage-100: #DAF1DE;
+  
+  /* Brand Backgrounds & Typography Colors */
+  --color-brand-bg-primary: #F8FAFC;
+  --color-brand-bg-secondary: #F4FBF7;
+  --color-brand-card: #FFFFFF;
+  --color-brand-heading: #090D16; /* Near Black */
+  --color-brand-body: #1E293B; /* Dark Slate Gray */
+  --color-brand-muted: #475569; /* Slate 600 - Perfect WCAG AA Medium Gray */
+  --color-brand-metadata: #64748B; /* Slate 500 - Soft Gray for subtle details */
+  --color-brand-disabled: #94A3B8; /* Slate 400 - Light Gray */
+  
+  /* Semantic States */
+  --color-semantic-success: #10B981;
+  --color-semantic-warning: #F59E0B;
+  --color-semantic-error: #EF4444;
+  --color-semantic-info: #3B82F6;
+  --color-semantic-border: #E2E8F0;
+  --color-semantic-divider: #F1F5F9;
+
+  /* Custom anim keys */
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Custom globally accessible scrollbars for a premium editorial light mode layout */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-brand-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  background-color: var(--color-brand-bg-primary);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
