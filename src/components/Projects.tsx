@@ -32,7 +32,10 @@ import {
   Tablet,
   Smartphone,
   Server,
-  Globe
+  Globe,
+  ChevronLeft,
+  ChevronRight,
+  Maximize2
 } from "lucide-react";
 
 interface ExecutiveSummary {
@@ -1170,6 +1173,8 @@ function getWorkflowSteps(projectId: string) {
 function ProjectVisuals({ projectId }: { projectId: string }) {
   const [activeTab, setActiveTab] = useState<"interface" | "architecture" | "workflow">("interface");
   const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const getProjectFolder = (id: string): string => {
     switch (id) {
@@ -1183,6 +1188,126 @@ function ProjectVisuals({ projectId }: { projectId: string }) {
       case "executive-platform": return "executive-dashboard";
       default: return id;
     }
+  };
+
+  const activeScreenshots = React.useMemo(() => {
+    const folder = getProjectFolder(projectId);
+    const screenshots: { src: string; alt: string; caption: string; type: "interface" | "architecture" | "workflow"; device?: "desktop" | "tablet" | "mobile" }[] = [];
+    
+    // Interface screenshots
+    if (projectId === "saylani-form") {
+      screenshots.push(
+        { src: `/assets/projects/${folder}/desktop-01.webp`, alt: "Registration Portal Homepage", caption: "Standard desktop viewport showing the student intake starting screen.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-02.webp`, alt: "Interactive Registration Form", caption: "Multi-page student intake form with real-time field error validation checking.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-03.webp`, alt: "Generated Student ID Card", caption: "High-density digital identity card generated completely on the client-side as SVG Canvas.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-04.webp`, alt: "Google Sheets Backend Integration", caption: "Centralized Google Sheets ledger syncing student profile records in real-time.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/tablet-01.webp`, alt: "Tablet Student Intake Screen", caption: "Tablet-optimized view with clean spacing and accessible input layouts.", type: "interface", device: "tablet" },
+        { src: `/assets/projects/${folder}/mobile-01.webp`, alt: "Mobile Student Profile View", caption: "Mobile-responsive viewport optimized for touch-based form entries in rural classrooms.", type: "interface", device: "mobile" }
+      );
+    } else if (projectId === "saylani-rotibank") {
+      screenshots.push(
+        { src: `/assets/projects/${folder}/desktop-01.webp`, alt: "Donation Platform Landing Page", caption: "Desktop overview dashboard displaying donor registration forms.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-02.webp`, alt: "Donation Intakes Pledges Form", caption: "Interactive multi-step donation form verifying bread counts and storage constraints.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-03.webp`, alt: "Pledge Submission Confirmation", caption: "Instant confirmation screen displaying pickup slot timing and coordinates.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-04.webp`, alt: "Google Sheets Logistics Ledger", caption: "Live Google Workspace sheet synchronizing active food stocks for distribution centers.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/tablet-01.webp`, alt: "Tablet Food Coordination Dashboard", caption: "Tablet display for regional kitchen managers planning food intake.", type: "interface", device: "tablet" },
+        { src: `/assets/projects/${folder}/mobile-01.webp`, alt: "Mobile Food Donor Form", caption: "Frictionless mobile layout designed for donors listing food donations on-the-go.", type: "interface", device: "mobile" }
+      );
+    } else if (projectId === "weather-app") {
+      screenshots.push(
+        { src: `/assets/projects/${folder}/desktop-01.webp`, alt: "Karachi Weather Intelligence Dashboard", caption: "Standard desktop interface showing live real-time conditions and debounced search fields.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-02.webp`, alt: "Dynamic Forecast Grid", caption: "7-day precipitation risk grid mapping forecasted wind, humidity, and temperatures.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/tablet-01.webp`, alt: "Tablet Weather Map", caption: "Tablet spatial layout displaying monsoonal cloud movements.", type: "interface", device: "tablet" },
+        { src: `/assets/projects/${folder}/mobile-01.webp`, alt: "Mobile Local Storm Alert View", caption: "Mobile screen displaying monsoon rain warnings (Karachi coordinate alerts).", type: "interface", device: "mobile" }
+      );
+    } else if (projectId === "enterpret-steel") {
+      screenshots.push(
+        { src: `/assets/projects/${folder}/desktop-01.webp`, alt: "Enterprise Steel B2B Homepage", caption: "Highly polished desktop landing page showcase for steel manufacturing.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-02.webp`, alt: "B2B Steel Product Catalog", caption: "Dense CSS filterable product catalog highlighting load tolerances and dimensions.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-03.webp`, alt: "Responsive Grid Layout", caption: "Responsive multi-column visual grid showing clean industrial components.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/tablet-01.webp`, alt: "Tablet B2B Catalog View", caption: "Tablet interface displaying heavy plate load tolerances.", type: "interface", device: "tablet" },
+        { src: `/assets/projects/${folder}/mobile-01.webp`, alt: "Mobile Product Specs View", caption: "Highly dense mobile datasheet layout for quick field inspections.", type: "interface", device: "mobile" }
+      );
+    } else if (projectId === "job-applica") {
+      screenshots.push(
+        { src: `/assets/projects/${folder}/desktop-01.webp`, alt: "Recruitment Wizard Step 1", caption: "First phase of the modular hiring form collecting personal candidate details.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-02.webp`, alt: "Skills Assessment & Progress Tracker", caption: "Step 2 interface with integrated slider metrics and live state progress bar.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-03.webp`, alt: "Resume Uploader & Drag-Drop Panel", caption: "Step 3 file drag-and-drop container validating resume sizes and formats.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/tablet-01.webp`, alt: "Tablet Progress Wizard", caption: "Tablet-optimized multi-step wizard showing state integrity caches.", type: "interface", device: "tablet" },
+        { src: `/assets/projects/${folder}/mobile-01.webp`, alt: "Mobile Progressive Application", caption: "Fully responsive multi-step wizard optimized for simple hand-held navigation.", type: "interface", device: "mobile" }
+      );
+    } else if (projectId === "lifedrop") {
+      screenshots.push(
+        { src: `/assets/projects/${folder}/desktop-01.webp`, alt: "ER Hospital Coordination Panel", caption: "Hospital portal interface for submitting and logging emergency blood deficits.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-02.webp`, alt: "Geofenced Donor Matching Grid", caption: "Real-time matching table scanning Firestore donor registries based on coordinate distances.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-03.webp`, alt: "Twilio SMS Notification Broadcast Status", caption: "Status log tracking outbound SMS broadcasts to geofenced O-negative donors.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/tablet-01.webp`, alt: "Tablet Blood Bank Overview", caption: "Tablet-optimized screen monitoring live regional clinic blood inventories.", type: "interface", device: "tablet" },
+        { src: `/assets/projects/${folder}/mobile-01.webp`, alt: "Mobile Donor Booking Portal", caption: "Fast geofenced response screens allowing donor pledge registration.", type: "interface", device: "mobile" }
+      );
+    } else if (projectId === "local-bi-framework") {
+      screenshots.push(
+        { src: `/assets/projects/${folder}/desktop-01.webp`, alt: "Local Search Research Dashboard", caption: "First stage analysis mapping Google Business Profile core search terms.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-02.webp`, alt: "Neighborhood Map Rankings Analysis", caption: "Geospatial coordinate grid illustrating search ranks across a 1x1 kilometer area.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-03.webp`, alt: "Citation completeness Audit Screen", caption: "Registry checker comparing name, phone, address parity across 200+ citations.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/tablet-01.webp`, alt: "Tablet Competitor Grid Map", caption: "Tablet geospatial visualizer showing localized map rankings.", type: "interface", device: "tablet" },
+        { src: `/assets/projects/${folder}/mobile-01.webp`, alt: "Mobile Map Presence Dashboard", caption: "Mobile tracking dashboard tracking active conversion rates on direction clicks.", type: "interface", device: "mobile" }
+      );
+    } else if (projectId === "executive-platform") {
+      screenshots.push(
+        { src: `/assets/projects/${folder}/desktop-01.webp`, alt: "Executive Portfolio Control Room", caption: "Main landing interface styled with high-contrast corporate typography and negative space.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/desktop-02.webp`, alt: "Interactive Dashboard Sandbox", caption: "Analytical playground showing live simulated charts and margin comparisons.", type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/tablet-01.webp`, alt: "Tablet Navigation Layout", caption: "Tablet-optimized showcase layout of executive analytical modules.", type: "interface", device: "tablet" },
+        { src: `/assets/projects/${folder}/mobile-01.webp`, alt: "Mobile Client Experience View", caption: "Elegant single-view layout adapting all portfolio widgets cleanly to smaller viewport ratios.", type: "interface", device: "mobile" }
+      );
+    } else {
+      screenshots.push(
+        { src: `/assets/projects/${folder}/desktop-01.webp`, alt: `${projectId} Desktop Interface`, caption: `Standard desktop interface screenshot for ${projectId}.`, type: "interface", device: "desktop" },
+        { src: `/assets/projects/${folder}/tablet-01.webp`, alt: `${projectId} Tablet Interface`, caption: `Standard tablet interface screenshot for ${projectId}.`, type: "interface", device: "tablet" },
+        { src: `/assets/projects/${folder}/mobile-01.webp`, alt: `${projectId} Mobile Interface`, caption: `Standard mobile interface screenshot for ${projectId}.`, type: "interface", device: "mobile" }
+      );
+    }
+
+    // Architecture diagram (all projects)
+    screenshots.push({
+      src: `/assets/projects/${folder}/architecture.webp`,
+      alt: "System Architecture & Integration Diagram",
+      caption: "High-level visual blueprint mapping cloud architecture topology and third-party service connections.",
+      type: "architecture"
+    });
+
+    // Workflow diagram (all projects)
+    screenshots.push({
+      src: `/assets/projects/${folder}/workflow.webp`,
+      alt: "Operational Workflow & Integration Lifecycle",
+      caption: "Sequential process diagram tracking logical stages from initial data collection triggers to end deliverable storage.",
+      type: "workflow"
+    });
+
+    return screenshots;
+  }, [projectId]);
+
+  React.useEffect(() => {
+    if (!lightboxOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        setLightboxIndex((prev) => (prev - 1 + activeScreenshots.length) % activeScreenshots.length);
+      } else if (e.key === "ArrowRight") {
+        setLightboxIndex((prev) => (prev + 1) % activeScreenshots.length);
+      } else if (e.key === "Escape") {
+        setLightboxOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [lightboxOpen, activeScreenshots, activeScreenshots.length]);
+
+  const openLightbox = (index: number) => {
+    setLightboxIndex(index);
+    setLightboxOpen(true);
   };
 
   const realProjectIds = [
@@ -1275,7 +1400,7 @@ function ProjectVisuals({ projectId }: { projectId: string }) {
 
           <div className="flex justify-center transition-all duration-300">
             {device === "desktop" && (
-              <div className="w-full max-w-3xl border border-slate-300 rounded-xl overflow-hidden shadow-lg bg-white">
+              <div className="w-full max-w-3xl border border-slate-300 rounded-xl overflow-hidden shadow-lg bg-white relative group/device">
                 <div className="bg-slate-100 px-4 py-2 border-b border-slate-200 flex items-center gap-4 shrink-0">
                   <div className="flex items-center gap-1.5 shrink-0">
                     <span className="w-2.5 h-2.5 bg-rose-500 rounded-full" />
@@ -1286,7 +1411,14 @@ function ProjectVisuals({ projectId }: { projectId: string }) {
                     {getProjectUrl(projectId)}
                   </div>
                 </div>
-                <div className="h-[280px] overflow-y-auto bg-slate-100 p-4 relative">
+                <div 
+                  className="h-[280px] overflow-y-auto bg-slate-100 p-4 relative cursor-zoom-in group/image hover:opacity-95 active:scale-[0.99] transition-all"
+                  onClick={() => {
+                    const idx = activeScreenshots.findIndex(s => s.type === "interface" && s.device === "desktop");
+                    openLightbox(idx !== -1 ? idx : 0);
+                  }}
+                  title="Expand visual evidence"
+                >
                   <ContentPlaceholder
                     variant="desktop screenshot"
                     src={`/assets/projects/${getProjectFolder(projectId)}/desktop-01.webp`}
@@ -1297,16 +1429,27 @@ function ProjectVisuals({ projectId }: { projectId: string }) {
                       {renderMockScreenContent(projectId, "desktop")}
                     </div>
                   </ContentPlaceholder>
+                  <div className="absolute bottom-3 right-3 z-30 bg-slate-900/90 hover:bg-slate-950 text-white backdrop-blur-xs text-[9px] font-mono font-extrabold px-2.5 py-1.5 rounded-lg border border-slate-700/50 flex items-center gap-1.5 opacity-0 group-hover/device:opacity-100 transition-opacity">
+                    <Maximize2 className="w-3.5 h-3.5" />
+                    <span>EXPAND EVIDENCE</span>
+                  </div>
                 </div>
               </div>
             )}
 
             {device === "tablet" && (
-              <div className="w-[450px] border-[12px] border-slate-900 rounded-[2rem] overflow-hidden shadow-lg bg-white relative">
+              <div className="w-[450px] border-[12px] border-slate-900 rounded-[2rem] overflow-hidden shadow-lg bg-white relative group/device">
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 w-16 h-3.5 bg-slate-950 rounded-full z-20 flex items-center justify-center">
                   <span className="w-1.5 h-1.5 bg-slate-800 rounded-full" />
                 </div>
-                <div className="h-[320px] overflow-y-auto bg-slate-100 p-4 relative pt-6">
+                <div 
+                  className="h-[320px] overflow-y-auto bg-slate-100 p-4 relative pt-6 cursor-zoom-in hover:opacity-95 active:scale-[0.99] transition-all"
+                  onClick={() => {
+                    const idx = activeScreenshots.findIndex(s => s.type === "interface" && s.device === "tablet");
+                    openLightbox(idx !== -1 ? idx : 0);
+                  }}
+                  title="Expand visual evidence"
+                >
                   <ContentPlaceholder
                     variant="desktop screenshot"
                     src={`/assets/projects/${getProjectFolder(projectId)}/tablet-01.webp`}
@@ -1317,14 +1460,25 @@ function ProjectVisuals({ projectId }: { projectId: string }) {
                       {renderMockScreenContent(projectId, "tablet")}
                     </div>
                   </ContentPlaceholder>
+                  <div className="absolute bottom-3 right-3 z-30 bg-slate-900/90 hover:bg-slate-950 text-white backdrop-blur-xs text-[9px] font-mono font-extrabold px-2.5 py-1.5 rounded-lg border border-slate-700/50 flex items-center gap-1.5 opacity-0 group-hover/device:opacity-100 transition-opacity">
+                    <Maximize2 className="w-3.5 h-3.5" />
+                    <span>EXPAND EVIDENCE</span>
+                  </div>
                 </div>
               </div>
             )}
 
             {device === "mobile" && (
-              <div className="w-[260px] border-[10px] border-slate-900 rounded-[2.2rem] overflow-hidden shadow-lg bg-white relative">
+              <div className="w-[260px] border-[10px] border-slate-900 rounded-[2.2rem] overflow-hidden shadow-lg bg-white relative group/device">
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 w-24 h-4 bg-slate-950 rounded-xl z-20" />
-                <div className="h-[380px] overflow-y-auto bg-slate-100 p-3 relative pt-6">
+                <div 
+                  className="h-[380px] overflow-y-auto bg-slate-100 p-3 relative pt-6 cursor-zoom-in hover:opacity-95 active:scale-[0.99] transition-all"
+                  onClick={() => {
+                    const idx = activeScreenshots.findIndex(s => s.type === "interface" && s.device === "mobile");
+                    openLightbox(idx !== -1 ? idx : 0);
+                  }}
+                  title="Expand visual evidence"
+                >
                   <ContentPlaceholder
                     variant="mobile screenshot"
                     src={`/assets/projects/${getProjectFolder(projectId)}/mobile-01.webp`}
@@ -1335,6 +1489,10 @@ function ProjectVisuals({ projectId }: { projectId: string }) {
                       {renderMockScreenContent(projectId, "mobile")}
                     </div>
                   </ContentPlaceholder>
+                  <div className="absolute bottom-3 right-3 z-30 bg-slate-900/90 hover:bg-slate-950 text-white backdrop-blur-xs text-[9px] font-mono font-extrabold px-2.5 py-1.5 rounded-lg border border-slate-700/50 flex items-center gap-1.5 opacity-0 group-hover/device:opacity-100 transition-opacity">
+                    <Maximize2 className="w-3.5 h-3.5" />
+                    <span>EXPAND EVIDENCE</span>
+                  </div>
                 </div>
               </div>
             )}
@@ -1343,77 +1501,245 @@ function ProjectVisuals({ projectId }: { projectId: string }) {
       )}
 
       {activeTab === "architecture" && (
-        <ContentPlaceholder
-          variant="architecture"
-          src={`/assets/projects/${getProjectFolder(projectId)}/architecture.webp`}
-          alt={`${projectId} architecture diagram`}
-          className="w-full"
+        <div 
+          className="relative cursor-zoom-in group/device overflow-hidden rounded-xl active:scale-[0.995] transition-all hover:opacity-98"
+          onClick={() => {
+            const idx = activeScreenshots.findIndex(s => s.type === "architecture");
+            openLightbox(idx !== -1 ? idx : 0);
+          }}
+          title="Expand system architecture"
         >
-          <div className="bg-slate-900 text-slate-100 border border-slate-850 p-6 rounded-xl space-y-6 relative overflow-hidden font-mono text-left">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/[0.03] rounded-full blur-3xl pointer-events-none" />
-            <div className="text-[9px] text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2 flex justify-between items-center text-left">
-              <span>Unified System Diagram</span>
-              <span className="text-blue-400">STAGE_4_ENG</span>
-            </div>
+          <ContentPlaceholder
+            variant="architecture"
+            src={`/assets/projects/${getProjectFolder(projectId)}/architecture.webp`}
+            alt={`${projectId} architecture diagram`}
+            className="w-full"
+          >
+            <div className="bg-slate-900 text-slate-100 border border-slate-850 p-6 rounded-xl space-y-6 relative overflow-hidden font-mono text-left">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/[0.03] rounded-full blur-3xl pointer-events-none" />
+              <div className="text-[9px] text-slate-500 uppercase tracking-widest border-b border-slate-800 pb-2 flex justify-between items-center text-left">
+                <span>Unified System Diagram</span>
+                <span className="text-blue-400">STAGE_4_ENG</span>
+              </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-2 items-center relative z-10 text-center">
-              {getArchitectureNodes(projectId).map((node, idx, arr) => (
-                <React.Fragment key={node.id}>
-                  <div className="bg-slate-850 border border-slate-800 rounded-xl p-4 flex flex-col items-center gap-2 shadow-xs hover:border-slate-700 transition-colors text-center">
-                    <div className="p-2 bg-slate-800 text-blue-400 rounded-lg">
-                      {React.createElement(node.icon, { className: "w-5 h-5" })}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-2 items-center relative z-10 text-center">
+                {getArchitectureNodes(projectId).map((node, idx, arr) => (
+                  <React.Fragment key={node.id}>
+                    <div className="bg-slate-850 border border-slate-800 rounded-xl p-4 flex flex-col items-center gap-2 shadow-xs hover:border-slate-700 transition-colors text-center">
+                      <div className="p-2 bg-slate-800 text-blue-400 rounded-lg">
+                        {React.createElement(node.icon, { className: "w-5 h-5" })}
+                      </div>
+                      <h5 className="text-[10px] font-bold text-white uppercase tracking-wider">{node.label}</h5>
+                      <p className="text-[9px] text-slate-400 leading-normal">{node.desc}</p>
                     </div>
-                    <h5 className="text-[10px] font-bold text-white uppercase tracking-wider">{node.label}</h5>
-                    <p className="text-[9px] text-slate-400 leading-normal">{node.desc}</p>
-                  </div>
-                  {idx < arr.length - 1 && (
-                    <div className="flex md:flex-col justify-center items-center py-1 text-slate-600">
-                      <span className="md:hidden">▼</span>
-                      <span className="hidden md:inline">▶</span>
-                    </div>
-                  )}
-                </React.Fragment>
-              ))}
+                    {idx < arr.length - 1 && (
+                      <div className="flex md:flex-col justify-center items-center py-1 text-slate-600">
+                        <span className="md:hidden">▼</span>
+                        <span className="hidden md:inline">▶</span>
+                      </div>
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
+          </ContentPlaceholder>
+          <div className="absolute bottom-3 right-3 z-30 bg-slate-900/90 hover:bg-slate-950 text-white backdrop-blur-xs text-[9px] font-mono font-extrabold px-2.5 py-1.5 rounded-lg border border-slate-700/50 flex items-center gap-1.5 opacity-0 group-hover/device:opacity-100 transition-opacity">
+            <Maximize2 className="w-3.5 h-3.5" />
+            <span>EXPAND DIAGRAM</span>
           </div>
-        </ContentPlaceholder>
+        </div>
       )}
 
       {activeTab === "workflow" && (
-        <ContentPlaceholder
-          variant="workflow"
-          src={`/assets/projects/${getProjectFolder(projectId)}/workflow.webp`}
-          alt={`${projectId} operational workflow`}
-          className="w-full"
+        <div 
+          className="relative cursor-zoom-in group/device overflow-hidden rounded-xl active:scale-[0.995] transition-all hover:opacity-98"
+          onClick={() => {
+            const idx = activeScreenshots.findIndex(s => s.type === "workflow");
+            openLightbox(idx !== -1 ? idx : 0);
+          }}
+          title="Expand operational workflow"
         >
-          <div className="bg-white border border-slate-200 p-6 rounded-xl space-y-4 text-left">
-            <div className="flex justify-between items-center border-b border-slate-100 pb-2">
-              <span className="text-[10px] font-bold font-mono text-slate-800 uppercase tracking-wider">Operational Lifecycle Stages</span>
-              <span className="text-[9px] font-mono text-emerald-600 bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded uppercase font-semibold">Active Pipeline</span>
+          <ContentPlaceholder
+            variant="workflow"
+            src={`/assets/projects/${getProjectFolder(projectId)}/workflow.webp`}
+            alt={`${projectId} operational workflow`}
+            className="w-full"
+          >
+            <div className="bg-white border border-slate-200 p-6 rounded-xl space-y-4 text-left">
+              <div className="flex justify-between items-center border-b border-slate-100 pb-2">
+                <span className="text-[10px] font-bold font-mono text-slate-800 uppercase tracking-wider">Operational Lifecycle Stages</span>
+                <span className="text-[9px] font-mono text-emerald-600 bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded uppercase font-semibold">Active Pipeline</span>
+              </div>
+
+              <div className="space-y-4">
+                {getWorkflowSteps(projectId).map((step, idx) => (
+                  <div key={idx} className="flex gap-4 items-start group">
+                    <div className="flex flex-col items-center shrink-0">
+                      <span className="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px] font-mono font-bold">
+                        {idx + 1}
+                      </span>
+                      {idx < 3 && <div className="w-[1px] h-10 bg-slate-200 group-hover:bg-slate-300 transition-colors" />}
+                    </div>
+                    <div className="space-y-1 pt-0.5">
+                      <h5 className="text-xs font-bold text-slate-950 uppercase tracking-wider">{step.title}</h5>
+                      <p className="text-[11px] text-slate-600 leading-relaxed">{step.desc}</p>
+                      <span className="inline-block text-[8px] font-mono text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 uppercase tracking-wider font-semibold">
+                        {step.status}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ContentPlaceholder>
+          <div className="absolute bottom-3 right-3 z-30 bg-slate-900/90 hover:bg-slate-950 text-white backdrop-blur-xs text-[9px] font-mono font-extrabold px-2.5 py-1.5 rounded-lg border border-slate-700/50 flex items-center gap-1.5 opacity-0 group-hover/device:opacity-100 transition-opacity">
+            <Maximize2 className="w-3.5 h-3.5" />
+            <span>EXPAND FLOW</span>
+          </div>
+        </div>
+      )}
+
+      {/* Lightbox Modal Component */}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-md flex flex-col justify-between p-4 select-none"
+            onClick={() => setLightboxOpen(false)}
+          >
+            {/* Header: Controls */}
+            <div className="w-full flex items-center justify-between py-3 px-4 md:px-8 border-b border-slate-800/60 bg-slate-900/40 rounded-xl backdrop-blur-sm z-20" onClick={(e) => e.stopPropagation()}>
+              <div>
+                <h5 className="text-xs md:text-sm font-bold text-white tracking-wide uppercase">
+                  {projects.find(p => p.id === projectId)?.title || "Project Evidence"}
+                </h5>
+                <p className="text-[10px] font-mono text-slate-400 mt-0.5">
+                  Artifact {lightboxIndex + 1} of {activeScreenshots.length} — {activeScreenshots[lightboxIndex].alt}
+                </p>
+              </div>
+
+              <button 
+                onClick={() => setLightboxOpen(false)}
+                className="p-2 text-slate-400 hover:text-white hover:bg-slate-800/80 rounded-full border border-slate-800 transition-all cursor-pointer"
+                aria-label="Close Lightbox"
+              >
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
-            <div className="space-y-4">
-              {getWorkflowSteps(projectId).map((step, idx) => (
-                <div key={idx} className="flex gap-4 items-start group">
-                  <div className="flex flex-col items-center shrink-0">
-                    <span className="w-6 h-6 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px] font-mono font-bold">
-                      {idx + 1}
-                    </span>
-                    {idx < 3 && <div className="w-[1px] h-10 bg-slate-200 group-hover:bg-slate-300 transition-colors" />}
+            {/* Core Workspace: Image or high-fidelity mockup */}
+            <div className="flex-1 flex items-center justify-center relative py-4 z-10 my-4" onClick={(e) => e.stopPropagation()}>
+              {/* Previous Button */}
+              <button 
+                onClick={() => setLightboxIndex((prev) => (prev - 1 + activeScreenshots.length) % activeScreenshots.length)}
+                className="absolute left-2 md:left-6 p-3 bg-slate-900/85 hover:bg-slate-900 text-slate-400 hover:text-white border border-slate-800/80 rounded-full transition-all hover:scale-105 active:scale-95 cursor-pointer z-30"
+                aria-label="Previous Slide"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+
+              {/* Main Image frame */}
+              <div className="max-w-4xl w-full h-[60vh] flex items-center justify-center relative p-2 md:p-6 bg-slate-900/25 rounded-2xl border border-slate-900/60 overflow-hidden">
+                <ContentPlaceholder
+                  variant={activeScreenshots[lightboxIndex].type === "architecture" ? "architecture" : activeScreenshots[lightboxIndex].type === "workflow" ? "workflow" : "desktop screenshot"}
+                  src={activeScreenshots[lightboxIndex].src}
+                  alt={activeScreenshots[lightboxIndex].alt}
+                  className="max-h-full max-w-full object-contain rounded-xl shadow-2xl border border-slate-800/40"
+                >
+                  {/* Dynamic Mockup fallback inside lightbox so there are never broken images! */}
+                  <div className="w-full max-w-lg p-6 bg-slate-900 border border-slate-800 rounded-2xl text-left shadow-2xl space-y-4">
+                    <div className="flex justify-between items-center border-b border-slate-850 pb-2.5">
+                      <span className="text-[10px] font-mono text-blue-400 uppercase tracking-widest font-bold">
+                        {activeScreenshots[lightboxIndex].type.toUpperCase()} EVIDENCE
+                      </span>
+                      <span className="text-[8px] font-mono text-emerald-400 px-1.5 py-0.5 rounded border border-emerald-500/20 bg-emerald-500/5 font-semibold uppercase tracking-wider">
+                        SECURE SANDBOX
+                      </span>
+                    </div>
+
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-bold text-white tracking-tight uppercase">
+                        {activeScreenshots[lightboxIndex].alt}
+                      </h4>
+                      <p className="text-xs text-slate-400 leading-relaxed font-sans">
+                        {activeScreenshots[lightboxIndex].caption}
+                      </p>
+                    </div>
+
+                    {/* Show beautiful mini interactive dashboard mockup if it's the interface type! */}
+                    {activeScreenshots[lightboxIndex].type === "interface" ? (
+                      <div className="h-[200px] border border-slate-800/80 rounded-xl overflow-hidden mt-3 bg-slate-950 p-4 relative">
+                        {renderMockScreenContent(projectId, activeScreenshots[lightboxIndex].device || "desktop")}
+                      </div>
+                    ) : activeScreenshots[lightboxIndex].type === "architecture" ? (
+                      <div className="space-y-2 bg-slate-950 p-4 rounded-xl border border-slate-850 text-[10px] font-mono text-slate-400 max-h-[220px] overflow-y-auto">
+                        <span className="text-white font-bold block uppercase tracking-wider text-[8px] mb-2 text-blue-400">Topology Specifications:</span>
+                        {getArchitectureNodes(projectId).map((node, i) => (
+                          <div key={node.id} className="flex gap-2 items-center">
+                            <span className="text-blue-500 font-extrabold">{i + 1}.</span>
+                            <span className="text-white uppercase font-bold text-[9px] min-w-[100px]">{node.label}:</span>
+                            <span className="truncate">{node.desc}</span>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="space-y-3 bg-slate-950 p-4 rounded-xl border border-slate-850 text-[10px] font-mono text-slate-400 max-h-[220px] overflow-y-auto">
+                        <span className="text-white font-bold block uppercase tracking-wider text-[8px] mb-1.5 text-emerald-400">Pipeline Stages:</span>
+                        {getWorkflowSteps(projectId).map((step, i) => (
+                          <div key={i} className="flex gap-2 items-start">
+                            <span className="text-emerald-500 font-extrabold">{i + 1}.</span>
+                            <div>
+                              <span className="text-white uppercase font-bold text-[9px] block">{step.title}</span>
+                              <span className="text-[9px] leading-relaxed block text-slate-500">{step.desc}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <div className="space-y-1 pt-0.5">
-                    <h5 className="text-xs font-bold text-slate-950 uppercase tracking-wider">{step.title}</h5>
-                    <p className="text-[11px] text-slate-600 leading-relaxed">{step.desc}</p>
-                    <span className="inline-block text-[8px] font-mono text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 uppercase tracking-wider font-semibold">
-                      {step.status}
-                    </span>
-                  </div>
-                </div>
-              ))}
+                </ContentPlaceholder>
+              </div>
+
+              {/* Next Button */}
+              <button 
+                onClick={() => setLightboxIndex((prev) => (prev + 1) % activeScreenshots.length)}
+                className="absolute right-2 md:right-6 p-3 bg-slate-900/85 hover:bg-slate-900 text-slate-400 hover:text-white border border-slate-800/80 rounded-full transition-all hover:scale-105 active:scale-95 cursor-pointer z-30"
+                aria-label="Next Slide"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
             </div>
-          </div>
-        </ContentPlaceholder>
-      )}
+
+            {/* Footer: Captions and Thumbnails */}
+            <div className="w-full bg-slate-900/40 rounded-xl border border-slate-800/50 p-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4 z-20" onClick={(e) => e.stopPropagation()}>
+              <div className="text-center md:text-left max-w-2xl">
+                <span className="inline-block text-[9px] font-mono text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20 font-bold uppercase tracking-widest mb-1.5">
+                  Executive Briefing
+                </span>
+                <p className="text-xs text-slate-300 leading-relaxed font-sans font-medium text-left">
+                  {activeScreenshots[lightboxIndex].caption}
+                </p>
+              </div>
+
+              {/* Thumbnail strip or index indicators */}
+              <div className="flex gap-1.5">
+                {activeScreenshots.map((scr, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setLightboxIndex(idx)}
+                    className={`w-2.5 h-2.5 rounded-full transition-all cursor-pointer ${
+                      idx === lightboxIndex ? "bg-blue-500 w-6" : "bg-slate-700 hover:bg-slate-600"
+                    }`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

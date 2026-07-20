@@ -227,6 +227,10 @@ export default function DashboardSandbox() {
           <p className="text-xs text-slate-500 mt-1 leading-relaxed max-w-xl">
             Compare performance across eight functional business domains, toggle active segment metrics, and explore recommendations with the conversational intelligence console.
           </p>
+          <p className="text-[10px] font-mono text-slate-400 mt-2 flex items-center gap-1.5 font-medium">
+            <AlertCircle className="w-3.5 h-3.5 text-slate-300" />
+            <span>This project uses publicly available or sample datasets for demonstration purposes.</span>
+          </p>
         </div>
 
         {/* Global Reset / Redraw */}
