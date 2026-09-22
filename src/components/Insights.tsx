@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { blogPosts } from "../data/blog";
 import { BlogPost } from "../types";
@@ -107,6 +107,32 @@ const mapPostToQuestionFirst = (post: BlogPost): QuestionFirstBlogPost => {
 export default function Insights({ onNavigate }: InsightsProps) {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("All");
+
+  useEffect(() => {
+    const preselectedId = localStorage.getItem("selected-article-id");
+    if (preselectedId) {
+      const found = blogPosts.find((p) => p.id === preselectedId);
+      if (found) {
+        setSelectedPost(found);
+      }
+      localStorage.removeItem("selected-article-id");
+    }
+
+    const handleCustomOpen = (e: Event) => {
+      const customEvent = e as CustomEvent<{ articleId?: string }>;
+      if (customEvent.detail?.articleId) {
+        const found = blogPosts.find((p) => p.id === customEvent.detail?.articleId);
+        if (found) {
+          setSelectedPost(found);
+        }
+      }
+    };
+
+    window.addEventListener("portfolio-open-article", handleCustomOpen);
+    return () => {
+      window.removeEventListener("portfolio-open-article", handleCustomOpen);
+    };
+  }, []);
 
   const categories = ["All", "Business Intelligence", "Data Analytics", "AI Automation", "Local BI"];
 
@@ -325,6 +351,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
 
             return (
               <ArticleLayout
+                articleId={selectedPost.id}
                 title={mappedSelectedPost.title}
                 category={mappedSelectedPost.category}
                 summary={mappedSelectedPost.summary}
@@ -377,6 +404,7 @@ export default function Insights({ onNavigate }: InsightsProps) {
                   }
                 }}
                 onClose={() => setSelectedPost(null)}
+                onNavigate={onNavigate}
               />
             );
           })()}

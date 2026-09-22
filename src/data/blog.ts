@@ -110,7 +110,7 @@ Many people think they need a faster computer or a more expensive database licen
       "Filtering single columns rather than entire tables avoids slow full-table row scans."
     ],
     relatedCaseStudies: [
-      { title: "SaaS Customer Churn Modeling", id: "churn-model" }
+      { title: "SaaS Customer Churn Modeling", id: "customer-churn" }
     ],
     relatedSolutions: [
       { title: "Business Dashboards & Reporting", id: "bi-dashboards" }
@@ -166,7 +166,7 @@ Whether you run a community dental clinic, a local restaurant, or a retail store
       "Simple physical changes, like visible signs, can turn digital map clicks into real customers."
     ],
     relatedCaseStudies: [
-      { title: "Local Map & Review Optimization", id: "local-seo-expert" }
+      { title: "Local Map & Review Optimization", id: "local-bi-framework" }
     ],
     relatedSolutions: [
       { title: "Local Visibility & Maps", id: "local-bi" }
@@ -274,7 +274,7 @@ Whether you run a community dental clinic, a local restaurant, or a retail store
       "Tracking consecutive points above or below the mean spots operational issues early."
     ],
     relatedCaseStudies: [
-      { title: "SaaS Customer Churn Modeling", id: "churn-model" }
+      { title: "SaaS Customer Churn Modeling", id: "customer-churn" }
     ],
     relatedSolutions: [
       { title: "Data Analytics & Insights", id: "data-analytics" }

@@ -4,6 +4,8 @@ import PresenceAndKnowledge from "./PresenceAndKnowledge";
 import ExecutiveSectionHeader from "./ExecutiveSectionHeader";
 import Expertise from "./Expertise";
 import ContentPlaceholder from "./ContentPlaceholder";
+import { useResumeDownload } from "../hooks/useResumeDownload";
+import { telemetry } from "../utils/telemetry";
 import { 
   Compass, 
   GraduationCap, 
@@ -17,7 +19,9 @@ import {
   Cpu,
   Sparkles,
   TrendingUp,
-  Github
+  Github,
+  Loader2,
+  ArrowUpRight
 } from "lucide-react";
 
 interface PhilosophyItem {
@@ -203,6 +207,7 @@ interface AboutProps {
  * standard workflows, and ongoing learning themes.
  */
 export default function About({ onNavigate }: AboutProps) {
+  const { download: downloadResume, isLoading: isResumeLoading } = useResumeDownload();
   const [expandedPhilosophies, setExpandedPhilosophies] = useState<Record<string, boolean>>({
     evidence: true // Pre-expanded to guide user interaction
   });
@@ -217,7 +222,7 @@ export default function About({ onNavigate }: AboutProps) {
   return (
     <section 
       id="about" 
-      className="relative py-24 bg-brand-bg-primary text-brand-body px-6 md:px-8 border-t border-slate-200 overflow-hidden"
+      className="relative py-16 md:py-20 bg-brand-bg-primary text-brand-body px-6 md:px-8 border-t border-slate-200 overflow-hidden"
       aria-label="Professional Philosophy & Journey"
     >
       {/* McKinsey-style minimal light backgrounds */}
@@ -239,6 +244,55 @@ export default function About({ onNavigate }: AboutProps) {
           title="Professional Mindset & Journey"
           description="The practical principles, ongoing learning, and curiosity that guide how I build helpful digital systems."
         />
+
+        {/* Recruiter & Executive Quick Access Strip */}
+        <div className="mb-12 p-4 bg-white border border-slate-200/90 rounded-2xl shadow-3xs flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <div>
+              <span className="text-xs font-bold text-slate-800 font-sans block">Candidate Quick Access</span>
+              <span className="text-[11px] font-mono text-slate-500">MSc Statistics • 40+ Verified Google & Microsoft Credentials</span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2.5">
+            <button
+              onClick={() => {
+                telemetry.trackCVDownload("about_strip");
+                downloadResume().catch(() => {});
+              }}
+              disabled={isResumeLoading}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-executive-blue hover:bg-blue-700 text-white rounded-lg text-xs font-bold font-mono uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-50"
+              aria-label="Download Full Resume in PDF format"
+            >
+              {isResumeLoading ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <FileText className="w-3.5 h-3.5" />
+              )}
+              <span>{isResumeLoading ? "Loading..." : "Download CV (PDF)"}</span>
+            </button>
+
+            {onNavigate && (
+              <>
+                <button
+                  onClick={() => onNavigate("certifications")}
+                  className="inline-flex items-center gap-1 px-3.5 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-lg text-xs font-bold font-mono uppercase tracking-wider transition-colors cursor-pointer"
+                >
+                  <span>40+ Certifications</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-400" />
+                </button>
+                <button
+                  onClick={() => onNavigate("projects")}
+                  className="inline-flex items-center gap-1 px-3.5 py-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 rounded-lg text-xs font-bold font-mono uppercase tracking-wider transition-colors cursor-pointer"
+                >
+                  <span>20 Case Studies</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-slate-400" />
+                </button>
+              </>
+            )}
+          </div>
+        </div>
 
         {/* SECTION 1: Why Business Intelligence & Academic Foundation */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch mb-20">
@@ -491,47 +545,53 @@ export default function About({ onNavigate }: AboutProps) {
                 Areas of Focus
               </span>
               <h3 className="text-[20px] md:text-[22px] font-extrabold text-slate-950 tracking-tight font-display">
-                Continuous Learning
+                Continuous Learning & Capabilities
               </h3>
-              <p className="text-[16px] text-slate-700 font-sans leading-relaxed">
-                Technology changes quickly. I constantly keep my skills sharp in statistics, databases, and automation so I can build the most reliable and efficient systems for your team.
+              <p className="text-[15px] text-slate-700 font-sans leading-relaxed">
+                Technology evolves rapidly. I constantly keep my skills sharp across statistics, databases, and automation to deliver high-reliability systems.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {learningThemes.map((theme, i) => {
-                const Icon = theme.icon;
-                return (
-                  <div 
-                    key={i} 
-                    className="p-4 bg-slate-50/50 border border-slate-100 rounded-xl space-y-2 flex flex-col justify-between"
-                  >
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <div className="p-1.5 bg-blue-50 text-blue-600 rounded-md border border-blue-100">
-                          <Icon className="w-3.5 h-3.5" />
+            {/* Interactive Capability Matrix */}
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {learningThemes.map((theme, i) => {
+                  const Icon = theme.icon;
+                  return (
+                    <div 
+                      key={i} 
+                      className="p-4 bg-slate-50/70 hover:bg-white hover:border-blue-200 border border-slate-200/80 rounded-xl space-y-2.5 flex flex-col justify-between transition-all duration-200 shadow-3xs group"
+                    >
+                      <div className="space-y-1.5">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1.5 bg-blue-50 text-blue-600 rounded-lg border border-blue-100 group-hover:bg-executive-blue group-hover:text-white transition-colors">
+                            <Icon className="w-3.5 h-3.5" />
+                          </div>
+                          <h4 className="text-[15px] font-bold text-slate-950 font-sans group-hover:text-executive-blue transition-colors">
+                            {theme.title}
+                          </h4>
                         </div>
-                        <h4 className="text-[16px] font-bold text-slate-950 font-sans">
-                          {theme.title}
-                        </h4>
+                        <p className="text-[13.5px] text-slate-650 leading-relaxed font-sans">
+                          {theme.desc}
+                        </p>
                       </div>
-                      <p className="text-[15px] text-slate-700 leading-normal font-sans">
-                        {theme.desc}
-                      </p>
-                    </div>
 
-                    <div className="text-[13px] text-slate-700 leading-relaxed font-mono bg-white px-2.5 py-1.5 rounded border border-slate-100 mt-2">
-                      <span className="text-executive-blue font-bold block text-[11px] uppercase tracking-wider mb-0.5">Value Contribution:</span>
-                      {theme.contribution}
+                      <div className="text-[12px] text-slate-700 leading-relaxed font-mono bg-white px-2.5 py-1.5 rounded-lg border border-slate-200/60 mt-1">
+                        <span className="text-executive-blue font-bold block text-[10px] uppercase tracking-wider mb-0.5">Value Contribution:</span>
+                        {theme.contribution}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
 
-            {/* SPRINT 5.0 Career Timeline Graphics Placeholder */}
+            {/* Career Milestones Indicator */}
             <div className="border-t border-slate-100 pt-4 mt-2">
-              <span className="text-[12px] font-mono text-slate-500 uppercase tracking-widest block mb-2 font-bold">Professional Career Milestones</span>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[11px] font-mono text-slate-500 uppercase tracking-widest block font-bold">Strategic Evolution</span>
+                <span className="text-[10px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">Continuous Mastery</span>
+              </div>
               <ContentPlaceholder
                 variant="workflow"
                 src="/assets/workflows/career-timeline.webp"

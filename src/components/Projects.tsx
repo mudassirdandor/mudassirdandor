@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { telemetry } from "../utils/telemetry";
 import { projects } from "../data/projects";
 import { Project } from "../types";
 import ExecutiveSectionHeader from "./ExecutiveSectionHeader";
@@ -7,6 +8,7 @@ import CaseStudyLayout from "./CaseStudyLayout";
 import GlobalModal from "./GlobalModal";
 import ContentPlaceholder from "./ContentPlaceholder";
 import ExecutiveCard from "./ExecutiveCard";
+import ConnectedKnowledgeCard from "./ConnectedKnowledgeCard";
 import { 
   X, 
   Github, 
@@ -782,11 +784,11 @@ function renderMockScreenContent(projectId: string, device: "desktop" | "tablet"
             
             <div className="grid grid-cols-2 gap-2">
               <div className="bg-slate-900 border border-slate-850 p-2 rounded-lg">
-                <span className="text-[8px] font-mono text-slate-400 uppercase block">Quantifiable Savings</span>
-                <span className="text-sm font-extrabold text-blue-400 font-mono">$420K+</span>
+                <span className="text-[8px] font-mono text-slate-400 uppercase block">Portfolio Case Studies</span>
+                <span className="text-sm font-extrabold text-blue-400 font-mono">20 Total</span>
               </div>
               <div className="bg-slate-900 border border-slate-850 p-2 rounded-lg">
-                <span className="text-[8px] font-mono text-slate-400 uppercase block">Verified Pipelines</span>
+                <span className="text-[8px] font-mono text-slate-400 uppercase block">Pipeline Integrity</span>
                 <span className="text-sm font-extrabold text-emerald-400 font-mono">99.8%</span>
               </div>
             </div>
@@ -2014,7 +2016,29 @@ export default function Projects({
       }
       localStorage.removeItem("selected-project-id");
     }
+
+    const handleCustomOpen = (e: Event) => {
+      const customEvent = e as CustomEvent<{ projectId?: string }>;
+      if (customEvent.detail?.projectId) {
+        const found = projects.find((p) => p.id === customEvent.detail?.projectId);
+        if (found) {
+          setSelectedProject(found);
+        }
+      }
+    };
+
+    window.addEventListener("portfolio-open-project", handleCustomOpen);
+    return () => {
+      window.removeEventListener("portfolio-open-project", handleCustomOpen);
+    };
   }, []);
+
+  React.useEffect(() => {
+    if (selectedProject) {
+      telemetry.trackProjectOpen(selectedProject.id, selectedProject.category, selectedProject.status || "");
+      telemetry.trackCaseStudyOpen(selectedProject.id, selectedProject.category, selectedProject.status || "");
+    }
+  }, [selectedProject]);
 
   const [activeLabCategory, setActiveLabCategory] = useState<"All" | "AI Automation" | "Business Intelligence" | "Local Business Intelligence" | "Interactive Applications">("All");
 
@@ -2445,452 +2469,16 @@ export default function Projects({
           </>
         )}
 
-        {/* Premium Consulting Brief Overlay (Modal) */}
+        {/* Interactive Case Study & Evidence Experience Modal */}
         <AnimatePresence>
-          {selectedProject && (() => {
-            const data14 = get14PointData(selectedProject);
-            // Unified rendering across all projects using standard GlobalModal layout
-
-            const extra = projectExtraDetails[selectedProject.id] || projectExtraDetails["sales-dashboard"];
-
-            return (
-              <GlobalModal
-                onClose={() => setSelectedProject(null)}
-                maxWidthClassName="max-w-4xl"
-                heightClassName="max-h-[90vh]"
-                overlayClassName="bg-slate-950/80 backdrop-blur-md"
-              >
-                  
-                  {/* Lightweight Reading Progress Indicator */}
-                  <div className="absolute top-0 left-0 h-[3px] bg-executive-blue transition-all duration-75 z-50" style={{ width: `${scrollPercent}%` }} />
-
-                  {/* Report Header */}
-                  <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-white/95 backdrop-blur-md z-10 shrink-0">
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <span className={`px-2 py-0.5 text-[8px] font-mono rounded border uppercase tracking-wider ${getCategoryColor(selectedProject.category)}`}>
-                        {selectedProject.category}
-                      </span>
-                      {(() => {
-                        const labelInfo = getProjectVisitorLabel(selectedProject);
-                        return (
-                          <span className={`px-2 py-0.5 text-[8px] font-mono rounded border uppercase tracking-wider ${labelInfo.className}`}>
-                            {labelInfo.text}
-                          </span>
-                        );
-                      })()}
-                      {selectedProject.repoStatus && (
-                        <span className={`px-2 py-0.5 text-[8px] font-mono rounded border uppercase tracking-wider ${
-                          selectedProject.repoStatus === "Source Available" 
-                            ? "bg-slate-50 text-slate-600 border-slate-200" 
-                            : "bg-zinc-50 text-zinc-600 border-zinc-200"
-                        }`}>
-                          {selectedProject.repoStatus}
-                        </span>
-                      )}
-                      <span className="text-[10px] font-mono text-slate-400">ENGAGEMENT BRIEF ID: {selectedProject.id.toUpperCase()}</span>
-                    </div>
-                    <button
-                      onClick={() => setSelectedProject(null)}
-                      className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 rounded-lg cursor-pointer transition-colors focus-visible:ring-1 focus-visible:ring-blue-500 focus:outline-none"
-                      aria-label="Close Case Study"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-
-                  {/* Report Main Content Area (Scrollable) */}
-                  <div 
-                    className="overflow-y-auto p-6 md:p-10 space-y-10 font-sans text-brand-body"
-                    onScroll={handleModalScroll}
-                  >
-                    
-                    {/* Header Banner - Editorial & Sleek */}
-                    <div className="space-y-2 border-b border-slate-100 pb-6">
-                      <span className="font-mono text-[9px] tracking-widest text-executive-blue uppercase font-semibold">
-                        {selectedProject.isSimulated ? "Analytical Demonstration" : "Consulting Case Study"}
-                      </span>
-                      <h3 className="text-xl md:text-3xl font-extrabold tracking-tight text-slate-900 leading-tight">
-                        {selectedProject.title}
-                      </h3>
-                      <p className="text-xs text-slate-400 italic mt-1 font-mono">
-                        Framework Integration: Stage {selectedProject.id.includes("gbp") || selectedProject.id.includes("seo") ? "5 (Recommend Actions)" : selectedProject.id.includes("assistant") ? "6 (Automate & Optimize)" : "4 (Build Business Intelligence)"}
-                      </p>
-                    </div>
-
-                    {selectedProject.isSimulated && (
-                      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 md:p-5 flex gap-3 text-amber-900 shadow-2xs">
-                        <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                        <div className="space-y-1">
-                          <h4 className="text-sm font-extrabold tracking-tight uppercase">Analytical Demonstration Profile</h4>
-                          <p className="text-xs text-amber-800 leading-relaxed font-sans italic">
-                            This demonstration uses publicly available or sample datasets to showcase analytical techniques. No real-world private database keys or client details are exposed within this live simulation framework.
-                          </p>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Executive Summary Card (First thing seen by executives) */}
-                    <div className="bg-slate-50/50 border border-blue-100 rounded-xl p-5 md:p-6 space-y-4 relative overflow-hidden shadow-xs">
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/[0.015] rounded-full blur-3xl pointer-events-none" />
-                      
-                      <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-                        <FileSignature className="w-4 h-4 text-executive-blue" />
-                        <h4 className="text-xs font-bold font-mono text-slate-800 uppercase tracking-wider">
-                          Executive Briefing Summary
-                        </h4>
-                      </div>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                        <div className="space-y-1">
-                          <span className="text-[9px] font-mono text-slate-400 uppercase block">Business Context</span>
-                          <p className="text-slate-600 leading-relaxed">{extra.executiveSummary.context}</p>
-                        </div>
-                        <div className="space-y-1">
-                          <span className="text-[9px] font-mono text-slate-400 uppercase block">Primary Challenge</span>
-                          <p className="text-slate-600 leading-relaxed">{extra.executiveSummary.challenge}</p>
-                        </div>
-                        <div className="space-y-1">
-                          <span className="text-[9px] font-mono text-slate-400 uppercase block">Approach</span>
-                          <p className="text-slate-600 leading-relaxed">{extra.executiveSummary.approach}</p>
-                        </div>
-                        <div className="space-y-1">
-                          <span className="text-[9px] font-mono text-slate-400 uppercase block">Key Insight</span>
-                          <p className="text-slate-700 leading-relaxed font-semibold text-executive-blue">{extra.executiveSummary.insight}</p>
-                        </div>
-                        <div className="space-y-1">
-                          <span className="text-[9px] font-mono text-slate-400 uppercase block">Recommendation</span>
-                          <p className="text-slate-700 leading-relaxed font-semibold text-emerald-600">{extra.executiveSummary.recommendation}</p>
-                        </div>
-                        <div className="space-y-1">
-                          <span className="text-[9px] font-mono text-slate-400 uppercase block">Expected Business Value</span>
-                          <p className="text-slate-800 leading-relaxed font-semibold">{extra.executiveSummary.businessValue}</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Interactive Visual Workspace Section */}
-                    <ProjectVisuals projectId={selectedProject.id} />
-
-                    {/* Section Separator */}
-                    <div className="h-[1px] bg-slate-200" />
-
-                    {/* Editorial Layout: Column flow */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                      
-                      {/* Left Side: Strategic Problem & Methodology (7 columns) */}
-                      <div className="lg:col-span-7 space-y-8">
-                        
-                        {/* 1. Business Context */}
-                        <div className="space-y-2">
-                          <h4 className="text-xs font-bold font-mono text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-executive-blue" />
-                            1. Business Context & Landscape
-                          </h4>
-                          <p className="text-sm text-slate-600 leading-relaxed pl-3.5 border-l border-slate-200">
-                            {extra.businessContext}
-                          </p>
-                        </div>
-
-                        {/* 2. Business Challenge */}
-                        <div className="space-y-2">
-                          <h4 className="text-xs font-bold font-mono text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-executive-blue" />
-                            2. Primary Business Challenge
-                          </h4>
-                          <p className="text-sm text-slate-600 leading-relaxed pl-3.5 border-l border-slate-200">
-                            {selectedProject.businessProblem}
-                          </p>
-                        </div>
-
-                        {/* 3. Business Questions */}
-                        <div className="space-y-2 bg-slate-50/50 p-4 rounded-xl border border-slate-200">
-                          <h4 className="text-xs font-bold font-mono text-slate-700 uppercase tracking-wider flex items-center gap-2 mb-2">
-                            <HelpCircle className="w-4 h-4 text-executive-blue" />
-                            3. Strategic Business Questions
-                          </h4>
-                          <ul className="space-y-2 pl-1.5">
-                            {extra.businessQuestions.map((q, idx) => (
-                              <li key={idx} className="text-xs text-slate-600 flex items-start gap-2 leading-relaxed">
-                                <span className="font-mono text-executive-blue font-semibold text-[10px] shrink-0 mt-0.5">Q0{idx+1}:</span>
-                                <span>{q}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* 4. Data Sources */}
-                        <div className="space-y-2">
-                          <h4 className="text-xs font-bold font-mono text-slate-400 uppercase tracking-wider flex items-center gap-2">
-                            <Database className="w-4 h-4 text-executive-blue" />
-                            4. Data Sources & Integration Integrity
-                          </h4>
-                          <p className="text-xs text-slate-500 leading-relaxed pl-1">
-                            {extra.dataSources}
-                          </p>
-                        </div>
-
-                        {/* 5. Analytical Methodology */}
-                        <div className="space-y-3 pl-3.5 border-l-2 border-blue-200">
-                          <h4 className="text-xs font-bold font-mono text-slate-700 uppercase tracking-wider flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-executive-blue" />
-                            5. Analytical Methodology
-                          </h4>
-                          <p className="text-xs text-slate-600 leading-relaxed">
-                            {extra.methodology}
-                          </p>
-                          <div className="space-y-2 pt-1">
-                            {selectedProject.analysisSteps.map((step, idx) => (
-                              <div key={idx} className="flex gap-2 text-xs text-slate-500">
-                                <span className="font-mono text-slate-400 select-none">0{idx+1}.</span>
-                                <span className="leading-relaxed">{step}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                      </div>
-
-                      {/* Right Side: Evidence, Insights & Limitations (5 columns) */}
-                      <div className="lg:col-span-5 space-y-8">
-                        
-                        {/* Evidence & Data Quality Panel */}
-                        <div className="bg-slate-50/30 border border-slate-200 rounded-xl p-5 space-y-3">
-                          <h4 className="text-xs font-bold font-mono text-slate-700 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-2.5">
-                            <Compass className="w-4 h-4 text-executive-blue" />
-                            Evidence & Data Quality
-                          </h4>
-                          <div className="space-y-3 text-xs">
-                            <div className="flex justify-between items-center py-1 border-b border-slate-100">
-                              <span className="text-slate-400">Dataset Source:</span>
-                              <span className="font-mono text-slate-700 font-semibold text-[10px]">{extra.evidence.source}</span>
-                            </div>
-                            <div className="flex justify-between items-center py-1 border-b border-slate-100">
-                              <span className="text-slate-400">Data Completeness:</span>
-                              <span className="font-mono text-emerald-600 text-[10px] bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded">{extra.evidence.completeness}</span>
-                            </div>
-                            <div className="flex justify-between items-center py-1 border-b border-slate-100">
-                              <span className="text-slate-400">Analysis Scope:</span>
-                              <span className="font-mono text-blue-600 text-[10px]">{extra.evidence.scope}</span>
-                            </div>
-                            <div className="space-y-1 pt-1">
-                              <span className="text-[10px] font-mono text-slate-400 block uppercase">Decision Confidence:</span>
-                              <p className="text-[11px] text-slate-600 font-medium leading-relaxed italic">
-                                "{extra.evidence.confidence}"
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* 6. Key Insights */}
-                        <div className="bg-slate-50/30 border border-slate-200 rounded-xl p-5 space-y-3">
-                          <h4 className="text-xs font-bold font-mono text-slate-700 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-2.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                            6. Key Insights
-                          </h4>
-                          <div className="space-y-3">
-                            {selectedProject.businessInsights.map((insight, idx) => (
-                              <div key={idx} className="space-y-0.5">
-                                <span className="text-[8px] font-mono text-slate-400 block uppercase">INSIGHT 0{idx+1}</span>
-                                <p className="text-xs text-slate-600 leading-relaxed">
-                                  {insight}
-                                </p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* 7. Recommendations */}
-                        <div className="bg-blue-50/20 border border-blue-100 rounded-xl p-5 space-y-3">
-                          <h4 className="text-xs font-bold font-mono text-slate-800 uppercase tracking-wider flex items-center gap-2 border-b border-blue-100 pb-2.5">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                            7. Recommendations
-                          </h4>
-                          <div className="space-y-3">
-                            {selectedProject.recommendations.map((rec, idx) => (
-                              <div key={idx} className="flex gap-2 items-start">
-                                <span className="font-mono text-[9px] px-1.5 py-0.5 bg-blue-50 text-blue-600 border border-blue-100 rounded mt-0.5 shrink-0">REC 0{idx+1}</span>
-                                <p className="text-xs text-slate-600 leading-relaxed">
-                                  {rec}
-                                </p>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Limitations Section (Reinforces Analytical Honesty) */}
-                        <div className="bg-slate-50/30 border border-slate-200 rounded-xl p-5 space-y-3">
-                          <h4 className="text-xs font-bold font-mono text-slate-700 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-2.5">
-                            <AlertTriangle className="w-4 h-4 text-amber-500" />
-                            Limitations & Disclaimers
-                          </h4>
-                          <ul className="space-y-2">
-                            {extra.limitations.map((lim, idx) => (
-                              <li key={idx} className="text-xs text-slate-600 flex items-start gap-2 leading-relaxed">
-                                <span className="text-amber-500/50 select-none">•</span>
-                                <span>{lim}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Future Enhancements Section */}
-                        <div className="bg-slate-50/30 border border-slate-200 rounded-xl p-5 space-y-3">
-                          <h4 className="text-xs font-bold font-mono text-slate-700 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-2.5">
-                            <TrendingUp className="w-4 h-4 text-executive-blue" />
-                            Future Enhancements
-                          </h4>
-                          <ul className="space-y-2">
-                            {extra.futureEnhancements.map((fut, idx) => (
-                              <li key={idx} className="text-xs text-slate-600 flex items-start gap-2 leading-relaxed">
-                                <span className="text-blue-500/50 select-none">+</span>
-                                <span>{fut}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* 8. Tools Used */}
-                        <div className="space-y-2">
-                          <h4 className="text-[10px] font-bold font-mono text-slate-400 uppercase tracking-widest block">
-                            8. Supporting Tools Used
-                          </h4>
-                          <div className="flex flex-wrap gap-1.5">
-                            {selectedProject.tools.map((t) => (
-                              <span key={t} className="px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-700 rounded text-[13px] font-medium">
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* SPRINT 3.5 SMART CROSS-LINKS */}
-                        {(() => {
-                          const links = getProjectCrossLinks(selectedProject.id);
-                          return (
-                            <div className="space-y-3 bg-slate-50/50 p-5 rounded-xl border border-slate-200">
-                              <h4 className="text-xs font-bold font-mono text-slate-700 uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 pb-2.5">
-                                <Compass className="w-4 h-4 text-blue-600 shrink-0" />
-                                Related Assets & Research
-                              </h4>
-                              <div className="flex flex-col gap-2.5">
-                                {links.solution && (
-                                  <button
-                                    onClick={() => {
-                                      setSelectedProject(null);
-                                      onNavigate?.(links.solution.pageId);
-                                    }}
-                                    className="inline-flex items-center gap-1.5 text-left text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline cursor-pointer focus:outline-none"
-                                  >
-                                    <span className="font-mono text-[9px] font-bold bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded border border-blue-100 uppercase">
-                                      Solution
-                                    </span>
-                                    <span>Explore Solution →</span>
-                                  </button>
-                                )}
-                                {links.article && (
-                                  <button
-                                    onClick={() => {
-                                      setSelectedProject(null);
-                                      onNavigate?.(links.article.pageId);
-                                    }}
-                                    className="inline-flex items-center gap-1.5 text-left text-xs font-semibold text-violet-600 hover:text-violet-700 hover:underline cursor-pointer focus:outline-none"
-                                  >
-                                    <span className="font-mono text-[9px] font-bold bg-violet-50 text-violet-600 px-1.5 py-0.5 rounded border border-violet-100 uppercase">
-                                      Research
-                                    </span>
-                                    <span>Read Article →</span>
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })()}
-
-                      </div>
-
-                    </div>
-
-                    {/* Section Separator */}
-                    <div className="h-[1px] bg-slate-200" />
-
-                    {/* Ethical Professional Analytics Statement */}
-                    <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl space-y-2 max-w-3xl">
-                      <div className="flex items-center gap-2">
-                        <ShieldCheck className="w-4 h-4 text-executive-blue" />
-                        <span className="text-[10px] font-mono text-slate-700 uppercase tracking-wider font-semibold">Professional Analytics Statement</span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 leading-relaxed">
-                        Recommendations and findings are formulated solely based upon available structural files and the specific mathematical models applied. Sound operational decision-making requires combining these quantitative indices with qualitative stakeholder input, localized expert knowledge, and prevailing organizational conditions.
-                      </p>
-                    </div>
-
-                  </div>
-
-                  {/* Footer Actions Panel */}
-                  <div className="px-6 py-5 border-t border-slate-100 bg-white/95 backdrop-blur-md z-10 shrink-0 flex flex-wrap justify-between items-center gap-4">
-                    <div className="flex items-center gap-2 text-[10px] font-mono text-slate-400">
-                      <ShieldCheck className="w-4 h-4 text-executive-blue" />
-                      <span>MUDASSIR JAVED • DECISION COMPANION SYSTEM</span>
-                    </div>
-                    
-                    <div className="flex gap-3">
-                      {selectedProject.githubUrl && (
-                        <a
-                          href={selectedProject.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 px-4 py-2 bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all focus-visible:ring-1 focus-visible:ring-blue-500 focus:outline-none"
-                        >
-                          <Github className="w-4 h-4" />
-                          Code Repository
-                        </a>
-                      )}
-                      <button
-                        onClick={() => {
-                          setSelectedProject(null);
-                          const element = document.getElementById("dashboard-sandbox");
-                          if (element) {
-                            const offset = 80;
-                            const bodyRect = document.body.getBoundingClientRect().top;
-                            const elementRect = element.getBoundingClientRect().top;
-                            const elementPosition = elementRect - bodyRect;
-                            const offsetPosition = elementPosition - offset;
-                            window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                          }
-                        }}
-                        className="flex items-center gap-1.5 px-4 py-2 bg-slate-100 text-slate-800 hover:bg-slate-200 rounded-lg text-xs font-semibold transition-all cursor-pointer focus-visible:ring-1 focus-visible:ring-blue-500 focus:outline-none"
-                      >
-                        <Play className="w-4 h-4 text-slate-600" />
-                        Run Simulation
-                      </button>
-                      <button
-                        onClick={() => {
-                          setSelectedProject(null);
-                          onNavigate?.("contact");
-                        }}
-                        className="flex items-center gap-1.5 px-4 py-2 bg-executive-blue text-white hover:bg-executive-blue/90 rounded-lg text-xs font-semibold transition-all cursor-pointer focus-visible:ring-1 focus-visible:ring-blue-500 focus:outline-none"
-                      >
-                        Let's Talk About Your Project →
-                      </button>
-
-                      <div className="text-[10px] text-slate-500 pl-1">
-                        Prefer WhatsApp?{" "}
-                        <a
-                          href={`https://wa.me/923112777061?text=${encodeURIComponent("Hello Mudassir,\n\nI visited your portfolio website and would like to discuss a project with you.")}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label="Discuss on WhatsApp with Mudassir"
-                          className="text-emerald-600 hover:text-emerald-700 underline font-semibold inline-flex items-center gap-1 cursor-pointer"
-                        >
-                          Start a conversation
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-
-                </GlobalModal>
-              );
-          })()}
+          {selectedProject && (
+            <CaseStudyLayout
+              project={selectedProject}
+              onClose={() => setSelectedProject(null)}
+              onNavigate={onNavigate}
+              onSelectProject={(p) => setSelectedProject(p)}
+            />
+          )}
         </AnimatePresence>
 
       </div>

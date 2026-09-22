@@ -81,31 +81,31 @@ export default function HomeHero({ onNavigate }: HomeHeroProps) {
               </span>
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto pt-1">
+            <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto pt-2">
               <button
                 onClick={() => onNavigate("contact")}
-                className="w-full sm:w-auto px-5 py-3 bg-executive-blue hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus:outline-none active:scale-[0.98] text-white font-semibold text-[15px] rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 shadow-md shadow-blue-500/10"
+                className="w-full sm:w-auto px-5 py-2.5 bg-executive-blue hover:bg-blue-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus:outline-none active:scale-[0.98] text-white font-bold text-xs uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 shadow-2xs"
               >
-                Discuss Your Project
-                <ArrowUpRight className="w-4 h-4" />
+                <span>Discuss Your Project</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </button>
- 
+
               <a
                 href={`https://wa.me/923112777061?text=${encodeURIComponent("Hello Mudassir,\n\nI visited your portfolio website and would like to discuss a project with you.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Chat on WhatsApp with Mudassir"
-                className="w-full sm:w-auto px-5 py-3 bg-white hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus:outline-none active:scale-[0.98] border border-slate-200 text-emerald-600 hover:text-emerald-700 font-semibold text-[15px] rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 shadow-xs"
+                className="w-full sm:w-auto px-5 py-2.5 bg-white hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 focus:outline-none active:scale-[0.98] border border-slate-200 text-emerald-600 hover:text-emerald-700 font-bold text-xs uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 shadow-3xs"
               >
-                Chat on WhatsApp
-                <MessageCircle className="w-4 h-4" />
+                <span>Chat on WhatsApp</span>
+                <MessageCircle className="w-3.5 h-3.5" />
               </a>
               
               <button
                 onClick={() => scrollToSection("featured-projects")}
-                className="w-full sm:w-auto px-5 py-3 bg-white hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus:outline-none active:scale-[0.98] border border-slate-200 text-slate-700 hover:text-slate-900 font-semibold text-[15px] rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 shadow-xs"
+                className="w-full sm:w-auto px-5 py-2.5 bg-white hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus:outline-none active:scale-[0.98] border border-slate-200 text-slate-700 hover:text-slate-900 font-bold text-xs uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-2 cursor-pointer transition-all duration-200 shadow-3xs"
               >
-                View Case Studies
+                <span>View Case Studies</span>
               </button>
             </div>
           </div>
@@ -118,6 +118,17 @@ export default function HomeHero({ onNavigate }: HomeHeroProps) {
               transition={{ duration: 0.6 }}
               className="relative w-full max-w-sm sm:max-w-md bg-white border border-slate-200 rounded-2xl p-5 md:p-6 shadow-xl flex flex-col justify-between"
             >
+              {/* Floating Signature Visual Badges for Living Data Landscape */}
+              <div className="absolute -top-3 -left-2 z-20 hidden sm:flex items-center gap-1.5 px-3 py-1 bg-slate-900 text-white rounded-full text-[10px] font-mono font-bold tracking-wider shadow-md border border-slate-700/50">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>LIVE PIPELINE ACTIVE</span>
+              </div>
+
+              <div className="absolute -bottom-3 -right-2 z-20 hidden sm:flex items-center gap-1.5 px-3 py-1 bg-white text-slate-800 rounded-full text-[10px] font-mono font-bold tracking-wider shadow-md border border-slate-200">
+                <ShieldCheck className="w-3.5 h-3.5 text-executive-blue" />
+                <span>40+ CERTIFIED PIPELINES</span>
+              </div>
+
               {/* Corner Coordinate Tick Marks for Executive Aesthetic */}
               <span className="absolute top-4 left-4 text-[10px] font-mono text-slate-300 select-none">+</span>
               <span className="absolute top-4 right-4 text-[10px] font-mono text-slate-300 select-none">+</span>

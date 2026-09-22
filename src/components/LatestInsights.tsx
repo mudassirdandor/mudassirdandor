@@ -21,7 +21,7 @@ export default function LatestInsights({ onNavigate }: LatestInsightsProps) {
   return (
     <section 
       id="latest-insights" 
-      className="py-24 bg-slate-50 border-b border-slate-200 px-6 md:px-8 relative"
+      className="py-16 md:py-20 bg-slate-50 border-b border-slate-200 px-6 md:px-8 relative"
       aria-label="Conceptual Thought Leadership"
     >
       <div className="max-w-7xl mx-auto">
@@ -33,9 +33,9 @@ export default function LatestInsights({ onNavigate }: LatestInsightsProps) {
           actions={
             <button
               onClick={() => onNavigate("insights")}
-              className="self-start md:self-auto flex items-center gap-2 px-5 py-3 bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-slate-900 text-xs font-bold tracking-wider uppercase rounded-xl border border-slate-200 transition-colors cursor-pointer shadow-2xs"
+              className="self-start md:self-auto inline-flex items-center gap-2 px-4.5 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 hover:text-slate-900 text-xs font-bold tracking-wider uppercase rounded-xl border border-slate-200 transition-colors cursor-pointer shadow-2xs"
             >
-              Explore Complete Library
+              <span>Explore Complete Library</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </button>
           }

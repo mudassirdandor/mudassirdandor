@@ -45,7 +45,13 @@ export const getRevealVariants = (
     | "left" 
     | "right" 
     | "scale"
-    | "hero",
+    | "hero"
+    | "cinematicHero"
+    | "layeredCardEmergence"
+    | "timelineProgression"
+    | "dashboardActivation"
+    | "profileAssembly"
+    | "completionSequence",
   shouldReduceMotion: boolean,
   customDuration?: number
 ) => {
@@ -73,12 +79,68 @@ export const getRevealVariants = (
       };
     
     case "hero":
+    case "cinematicHero":
       return {
-        hidden: { opacity: 0, scale: 0.98 },
+        hidden: { opacity: 0, scale: 1.02, y: 12 },
         visible: {
           opacity: 1,
           scale: 1,
-          transition: { duration: MOTION_DURATIONS.slow, ease }
+          y: 0,
+          transition: { duration: 0.85, ease: MOTION_EASES.smooth }
+        }
+      };
+
+    case "layeredCardEmergence":
+      return {
+        hidden: { opacity: 0, y: 28, scale: 0.97 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          transition: { duration: 0.6, ease }
+        }
+      };
+
+    case "timelineProgression":
+      return {
+        hidden: { opacity: 0, x: -16, y: 8 },
+        visible: {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          transition: { duration: 0.55, ease: MOTION_EASES.smooth }
+        }
+      };
+
+    case "dashboardActivation":
+      return {
+        hidden: { opacity: 0, scale: 0.98, y: 16 },
+        visible: {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          transition: { duration: 0.65, ease }
+        }
+      };
+
+    case "profileAssembly":
+      return {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: { duration: 0.6, ease }
+        }
+      };
+
+    case "completionSequence":
+      return {
+        hidden: { opacity: 0, scale: 0.96, y: 12 },
+        visible: {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          transition: { duration: 0.5, ease }
         }
       };
 

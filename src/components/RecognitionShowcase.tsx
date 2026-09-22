@@ -257,7 +257,7 @@ export default function RecognitionShowcase({ onNavigate }: RecognitionShowcaseP
   return (
     <motion.section
       id="recognition-showcase"
-      className="py-4 md:py-5 bg-slate-50 border-b border-slate-200 px-6 md:px-8 relative"
+      className="py-8 md:py-10 bg-slate-50 border-b border-slate-200 px-6 md:px-8 relative"
       aria-label="Professional Recognition Showcase"
       initial="hidden"
       whileInView="visible"

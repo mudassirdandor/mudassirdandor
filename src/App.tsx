@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, lazy, Suspense } from "react";
 import { useLocation, useNavigate, useNavigationType } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { useSEO } from "./hooks/useSEO";
+import { telemetry } from "./utils/telemetry";
+import { performanceTracker } from "./utils/performance";
 import Navbar from "./components/Navbar";
 import Contact from "./components/Contact";
 import AnimatedCounter from "./components/AnimatedCounter";
@@ -16,8 +18,11 @@ import FeaturedProjects from "./components/FeaturedProjects";
 import CertGrid from "./components/CertGrid";
 import RecognitionShowcase from "./components/RecognitionShowcase";
 import HowIWork from "./components/HowIWork";
+import DecisionIntelligenceEngine from "./components/DecisionIntelligenceEngine";
 import LatestInsights from "./components/LatestInsights";
 import Footer from "./components/Footer";
+import CommandPalette from "./components/CommandPalette";
+import ValidationModeInspector from "./components/ValidationModeInspector";
 
 import { 
   SkeletonPulse, 
@@ -115,68 +120,6 @@ function PageLoading() {
   );
 }
 
-function BusinessImpactMetrics() {
-  return (
-    <section className="py-24 bg-white border-t border-slate-200 overflow-hidden relative" aria-label="Business Impact Metrics">
-      {/* Background desaturated decorative gradients */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/[0.01] rounded-full blur-[120px] pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
-        <div className="max-w-3xl mb-16 text-left">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="font-mono text-[10px] tracking-widest text-emerald-600 uppercase">Quantifiable Value Delivery</span>
-          </div>
-          <h2 className="text-[clamp(2.1rem,3vw,2.5rem)] font-bold tracking-[-0.01em] text-slate-950 font-display leading-[1.2]">
-            Business Impact Metrics
-          </h2>
-          <p className="text-[12px] font-mono text-slate-500 mt-2 uppercase tracking-wider">
-            Consolidated operational results across automated systems & local business visibility
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            {
-              value: "$420K+",
-              label: "Operational Savings",
-              sub: "Saved via intelligent AI workflows, automated report generation, and automated process pipelines."
-            },
-            {
-              value: "32%",
-              label: "Local Visibility Growth",
-              sub: "Average organic ranking improvement on Google Maps for local retail client groups within 90 days."
-            },
-            {
-              value: "99.8%",
-              label: "Pipeline Accuracy",
-              sub: "Ingestion accuracy and strict schema validation across financial and customer transaction systems."
-            },
-            {
-              value: "11",
-              label: "Enterprise Case Studies",
-              sub: "Fully detailed analytical frameworks, diagnostics, and customized dashboard solutions deployed."
-            }
-          ].map((metric, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ y: -4, boxShadow: "0 10px 25px -8px rgba(0, 0, 0, 0.05)" }}
-              transition={{ type: "spring", stiffness: 350, damping: 25 }}
-              className="bg-slate-50 border border-slate-100 rounded-2xl p-6 hover:border-slate-200/80 transition-all duration-350 hover:bg-white"
-            >
-              <span className="block text-4xl font-extrabold text-slate-900 tracking-tight font-display mb-2 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                <AnimatedCounter value={metric.value} />
-              </span>
-              <h3 className="text-xs font-bold text-slate-800 mb-1.5">{metric.label}</h3>
-              <p className="text-[11px] text-slate-500 leading-relaxed">{metric.sub}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export default function App() {
   const [isInitialLoading, setIsInitialLoading] = useState(() => {
     if (typeof window !== "undefined") {
@@ -187,6 +130,33 @@ export default function App() {
   });
   const [activeSection, setActiveSection] = useState("home-hero");
   const [scrollPercent, setScrollPercent] = useState(0);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+
+  // Global Keyboard Shortcuts for Command Palette: Cmd+K / Ctrl+K and '/'
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Check for Cmd+K or Ctrl+K
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setIsCommandPaletteOpen((prev) => !prev);
+        return;
+      }
+
+      // Check for '/' key when not focused in input/textarea/editable
+      if (e.key === "/" && !isCommandPaletteOpen) {
+        const target = e.target as HTMLElement;
+        const tagName = target?.tagName?.toLowerCase();
+        const isEditable = target?.isContentEditable || tagName === "input" || tagName === "textarea" || tagName === "select";
+        if (!isEditable) {
+          e.preventDefault();
+          setIsCommandPaletteOpen(true);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isCommandPaletteOpen]);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -231,6 +201,11 @@ export default function App() {
   // Call dynamic production-quality SEO manager
   useSEO({ currentPage });
 
+  // Privacy-first non-blocking page view telemetry
+  useEffect(() => {
+    telemetry.trackPageView(location.pathname, currentPage);
+  }, [location.pathname, currentPage]);
+
   // Scroll position logger & restoration
   useEffect(() => {
     const handleScroll = () => {
@@ -267,6 +242,7 @@ export default function App() {
       const sections = [
         "home-hero",
         "featured-projects",
+        "decision-intelligence-engine",
         "solutions-overview",
         "recognition-showcase",
         "how-i-work",
@@ -375,11 +351,24 @@ export default function App() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="bg-brand-bg-primary text-brand-body min-h-screen selection:bg-blue-100 selection:text-blue-900 flex-1 flex flex-col"
         >
+          {/* Accessible Skip to Content Link */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-slate-950 focus:text-white focus:text-xs focus:font-mono focus:rounded-lg focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            Skip to main content
+          </a>
+
           {/* Sleek top ambient glow bar */}
           <div className="fixed top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-blue-500/10 to-transparent z-50 pointer-events-none" />
 
           {/* High-end transparent glass navigation */}
-          <Navbar currentPage={currentPage} onNavigate={handleNavigate} activeSection={activeSection} />
+          <Navbar 
+            currentPage={currentPage} 
+            onNavigate={handleNavigate} 
+            activeSection={activeSection} 
+            onOpenSearch={() => setIsCommandPaletteOpen(true)}
+          />
 
           {/* Fixed Guided Reading Navigation Rail */}
           {currentPage === "home" && (
@@ -391,7 +380,7 @@ export default function App() {
           )}
 
           {/* Main Multi-Page Frame */}
-          <main className="w-full relative flex-1 pt-20">
+          <main id="main-content" tabIndex={-1} className="w-full relative flex-1 pt-20 outline-none">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentPage}
@@ -414,6 +403,9 @@ export default function App() {
 
                     {/* 4. Challenges I Help Solve */}
                     <ProblemRegister />
+
+                    {/* 4b. Signature Interactive Decision Engine Simulator */}
+                    <DecisionIntelligenceEngine onNavigate={handleNavigate} />
 
                     {/* 5. How I Deliver Results */}
                     <SolutionsOverview onNavigate={handleNavigate} />
@@ -598,6 +590,16 @@ export default function App() {
           <Footer onNavigate={handleNavigate} />
         </motion.div>
       </Suspense>
+
+      {/* Global Executive Command & Global Search Palette (⌘K) */}
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        onNavigate={handleNavigate}
+      />
+
+      {/* Development-Only Production Observability Inspector (completely excluded in production) */}
+      {import.meta.env.DEV && <ValidationModeInspector currentPath={location.pathname} />}
     </div>
   );
 }

@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useContactForm } from "../hooks/useContactForm";
 import { useResumeDownload } from "../hooks/useResumeDownload";
+import { telemetry } from "../utils/telemetry";
 import ExecutiveCard from "./ExecutiveCard";
 
 interface FloatingFieldProps {
@@ -217,7 +218,9 @@ ${messageText || "Not Specified"}`;
         ...formData,
         message: fullMessage
       });
+      telemetry.trackContactSubmit(true, formData.subject);
     } catch {
+      telemetry.trackContactSubmit(false, formData.subject);
       // Handled by standard hook error structures
     }
   };
@@ -241,7 +244,7 @@ ${messageText || "Not Specified"}`;
       initial="hidden"
       whileInView="visible"
       viewport={VIEWPORT_CONFIG}
-      className="relative py-24 bg-white text-slate-800 px-6 md:px-8 border-t border-slate-200 overflow-hidden"
+      className="relative py-16 md:py-20 bg-white text-slate-800 px-6 md:px-8 border-t border-slate-200 overflow-hidden"
     >
       {/* Background visual orbs */}
       <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-blue-500/[0.01] rounded-full blur-[100px] pointer-events-none" />
@@ -291,6 +294,7 @@ ${messageText || "Not Specified"}`;
                   rel="noopener noreferrer"
                   aria-label="WhatsApp"
                   title="Chat on WhatsApp"
+                  onClick={() => telemetry.trackExternalClick("whatsapp", "contact_socials")}
                   className="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-green-600 hover:-translate-y-0.5 hover:scale-102 transition-all duration-200 ease-in-out cursor-pointer active:scale-97"
                 >
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -303,6 +307,7 @@ ${messageText || "Not Specified"}`;
                   href="mailto:malikmudassir1997@gmail.com"
                   aria-label="Email"
                   title="Send Email"
+                  onClick={() => telemetry.track("contact_start", { source: "email_link" })}
                   className="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-blue-600 hover:-translate-y-0.5 hover:scale-102 transition-all duration-200 ease-in-out cursor-pointer active:scale-97"
                 >
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -317,6 +322,7 @@ ${messageText || "Not Specified"}`;
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
                   title="Connect on LinkedIn"
+                  onClick={() => telemetry.trackExternalClick("linkedin", "contact_socials")}
                   className="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-blue-700 hover:-translate-y-0.5 hover:scale-102 transition-all duration-200 ease-in-out cursor-pointer active:scale-97"
                 >
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -331,6 +337,7 @@ ${messageText || "Not Specified"}`;
                   rel="noopener noreferrer"
                   aria-label="GitHub"
                   title="View GitHub"
+                  onClick={() => telemetry.trackExternalClick("github", "contact_socials")}
                   className="w-10 h-10 flex items-center justify-center text-slate-500 hover:text-slate-950 hover:-translate-y-0.5 hover:scale-102 transition-all duration-200 ease-in-out cursor-pointer active:scale-97"
                 >
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
@@ -343,6 +350,7 @@ ${messageText || "Not Specified"}`;
                   type="button"
                   disabled={isResumeLoading}
                   onClick={() => {
+                    telemetry.trackCVDownload("contact_bar");
                     downloadResume().catch(() => {});
                   }}
                   aria-label="Download Resume"
@@ -491,7 +499,7 @@ ${messageText || "Not Specified"}`;
 
                   {/* Message input */}
                   <FloatingField
-                    label="Tell me about your business challenge, current workflow, or project goals."
+                    label="Project Details & Business Challenge"
                     type="textarea"
                     rows={4}
                     disabled={isLoading}

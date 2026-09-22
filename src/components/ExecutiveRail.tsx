@@ -10,6 +10,7 @@ interface ExecutiveRailProps {
 const navItems = [
   { label: "Hero", id: "home-hero" },
   { label: "Projects", id: "featured-projects" },
+  { label: "Simulator", id: "decision-intelligence-engine" },
   { label: "Solutions", id: "solutions-overview" },
   { label: "Recognition", id: "recognition-showcase" },
   { label: "Process", id: "how-i-work" },

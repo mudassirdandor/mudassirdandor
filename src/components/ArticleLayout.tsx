@@ -1,6 +1,7 @@
 import React from "react";
 import ExecutiveSectionHeader from "./ExecutiveSectionHeader";
 import GlobalModal from "./GlobalModal";
+import ConnectedKnowledgeCard from "./ConnectedKnowledgeCard";
 import {
   X,
   Clock,
@@ -26,6 +27,7 @@ import {
 } from "lucide-react";
 
 export interface ArticleLayoutProps {
+  articleId?: string;
   title: string;
   category: string;
   summary: string;
@@ -46,9 +48,11 @@ export interface ArticleLayoutProps {
   previousArticle?: { title: string; onClick: () => void };
   cta?: { title: string; text: string; buttonText: string; onClick: () => void };
   onClose: () => void;
+  onNavigate?: (pageId: string) => void;
 }
 
 export default function ArticleLayout({
+  articleId,
   title,
   category,
   summary,
@@ -69,6 +73,7 @@ export default function ArticleLayout({
   previousArticle,
   cta,
   onClose,
+  onNavigate,
 }: ArticleLayoutProps) {
 
   // Function to smooth scroll to a section ID within the modal
@@ -406,6 +411,27 @@ export default function ArticleLayout({
                     ))}
                   </ul>
                 </div>
+              )}
+
+              {/* Connected Knowledge System */}
+              {articleId && (
+                <ConnectedKnowledgeCard
+                  entityId={articleId}
+                  onNavigate={(pageId) => {
+                    onClose();
+                    onNavigate?.(pageId);
+                  }}
+                  onOpenProject={(pid) => {
+                    onClose();
+                    localStorage.setItem("selected-project-id", pid);
+                    window.dispatchEvent(new CustomEvent("portfolio-open-project", { detail: { projectId: pid } }));
+                    onNavigate?.("case-studies");
+                  }}
+                  onOpenArticle={(aid) => {
+                    localStorage.setItem("selected-article-id", aid);
+                    window.dispatchEvent(new CustomEvent("portfolio-open-article", { detail: { articleId: aid } }));
+                  }}
+                />
               )}
 
               {/* Related content block */}

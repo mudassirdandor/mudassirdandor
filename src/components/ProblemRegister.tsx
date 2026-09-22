@@ -62,15 +62,15 @@ export default function ProblemRegister() {
               variants={child}
               className="hover:bg-white h-full"
             >
-              <div className="flex flex-col text-left p-6 h-full w-full justify-between">
+              <div className="flex flex-col text-left p-5 md:p-6 h-full w-full justify-between">
                 <div>
-                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center mb-5 shadow-2xs">
+                  <div className="w-9 h-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center mb-4 shadow-3xs">
                     {prob.icon}
                   </div>
-                  <h3 className="text-[18px] md:text-[20px] font-bold text-slate-950 mb-2.5 font-display leading-snug">
+                  <h3 className="text-[17px] md:text-[18px] font-bold text-slate-950 mb-2 font-display leading-snug">
                     {prob.title}
                   </h3>
-                  <p className="text-[15px] text-slate-650 leading-relaxed font-sans">
+                  <p className="text-[13.5px] text-slate-600 leading-relaxed font-sans">
                     {prob.desc}
                   </p>
                 </div>

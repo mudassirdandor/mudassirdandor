@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { Menu, X, FileText, Loader2, AlertCircle } from "lucide-react";
+import { Menu, X, FileText, Loader2, AlertCircle, Search } from "lucide-react";
 import { useResumeDownload } from "../hooks/useResumeDownload";
+import { telemetry } from "../utils/telemetry";
 
 interface NavbarProps {
   currentPage: string;
   onNavigate: (pageId: string) => void;
   activeSection?: string;
+  onOpenSearch?: () => void;
 }
 
 /**
  * High-fidelity glassmorphic sticky Navigation Bar.
  * Integrates Multi-page state with layout indicators and CV downloading controls.
  */
-export default function Navbar({ currentPage, onNavigate, activeSection }: NavbarProps) {
+export default function Navbar({ currentPage, onNavigate, activeSection, onOpenSearch }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [showErrorToast, setShowErrorToast] = useState(false);
@@ -75,6 +77,7 @@ export default function Navbar({ currentPage, onNavigate, activeSection }: Navba
 
   const handleDownloadResume = async (e: React.MouseEvent) => {
     e.preventDefault();
+    telemetry.trackCVDownload("navbar");
     try {
       await downloadResume();
     } catch (err) {
@@ -142,8 +145,23 @@ export default function Navbar({ currentPage, onNavigate, activeSection }: Navba
           })}
         </nav>
 
-        {/* Desktop Resume CTA Action Button */}
-        <div className="hidden lg:flex items-center gap-3">
+        {/* Desktop Search & Resume CTA Actions */}
+        <div className="hidden lg:flex items-center gap-2.5">
+          {onOpenSearch && (
+            <button
+              onClick={onOpenSearch}
+              className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-950 bg-white/80 hover:bg-slate-50 border border-slate-200/90 rounded-lg transition-all cursor-pointer shadow-xs focus-visible:ring-1 focus-visible:ring-blue-500 hover:-translate-y-0.5"
+              title="Search & Quick Jump (⌘K / Ctrl+K)"
+              aria-label="Open command palette search"
+            >
+              <Search className="w-3.5 h-3.5 text-slate-400" />
+              <span className="font-sans">Search</span>
+              <kbd className="text-[10px] font-mono px-1.5 py-0.5 bg-slate-100 border border-slate-200 text-slate-500 rounded">
+                ⌘K
+              </kbd>
+            </button>
+          )}
+
           <button
             onClick={handleDownloadResume}
             disabled={isResumeLoading}
@@ -159,15 +177,27 @@ export default function Navbar({ currentPage, onNavigate, activeSection }: Navba
           </button>
         </div>
 
-        {/* Mobile Menu Icon */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden p-2 text-slate-600 hover:text-slate-950 bg-white/80 border border-slate-200/80 rounded-lg cursor-pointer focus-visible:ring-1 focus-visible:ring-blue-500 focus:outline-none"
-          aria-expanded={isOpen}
-          aria-label="Toggle navigation menu"
-        >
-          {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Mobile Action Controls */}
+        <div className="lg:hidden flex items-center gap-1.5">
+          {onOpenSearch && (
+            <button
+              onClick={onOpenSearch}
+              className="p-2 text-slate-600 hover:text-slate-950 bg-white/80 border border-slate-200/80 rounded-lg cursor-pointer focus-visible:ring-1 focus-visible:ring-blue-500 focus:outline-none"
+              aria-label="Open global search"
+            >
+              <Search className="w-4 h-4" />
+            </button>
+          )}
+
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2 text-slate-600 hover:text-slate-950 bg-white/80 border border-slate-200/80 rounded-lg cursor-pointer focus-visible:ring-1 focus-visible:ring-blue-500 focus:outline-none"
+            aria-expanded={isOpen}
+            aria-label="Toggle navigation menu"
+          >
+            {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer menu */}
@@ -180,6 +210,23 @@ export default function Navbar({ currentPage, onNavigate, activeSection }: Navba
             transition={{ duration: 0.2 }}
             className="lg:hidden absolute top-full left-0 w-full bg-white/95 border-b border-slate-200 backdrop-blur-2xl p-6 flex flex-col gap-4 shadow-xl"
           >
+            {onOpenSearch && (
+              <button
+                onClick={() => {
+                  setIsOpen(false);
+                  onOpenSearch();
+                }}
+                className="w-full flex items-center justify-between py-2.5 px-3 rounded-lg text-[14px] font-medium bg-slate-50 border border-slate-200 text-slate-700 hover:bg-slate-100 transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <Search className="w-4 h-4 text-slate-400" />
+                  <span>Search Case Studies & Articles</span>
+                </div>
+                <kbd className="text-[10px] font-mono px-1.5 py-0.5 bg-white border border-slate-200 text-slate-500 rounded">
+                  ⌘K
+                </kbd>
+              </button>
+            )}
             <div className="flex flex-col gap-1">
               {navItems.map((item) => {
                 const isActive = currentPage === item.id;
