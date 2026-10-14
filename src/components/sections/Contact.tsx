@@ -759,17 +759,20 @@ export function Contact() {
 
             {/* CV / Resume */}
             <a
-              href="mailto:mudassirdandor@gmail.com?subject=CV%20Request%20-%20Mudassir%20Javed"
+              href="/documents/Mudassir_Javed_CV.pdf"
+              download="Mudassir_Javed_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 text-porcelain/85 hover:text-white transition-colors group focus-visible:outline-2 focus-visible:outline-white rounded py-1"
-              aria-label="Request CV from Mudassir Javed via email"
+              aria-label="Download Mudassir Javed CV (PDF)"
             >
               <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-soft-green group-hover:border-soft-green/40 group-hover:bg-soft-green/10 transition-all flex-shrink-0">
                 <FileText className="w-4 h-4 text-soft-green" aria-hidden="true" />
               </div>
               <span className="font-medium text-xs sm:text-sm text-porcelain group-hover:text-white">
-                CV / Resume
+                Download CV
               </span>
-              <Mail className="w-3 h-3 text-eucalyptus/40 group-hover:text-soft-green transition-colors" aria-hidden="true" />
+              <ArrowRight className="w-3 h-3 text-eucalyptus/40 group-hover:text-soft-green transition-colors" aria-hidden="true" />
             </a>
           </div>
         </div>

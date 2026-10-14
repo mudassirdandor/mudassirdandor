@@ -1,6 +1,7 @@
 import { ExternalLink } from 'lucide-react';
 import { Container } from './Container';
 import { FOOTER_NAV_ITEMS, FOOTER_SOCIAL_LINKS, BRAND_INFO } from '../../data/navigation';
+import { Link } from '../../context/RouterContext';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -32,9 +33,10 @@ export function Footer() {
                   <a
                     key={link.label}
                     href={link.href}
-                    {...(link.href.startsWith('http')
+                    {...(link.href.startsWith('http') || link.href.endsWith('.pdf')
                       ? { target: '_blank', rel: 'noopener noreferrer' }
                       : {})}
+                    {...(link.href.endsWith('.pdf') ? { download: 'Mudassir_Javed_CV.pdf' } : {})}
                     className="inline-flex items-center text-xs font-mono text-text-tertiary hover:text-pine transition-colors focus-visible:outline-2 focus-visible:outline-focus rounded-sm py-0.5"
                     aria-label={link.ariaLabel}
                   >
@@ -57,13 +59,13 @@ export function Footer() {
                 className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 sm:gap-x-10 gap-y-2.5 text-xs sm:text-sm text-text-secondary"
               >
                 {FOOTER_NAV_ITEMS.map((item) => (
-                  <a
+                  <Link
                     key={item.href}
                     href={item.href}
                     className="hover:text-text-primary transition-colors focus-visible:outline-2 focus-visible:outline-focus rounded-sm py-0.5"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 ))}
               </nav>
             </div>

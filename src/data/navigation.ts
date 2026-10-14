@@ -52,6 +52,11 @@ export const FOOTER_SOCIAL_LINKS: SocialLink[] = [
     href: 'https://github.com/mudassirdandor',
     ariaLabel: 'Visit GitHub repositories of Mudassir Javed',
   },
+  {
+    label: 'CV (PDF)',
+    href: '/documents/Mudassir_Javed_CV.pdf',
+    ariaLabel: 'Download CV of Mudassir Javed (PDF)',
+  },
 ];
 
 export const BRAND_INFO = {

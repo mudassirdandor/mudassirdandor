@@ -499,3 +499,134 @@ Apply approved minimal scope compliance corrections to `src/App.tsx`, `src/compo
 
 
 
+
+---
+
+## 2026-10-13 — Milestone 22 / Project Case Studies & Lightweight Routing
+
+### Agent
+
+Lead Architect / Senior Frontend Engineer
+
+### Objective
+
+Implement individual project case-study detail pages with lightweight client-side routing, giving recruiters and hiring managers deeper insight into Mudassir's data workflows, problem-solving, validation rules, and verified outputs without breaking single-page flow or introducing external router dependencies.
+
+### Candidate Projects Assessed & Evidence
+
+1. **Saylani Student Registration System (`saylani-student-registration`)** — **QUALIFIED & IMPLEMENTED**
+   - *Evidence:* Live production web app at `saylanireg.netlify.app`, source repository at `saylani-form`.
+   - *Verified Implementation:* Multi-field intake form with regex CNIC masking (`XXXXX-XXXXXXX-X`) and phone formatting (`03XX-XXXXXXX`), dynamic age calculation from DOB (>= 13 years), Cropper.js image cropping before Base64 serialization, course-specific roll number prefixes (`AIC-`, `WMA-`, `GD-`), Dialogflow assistant integration, and dynamic double-sided ID card PDF generation via `html2pdf.js` with QR code.
+   - *Route:* `/projects/saylani-registration` (alias `/projects/saylani-student-registration`).
+
+2. **Job Application Data Collection System (`job-application-system`)** — **QUALIFIED & IMPLEMENTED**
+   - *Evidence:* Live web app at `jobapplica.netlify.app`, source repository at `multi-step-form`.
+   - *Verified Implementation:* 6-stage progressive disclosure form (Personal, Contact, Education, Experience, Skills, Review). Client-side validation gates preventing advancement until current step is valid, real-time completion progress calculation ($0\%$ to $100\%$), accessible ARIA tablist navigation, and aggregated preview panel.
+   - *Route:* `/projects/job-application` (alias `/projects/job-application-system`).
+
+3. **Barish Alert Weather Application (`barish-alert`)** — **QUALIFIED & IMPLEMENTED**
+   - *Evidence:* Live web app at `barishalert.netlify.app`, source repository at `weatherapp`.
+   - *Verified Implementation:* OpenWeatherMap REST API telemetry and 5-day forecast ingestion, Geolocation API coordinate resolution, thermodynamic unit conversion ($T_{°C} = T_K - 273.15$), resilient exponential backoff retry handler (`retry()`), in-memory query cache, LocalStorage search history.
+   - *Route:* `/projects/barish-alert`.
+
+4. **Saylani Data Collection Chatbot (`respondent-data-collection-chatbot`)** — **DEFERRED**
+   - *Evidence:* Live web app at `saylani-rotibank-mu.vercel.app`, source repository at `Saylani_rotibank`.
+   - *Rationale:* The public repository is a frontend clone with an embedded Dialogflow messenger; backend Google Apps Script and Google Sheets automation scripts documented in the portfolio summary are external to the public repository. In strict compliance with the project rule against manufacturing or unverified claims, this case study is deferred while retaining its full project card on the home page.
+
+### Architectural Decisions
+
+- **Zero-Dependency Native Routing:** Implemented lightweight `RouterContext` using native browser `window.location.pathname`, `pushState`, and `popstate` listeners. No heavy third-party routing dependencies (`react-router`, etc.) introduced.
+- **SPA Rewrite Guard for Vercel:** Created `vercel.json` with a rewrite rule (`/(.*)` -> `/`) guaranteeing direct navigation and browser refreshes on deep URLs like `/projects/saylani-registration` never produce 404s.
+- **Cross-Route Section Anchors:** Navigation links (`#about`, `#work`, `#contact`) in `Navbar` and `Footer` smoothly navigate to `/#section` and scroll to target elements when activated from a case-study route.
+- **Structured Content Architecture:** Stored all verified case study content in `src/data/caseStudies.ts`, decoupled from presentation logic.
+- **Graceful Fallback:** Implemented `CaseStudyNotFound` component for unrecognized slugs, offering direct navigation to all available case studies and back to the portfolio overview.
+- **Preserved Design Language:** Reused Porcelain (`#F5F7F4`), Eucalyptus (`#DCE7DF`), and Deep Pine palette, typography tokens, and the unified `<Chip />` system from Milestone 21.
+
+### Files Created / Modified
+
+- `vercel.json` (created) — SPA rewrite rule for Vercel deployment.
+- `src/data/caseStudies.ts` (created) — Structured case study data model and verified datasets for 3 qualified projects.
+- `src/context/RouterContext.tsx` (created) — Lightweight history-based client router and accessible `Link` component.
+- `src/components/sections/CaseStudy.tsx` (created) — 8-section case study page with breadcrumbs, screenshot frame, schema grid, workflow progression, outputs, and case study switcher.
+- `src/components/sections/CaseStudyNotFound.tsx` (created) — Fallback component for invalid/unmatched project slugs.
+- `src/App.tsx` (modified) — Integrated `RouterProvider` and conditional view rendering (Home vs CaseStudy vs NotFound).
+- `src/components/sections/Projects.tsx` (modified) — Integrated case study links on project title, screenshot, and action button bar.
+- `src/components/navigation/Navbar.tsx` (modified) — Updated navigation items to use `Link` for cross-route hash navigation.
+- `src/components/layout/Footer.tsx` (modified) — Updated footer navigation items to use `Link`.
+- `docs/progress-log.md` (modified) — Appended Milestone 22 completion record.
+
+### Verification Summary
+
+- **TypeScript:** `pnpm typecheck` (`tsc -b`) — PASS (zero errors)
+- **ESLint:** `npx eslint src` — PASS (zero warnings, zero errors)
+- **Production Build:** `pnpm build` (`tsc -b && vite build`) — PASS (exit code 0; 70.54 kB CSS, 509.45 kB JS bundle)
+- **Direct Navigation & Slug Aliases:** Verified via Chrome CDP across all implemented routes (`/projects/saylani-registration`, `/projects/saylani-student-registration`, `/projects/job-application`, `/projects/job-application-system`, `/projects/barish-alert`).
+- **404 Fallback:** Verified via Chrome CDP on `/projects/nonexistent-project`.
+- **Responsive Overflow Check:** Verified via Chrome CDP across 320px, 390px, 768px, 1024px, and 1440px viewports (`hasOverflow: false` on all viewports).
+- **Visual Artifacts:** Captured `m22_home_desktop.png`, `m22_saylani_casestudy_desktop.png`, `m22_saylani_casestudy_mobile.png`, `m22_jobapp_casestudy_desktop.png`, `m22_barish_casestudy_desktop.png`, `m22_notfound_fallback_desktop.png`.
+
+### Known Limitations & Deferred Work
+
+- `respondent-data-collection-chatbot` case-study page is deferred pending access to backend Google Apps Script / Sheets webhook source code.
+- Assets optimization (WebP/AVIF conversions) and CV PDF integration remain deferred to Milestone 23 per strict milestone boundaries.
+
+### Status
+
+`COMPLETED`
+
+---
+
+## 2026-10-14 — Milestone 23: Asset Optimization & CV PDF Integration
+
+### Objective
+
+Optimize all portfolio project screenshot assets for web delivery and integrate the real curriculum vitae PDF (`Mudassir_CV.pdf`) into public static assets and contact/navigation actions.
+
+### Implementation Summary
+
+1. **CV PDF Integration:**
+   - Located source CV at `docs/Mudassir_CV.pdf` (434,722 bytes, valid `%PDF-` header).
+   - Created public document directory `public/documents/` and deployed `public/documents/Mudassir_Javed_CV.pdf`.
+   - Updated `src/components/sections/Contact.tsx` lines 760–775 to replace placeholder `mailto:` link with verified PDF download (`href="/documents/Mudassir_Javed_CV.pdf"`, `download="Mudassir_Javed_CV.pdf"`, `target="_blank"`, `rel="noopener noreferrer"`).
+   - Added direct CV download link to `FOOTER_SOCIAL_LINKS` in `src/data/navigation.ts` and enhanced `src/components/layout/Footer.tsx` with download attribute handling.
+
+2. **Project Asset WebP Conversion:**
+   - Converted all 4 project screenshot PNGs to high-fidelity WebP (quality 0.88) using native HTML5 Canvas in headless Chrome without introducing any third-party runtime npm packages.
+   - Preserved exact dimensions (`2560x1600`) and aspect ratio (`16:10`):
+     - `saylani-registration.webp`: 316.7 KB → 103.5 KB (-67.3%)
+     - `respondent-chatbot.webp`: 862.4 KB → 202.3 KB (-76.5%)
+     - `job-application.webp`: 87.2 KB → 54.7 KB (-37.3%)
+     - `barish-alert.webp`: 193.7 KB → 84.2 KB (-56.5%)
+   - **Total project image weight reduced from 1,459.9 KB to 444.8 KB (-69.5% reduction, saving over 1 MB of network transfer).**
+   - Removed obsolete uncompressed PNGs from `public/images/projects/`.
+
+3. **Markup & Performance Hardening:**
+   - Updated data definitions in `src/data/projects.ts` and `src/data/caseStudies.ts` to reference `.webp` assets.
+   - Added explicit `width={2560}`, `height={1600}`, and `decoding="async"` to image tags in `src/components/sections/Projects.tsx` and `src/components/sections/CaseStudy.tsx` to prevent Cumulative Layout Shift (CLS).
+
+### Files Changed
+
+- `public/documents/Mudassir_Javed_CV.pdf` (created) — Public CV document asset.
+- `public/images/projects/*.webp` (created) — 4 optimized WebP screenshot images.
+- `public/images/projects/*.png` (deleted) — Obsolete uncompressed PNG source files.
+- `src/components/sections/Contact.tsx` (modified) — Wired CV action to public PDF.
+- `src/components/layout/Footer.tsx` (modified) — Added PDF download support in footer links.
+- `src/data/navigation.ts` (modified) — Added CV download item to `FOOTER_SOCIAL_LINKS`.
+- `src/data/projects.ts` (modified) — Updated screenshot URLs to `.webp`.
+- `src/data/caseStudies.ts` (modified) — Updated case study screenshot URLs to `.webp`.
+- `src/components/sections/Projects.tsx` (modified) — Added explicit dimensions and `decoding="async"`.
+- `src/components/sections/CaseStudy.tsx` (modified) — Added explicit dimensions and `decoding="async"`.
+- `scripts/verify-milestone23.cjs` (created) — Automated test verification suite.
+- `docs/progress-log.md` (modified) — Appended Milestone 23 record.
+
+### Verification Summary
+
+- **CV Validity Check:** Valid `%PDF-` header, 434,722 bytes, HTTP 200 static asset delivery.
+- **Image Size Reduction:** 1,459.9 KB → 444.8 KB (-69.5%).
+- **TypeScript Compilation:** `npx tsc --noEmit` — PASS (0 errors).
+- **Production Build:** `vite build` — PASS (`✓ built in 41.47s`, `dist/documents/Mudassir_Javed_CV.pdf` bundled).
+- **Automated Verification Suite:** `node scripts/verify-milestone23.cjs` — PASS (all 6 assertions satisfied).
+
+### Status
+
+`COMPLETED`

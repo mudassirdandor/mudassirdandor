@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { Menu, X } from 'lucide-react';
 import { NAV_ITEMS, NAV_CTA, BRAND_INFO } from '../../data/navigation';
+import { Link } from '../../context/RouterContext';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -83,8 +84,8 @@ export function Navbar() {
   return (
     <div className="flex items-center justify-between w-full h-16 md:h-20">
       {/* Brand Identity */}
-      <a
-        href="#home"
+      <Link
+        href="/#home"
         className="group flex items-center gap-2 sm:gap-2.5 shrink-0 focus-visible:outline-2 focus-visible:outline-focus rounded-sm py-1"
       >
         <span className="font-display font-bold text-base sm:text-lg tracking-tight text-text-primary group-hover:text-accent transition-colors whitespace-nowrap">
@@ -93,7 +94,7 @@ export function Navbar() {
         <span className="hidden sm:inline-block font-mono text-[11px] text-text-tertiary border border-border-subtle bg-surface px-1.5 py-0.5 rounded whitespace-nowrap">
           {BRAND_INFO.role}
         </span>
-      </a>
+      </Link>
 
       {/* Desktop Navigation */}
       <nav
@@ -101,20 +102,20 @@ export function Navbar() {
         className="hidden lg:flex items-center gap-4 xl:gap-8"
       >
         {NAV_ITEMS.map((item) => (
-          <a
+          <Link
             key={item.href}
             href={item.href}
             className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors focus-visible:outline-2 focus-visible:outline-focus rounded-sm py-1"
           >
             {item.label}
-          </a>
+          </Link>
         ))}
-        <a
+        <Link
           href={NAV_CTA.href}
           className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-accent hover:bg-accent-hover rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-focus"
         >
           {NAV_CTA.label}
-        </a>
+        </Link>
       </nav>
 
       {/* Mobile Menu Toggle Button */}
@@ -149,25 +150,25 @@ export function Navbar() {
           >
             <nav aria-label="Mobile Navigation" className="flex flex-col gap-4 pt-2">
               {NAV_ITEMS.map((item) => (
-                <a
+                <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
                   className="text-lg font-medium text-text-secondary hover:text-text-primary transition-colors py-2 border-b border-border-subtle focus-visible:outline-2 focus-visible:outline-focus rounded-sm"
                 >
                   {item.label}
-                </a>
+                </Link>
               ))}
             </nav>
 
             <div className="pt-6 pb-4">
-              <a
+              <Link
                 href={NAV_CTA.href}
                 onClick={() => setIsOpen(false)}
                 className="w-full flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-accent hover:bg-accent-hover rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-focus"
               >
                 {NAV_CTA.label}
-              </a>
+              </Link>
               <p className="mt-4 text-center font-mono text-xs text-text-tertiary">
                 {BRAND_INFO.statement}
               </p>

@@ -1,8 +1,10 @@
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, ArrowRight } from 'lucide-react';
 import { Container } from '../layout/Container';
 import { SectionFrame } from '../layout/SectionFrame';
 import { PROJECTS } from '../../data/projects';
+import { getCaseStudyBySlug } from '../../data/caseStudies';
 import { Chip } from '../ui/Chip';
+import { Link } from '../../context/RouterContext';
 
 function GithubIcon({ className = 'w-3.5 h-3.5' }: { className?: string }) {
   return (
@@ -43,6 +45,7 @@ export function Projects() {
         <div className="flex flex-col gap-10 md:gap-14 lg:gap-16">
           {PROJECTS.map((project, index) => {
             const isEven = index % 2 === 0;
+            const caseStudy = getCaseStudyBySlug(project.id);
 
             return (
               <article
@@ -71,7 +74,16 @@ export function Projects() {
 
                       {/* Project Title */}
                       <h3 className="font-display font-bold text-xl sm:text-2xl lg:text-3xl text-pine tracking-tight mb-4 group-hover:text-pine/80 transition-colors">
-                        {project.title}
+                        {caseStudy ? (
+                          <Link
+                            href={`/projects/${caseStudy.slugs[0]}`}
+                            className="hover:underline focus-visible:outline-2 focus-visible:outline-focus rounded-sm"
+                          >
+                            {project.title}
+                          </Link>
+                        ) : (
+                          project.title
+                        )}
                       </h3>
 
                       {/* Project Description */}
@@ -90,16 +102,27 @@ export function Projects() {
                     </div>
 
                     {/* Action Links */}
-                    <div className="pt-4 border-t border-border-subtle flex flex-wrap items-center gap-4 text-sm">
+                    <div className="pt-4 border-t border-border-subtle flex flex-wrap items-center gap-3.5 text-sm">
+                      {caseStudy && (
+                        <Link
+                          href={`/projects/${caseStudy.slugs[0]}`}
+                          className="inline-flex items-center justify-center px-4 py-2 rounded-md font-medium text-white bg-pine hover:bg-pine-hover transition-colors shadow-xs focus-visible:outline-2 focus-visible:outline-focus"
+                          aria-label={`Read case study for ${project.title}`}
+                        >
+                          <span>Case Study</span>
+                          <ArrowRight className="w-4 h-4 ml-1.5" aria-hidden="true" />
+                        </Link>
+                      )}
+
                       {project.liveUrl && (
                         <a
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center px-4 py-2 rounded-md font-medium text-white bg-pine hover:bg-pine-hover transition-colors shadow-xs focus-visible:outline-2 focus-visible:outline-focus"
+                          className="inline-flex items-center justify-center px-4 py-2 rounded-md font-medium text-pine hover:text-pine-hover border border-border-subtle bg-surface hover:bg-eucalyptus/40 transition-colors focus-visible:outline-2 focus-visible:outline-focus"
                           aria-label={`View live project for ${project.title}`}
                         >
-                          <span>Live Project</span>
+                          <span>Live App</span>
                           <ExternalLink className="w-4 h-4 ml-1.5" aria-hidden="true" />
                         </a>
                       )}
@@ -109,11 +132,11 @@ export function Projects() {
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center px-4 py-2 rounded-md font-medium text-pine hover:text-pine-hover border border-border-subtle bg-eucalyptus/30 hover:bg-eucalyptus/60 transition-colors focus-visible:outline-2 focus-visible:outline-focus"
+                          className="inline-flex items-center justify-center px-4 py-2 rounded-md font-medium text-text-secondary hover:text-pine border border-border-subtle bg-surface hover:bg-eucalyptus/30 transition-colors focus-visible:outline-2 focus-visible:outline-focus"
                           aria-label={`View GitHub repository for ${project.title}`}
                         >
-                          <GithubIcon className="w-4 h-4 mr-2 text-text-tertiary" />
-                          <span>Source Code</span>
+                          <GithubIcon className="w-4 h-4 mr-1.5 text-text-tertiary" />
+                          <span>Code</span>
                         </a>
                       )}
                     </div>
@@ -134,8 +157,25 @@ export function Projects() {
                         </span>
                       </div>
 
-                      {/* Actual Project Screenshot */}
-                      {project.liveUrl ? (
+                      {/* Project Screenshot Link */}
+                      {caseStudy ? (
+                        <Link
+                          href={`/projects/${caseStudy.slugs[0]}`}
+                          tabIndex={-1}
+                          aria-hidden="true"
+                          className="block relative overflow-hidden aspect-[16/10] bg-porcelain"
+                        >
+                          <img
+                            src={project.image}
+                            alt={project.imageAlt}
+                            width={2560}
+                            height={1600}
+                            className="w-full h-full object-cover object-top hover:scale-[1.02] transition-transform duration-300"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </Link>
+                      ) : project.liveUrl ? (
                         <a
                           href={project.liveUrl}
                           target="_blank"
@@ -147,8 +187,11 @@ export function Projects() {
                           <img
                             src={project.image}
                             alt={project.imageAlt}
+                            width={2560}
+                            height={1600}
                             className="w-full h-full object-cover object-top hover:scale-[1.02] transition-transform duration-300"
                             loading="lazy"
+                            decoding="async"
                           />
                         </a>
                       ) : (
@@ -156,8 +199,11 @@ export function Projects() {
                           <img
                             src={project.image}
                             alt={project.imageAlt}
+                            width={2560}
+                            height={1600}
                             className="w-full h-full object-cover object-top"
                             loading="lazy"
+                            decoding="async"
                           />
                         </div>
                       )}

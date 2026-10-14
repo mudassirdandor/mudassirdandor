@@ -28,7 +28,7 @@ export const PROJECTS: Project[] = [
     liveUrl: 'https://saylanireg.netlify.app/',
     githubUrl: 'https://github.com/mudassirdandor/saylani-form',
     featured: true,
-    image: '/images/projects/saylani-registration.png',
+    image: '/images/projects/saylani-registration.webp',
     imageAlt: 'Saylani Student Registration System interface with conversational chatbot assistant',
   },
   {
@@ -48,7 +48,7 @@ export const PROJECTS: Project[] = [
     liveUrl: 'https://saylani-rotibank-mu.vercel.app/',
     githubUrl: 'https://github.com/mudassirdandor/Saylani_rotibank',
     featured: true,
-    image: '/images/projects/respondent-chatbot.png',
+    image: '/images/projects/respondent-chatbot.webp',
     imageAlt: 'Respondent and Donor Data Collection Chatbot with conversational interaction interface',
   },
   {
@@ -67,7 +67,7 @@ export const PROJECTS: Project[] = [
     liveUrl: 'https://jobapplica.netlify.app/',
     githubUrl: 'https://github.com/mudassirdandor/multi-step-form',
     featured: false,
-    image: '/images/projects/job-application.png',
+    image: '/images/projects/job-application.webp',
     imageAlt: 'Multi-step Job Application digital workflow with progress indicator and structured input forms',
   },
   {
@@ -85,7 +85,7 @@ export const PROJECTS: Project[] = [
     liveUrl: 'https://barishalert.netlify.app/',
     githubUrl: 'https://github.com/mudassirdandor/weatherapp',
     featured: false,
-    image: '/images/projects/barish-alert.png',
+    image: '/images/projects/barish-alert.webp',
     imageAlt: 'Barish Alert Weather application presenting live meteorological metrics and 5-day forecast cards',
   },
 ];

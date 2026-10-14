@@ -1,3 +1,4 @@
+import { RouterProvider, useRouter } from './context/RouterContext';
 import { AppShell } from './components/layout/AppShell';
 import { Hero } from './components/sections/Hero';
 import { About } from './components/sections/About';
@@ -9,10 +10,36 @@ import { Education } from './components/sections/Education';
 import { Certifications } from './components/sections/Certifications';
 import { ProfessionalPhilosophy } from './components/sections/ProfessionalPhilosophy';
 import { Contact } from './components/sections/Contact';
+import { CaseStudyPage } from './components/sections/CaseStudy';
+import { CaseStudyNotFound } from './components/sections/CaseStudyNotFound';
+import { getCaseStudyBySlug } from './data/caseStudies';
 
-export function App() {
+function MainContent() {
+  const { currentPath } = useRouter();
+
+  // Normalize path (handle trailing slashes)
+  const normalizedPath = currentPath.replace(/\/+$/, '') || '/';
+
+  // Check if current route is a project case study route
+  if (normalizedPath.startsWith('/projects/')) {
+    const slug = normalizedPath.replace('/projects/', '').trim();
+    const caseStudy = getCaseStudyBySlug(slug);
+
+    if (caseStudy) {
+      return <CaseStudyPage study={caseStudy} />;
+    }
+
+    return <CaseStudyNotFound attemptedSlug={slug} />;
+  }
+
+  // Handle unmatched non-root routes
+  if (normalizedPath !== '/' && normalizedPath !== '/index.html') {
+    return <CaseStudyNotFound attemptedSlug={normalizedPath} />;
+  }
+
+  // Default Home page experience
   return (
-    <AppShell>
+    <>
       <Hero />
       <About />
       <Expertise />
@@ -23,9 +50,18 @@ export function App() {
       <Certifications />
       <ProfessionalPhilosophy />
       <Contact />
-    </AppShell>
+    </>
+  );
+}
+
+export function App() {
+  return (
+    <RouterProvider>
+      <AppShell>
+        <MainContent />
+      </AppShell>
+    </RouterProvider>
   );
 }
 
 export default App;
-
