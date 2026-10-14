@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mudassiranalyst.vercel.app/sitemap.xml

@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
 import { ArrowLeft, ExternalLink, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Container } from '../layout/Container';
 import { SectionFrame } from '../layout/SectionFrame';
 import { Chip } from '../ui/Chip';
 import { Link } from '../../context/RouterContext';
 import { type CaseStudy, CASE_STUDIES } from '../../data/caseStudies';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
 
 function GithubIcon({ className = 'w-4 h-4' }: { className?: string }) {
   return (
@@ -29,13 +29,21 @@ interface CaseStudyProps {
 }
 
 export function CaseStudyPage({ study }: CaseStudyProps) {
-  // Update document title for SEO & navigation feedback
-  useEffect(() => {
-    document.title = `${study.title} — Case Study | Mudassir Javed`;
-    return () => {
-      document.title = 'Mudassir Javed — Data Analyst';
-    };
-  }, [study.title]);
+  // Update document title, description, canonical, OG, Twitter, and structured data
+  useDocumentHead({
+    title: study.seo.title,
+    description: study.seo.description,
+    canonical: study.seo.canonical,
+    ogTitle: study.seo.title,
+    ogDescription: study.seo.description,
+    ogUrl: study.seo.canonical,
+    ogImage: study.seo.ogImage,
+    ogType: 'article',
+    twitterTitle: study.seo.title,
+    twitterDescription: study.seo.description,
+    twitterImage: study.seo.ogImage,
+    jsonLd: study.seo.jsonLd,
+  });
 
   // Find previous and next case studies for linear navigation
   const currentIndex = CASE_STUDIES.findIndex((cs) => cs.id === study.id);

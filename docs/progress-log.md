@@ -630,3 +630,134 @@ Optimize all portfolio project screenshot assets for web delivery and integrate 
 ### Status
 
 `COMPLETED`
+
+---
+
+## 2026-10-15 — Milestone 24.1: Technical SEO Foundation
+
+### Objective
+
+Establish a crawlable, indexable technical SEO foundation for the portfolio: absolute canonical URLs, distinct titles and meta descriptions, `robots.txt`, XML sitemap, image alt-text audit, internal link canonicalization, and alias 301/308 redirects.
+
+### Audit & Indexability Findings
+
+1. **Initial Indexability Audit:**
+   - Evaluated `index.html`, headers, and router: zero unintended `noindex` or `nofollow` directives found on public pages.
+   - Identified missing `robots.txt` and `sitemap.xml` prior to this milestone.
+   - Identified missing `<link rel="canonical">` tag in `index.html`.
+   - Identified that client router previously linked to non-canonical alias slugs (`saylani-student-registration`, `job-application-system`).
+2. **Canonical Paths Established:**
+   - Production origin: `https://mudassiranalyst.vercel.app`
+   - Canonical 1: `https://mudassiranalyst.vercel.app/`
+   - Canonical 2: `https://mudassiranalyst.vercel.app/projects/saylani-registration`
+   - Canonical 3: `https://mudassiranalyst.vercel.app/projects/job-application`
+   - Canonical 4: `https://mudassiranalyst.vercel.app/projects/barish-alert`
+3. **Alias Redirection & Canonicalization:**
+   - Reordered `slugs` array in `caseStudies.ts` so canonical slug is index 0. All internal navigation (`Projects.tsx`, `CaseStudy.tsx` next/prev switcher, `CaseStudyNotFound.tsx`) links directly to canonical routes.
+   - Added permanent HTTP 301/308 redirects in `vercel.json` mapping `/projects/saylani-student-registration` → `/projects/saylani-registration` and `/projects/job-application-system` → `/projects/job-application`.
+   - Added client-side `history.replaceState` canonical sync in `App.tsx` when an alias slug is accessed directly.
+4. **Metadata Management:**
+   - Built zero-dependency `useDocumentHead` hook (`src/hooks/useDocumentHead.ts`) dynamically synchronizing `document.title`, `<meta name="description">`, `<link rel="canonical">`, and `<meta name="robots">` during client-side navigation without tag duplication.
+   - Added indexable default title, description, and canonical link in `index.html` for crawlers without JavaScript execution.
+   - Assigned `noindex, nofollow` specifically to `CaseStudyNotFound` (404 view) preventing indexing of invalid URLs.
+5. **Crawl & Discovery Files:**
+   - Created `public/robots.txt` allowing root access and advertising sitemap location.
+   - Created `public/sitemap.xml` referencing exactly the 4 canonical pages using the standard sitemap namespace with no URL fragments or aliases.
+
+### Files Created / Modified
+
+- `public/robots.txt` (created) — Crawl directives and sitemap reference.
+- `public/sitemap.xml` (created) — Valid XML sitemap for 4 canonical routes.
+- `src/hooks/useDocumentHead.ts` (created) — Zero-dependency SEO head updater hook.
+- `scripts/verify-milestone24-1.cjs` (created) — Automated technical SEO assertion test suite.
+- `index.html` (modified) — Static canonical tag, title, and description.
+- `vercel.json` (modified) — Configured permanent redirects from aliases to canonical routes.
+- `src/data/caseStudies.ts` (modified) — Canonical slug ordering and structured `CaseStudySEO` metadata.
+- `src/App.tsx` (modified) — Dynamic SEO head for Homepage and alias URL synchronization.
+- `src/components/sections/CaseStudy.tsx` (modified) — Dynamic SEO head for Case Studies.
+- `src/components/sections/CaseStudyNotFound.tsx` (modified) — Dynamic SEO head with `noindex: true`.
+- `docs/progress-log.md` (modified) — Appended Milestone 24.1 record.
+
+### Verification Summary
+
+- **TypeScript Typecheck:** `pnpm typecheck` — PASS (0 errors).
+- **ESLint:** `pnpm lint` — PASS (0 warnings, 0 errors).
+- **Production Build:** `pnpm build` — PASS (built in 23.86s; `dist/robots.txt` and `dist/sitemap.xml` bundled).
+- **Automated Verification:** `node scripts/verify-milestone24-1.cjs` — PASS (all 6 technical SEO assertion groups satisfied).
+
+### Status
+
+`COMPLETED (Milestone 24.1)`
+
+---
+
+## 2026-10-15 — Milestone 24.2: Social Metadata, Structured Data & Search Enhancements
+
+### Objective
+
+Complete the search and discovery layer for `https://mudassiranalyst.vercel.app` with structured data (JSON-LD), Open Graph and Twitter Card social metadata, web application manifest, `llms.txt`, and static HTML shell pre-rendering to ensure reliable initial metadata delivery across all crawlers without framework migration.
+
+### Implementation Summary
+
+1. **Initial HTML Metadata Delivery & Pre-rendered Static Shells:**
+   - Identified that default Vite SPA output serves a single generic `dist/index.html` for deep URLs via the catch-all rewrite rule on Vercel. Non-executing crawlers (e.g., social scrapers for LinkedIn, Twitter/X, WhatsApp, Slack, and lightweight search bots) would receive homepage metadata on case-study links.
+   - Built a lightweight, zero-dependency post-build script (`scripts/prerender-seo-shells.cjs`) chained directly to `pnpm build`.
+   - The script clones `dist/index.html` and generates pre-rendered route shells at:
+     - `dist/projects/saylani-registration/index.html`
+     - `dist/projects/job-application/index.html`
+     - `dist/projects/barish-alert/index.html`
+   - Injects route-specific `<title>`, `<meta name="description">`, `<link rel="canonical">`, Open Graph tags, Twitter Card tags, and `TechArticle` JSON-LD blocks directly into the static HTML files.
+   - On Vercel, static HTML file matches take precedence over the `/(.*)` rewrite, ensuring 100% crawlability and immediate first-byte metadata delivery for every canonical route with zero framework migration or runtime overhead.
+
+2. **Open Graph and Twitter Social Metadata:**
+   - **Dedicated Portfolio Open Graph Image:** Created `public/images/og-portfolio.png` (exact dimensions 1200 × 630 pixels) featuring a restrained editorial card layout consistent with the design system (Porcelain `#F5F7F4`, Eucalyptus `#DCE7DF`, Deep Pine `#25483C`) and verified positioning (Mudassir Javed, Data Analyst, Business Intelligence & Data Analytics, MSc in Statistics). Zero invented achievements or metrics.
+   - **Homepage:** Configured `og:image` and `twitter:image` pointing to `https://mudassiranalyst.vercel.app/images/og-portfolio.png`.
+   - **Case Studies:** Configured `og:type` (`article`), route-specific titles, descriptions, canonical URLs, and project WebP screenshots (`saylani-registration.webp`, `job-application.webp`, `barish-alert.webp`).
+
+3. **Structured Data (Schema.org JSON-LD):**
+   - **Homepage:** Implemented schema.org `@graph` containing:
+     - `WebSite` entity (`#website`) identifying the portfolio, canonical URL, name, and linking publisher to `#person`.
+     - `Person` entity (`#person`) identifying Mudassir Javed as Data Analyst, alumnus of University of Balochistan (MSc in Statistics), core analytical skills, `image: "https://mudassiranalyst.vercel.app/images/og-portfolio.png"`, and verified `sameAs` links to LinkedIn and GitHub. Zero fabricated claims.
+   - **Case Studies:** Implemented `TechArticle` schemas for each canonical project route referencing the author, exact technical headlines, overview descriptions, and canonical URLs.
+   - **Dynamic Head Management:** Updated `src/hooks/useDocumentHead.ts` to manage a unified `<script id="schema-json-ld" type="application/ld+json">` element during SPA navigation, ensuring tags never duplicate or conflict.
+
+4. **Brand Token Alignment & Discovery Files:**
+   - **Theme Color Token:** Inspected `src/styles/globals.css` and aligned `public/site.webmanifest` (`theme_color: "#25483C"`, `background_color: "#F5F7F4"`) and `index.html` (`<meta name="theme-color" content="#25483C" />`) with the authoritative Deep Pine token (`#25483C`).
+   - **Web App Manifest:** Configured `public/site.webmanifest` with icons and manifest metadata.
+   - **LLM Discovery:** Created `public/llms.txt` providing a concise, factual summary of Mudassir Javed's profile, education, technical proficiencies, canonical project case studies, and CV download link for LLM search indexing.
+
+5. **Build Automation & Static Shell Generation:**
+   - Updated `package.json` `"build"` script: `"tsc -b && vite build && node scripts/prerender-seo-shells.cjs"`.
+
+### Files Created / Modified
+
+- `public/images/og-portfolio.png` (created) — Dedicated 1200 × 630 px portfolio Open Graph preview image.
+- `public/site.webmanifest` (created) — Web app manifest aligned with `#25483C` Deep Pine token.
+- `public/llms.txt` (created) — Factual profile and case study discovery document for LLMs.
+- `scripts/prerender-seo-shells.cjs` (created) — Post-build script generating static SEO shells for canonical routes.
+- `scripts/verify-milestone24-2.cjs` (created) — Automated test suite verifying JSON-LD, OG tags, manifest, static shells, and live HTTP server responses.
+- `index.html` (modified) — Injected manifest link, `#25483C` theme-color, Open Graph, Twitter Card, and static JSON-LD with `id="schema-json-ld"`.
+- `package.json` (modified) — Chained prerender script to production build.
+- `src/hooks/useDocumentHead.ts` (modified) — Added dynamic Open Graph, Twitter, and JSON-LD synchronization during SPA navigation.
+- `src/data/caseStudies.ts` (modified) — Added `ogImage` and structured `jsonLd` objects to `CaseStudySEO`.
+- `src/components/sections/CaseStudy.tsx` (modified) — Passed full SEO metadata (OG, Twitter, JSON-LD) to `useDocumentHead`.
+- `src/App.tsx` (modified) — Added `HOMEPAGE_JSON_LD` and full social metadata to `HomePage`.
+- `docs/progress-log.md` (modified) — Appended Milestone 24.2 record.
+
+### Verification Summary
+
+- **TypeScript Typecheck:** `pnpm typecheck` — PASS (0 errors).
+- **ESLint:** `pnpm lint` — PASS (0 warnings, 0 errors).
+- **Production Build:** `pnpm build` — PASS (built in 15.73s; generated static SEO shells for `/projects/saylani-registration`, `/projects/job-application`, and `/projects/barish-alert`).
+- **Milestone 24.2 Automated Test & Local HTTP Server Verification:** `node scripts/verify-milestone24-2.cjs` — PASS:
+  - Validated `#25483C` Deep Pine token across manifest and HTML.
+  - Validated `public/images/og-portfolio.png` (1200 × 630 px PNG) and all 3 project WebP screenshots.
+  - Validated initial HTML tags, JSON-LD `@graph`, and pre-rendered case-study static shells.
+  - Spun up local in-memory HTTP server verifying 200 responses on all canonical routes and 308 redirects from aliases to canonical routes without loops.
+- **Milestone 24.1 Regression Test:** `node scripts/verify-milestone24-1.cjs` — PASS (all 6 assertion groups satisfied).
+
+### Status
+
+`COMPLETED (Milestone 24.2 Final)`
+
+

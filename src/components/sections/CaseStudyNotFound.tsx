@@ -1,21 +1,22 @@
-import { useEffect } from 'react';
 import { ArrowLeft, ArrowRight, FileQuestion } from 'lucide-react';
 import { Container } from '../layout/Container';
 import { SectionFrame } from '../layout/SectionFrame';
 import { Link } from '../../context/RouterContext';
 import { CASE_STUDIES } from '../../data/caseStudies';
+import { useDocumentHead } from '../../hooks/useDocumentHead';
 
 interface CaseStudyNotFoundProps {
   attemptedSlug: string;
 }
 
 export function CaseStudyNotFound({ attemptedSlug }: CaseStudyNotFoundProps) {
-  useEffect(() => {
-    document.title = 'Project Not Found | Mudassir Javed';
-    return () => {
-      document.title = 'Mudassir Javed — Data Analyst';
-    };
-  }, []);
+  useDocumentHead({
+    title: 'Case Study Not Found | Mudassir Javed',
+    description:
+      'The requested project case study could not be found. Explore verified data analytics and workflow case studies by Mudassir Javed.',
+    canonical: 'https://mudassiranalyst.vercel.app/',
+    noindex: true,
+  });
 
   return (
     <div className="pt-24 sm:pt-32 pb-20 sm:pb-28">

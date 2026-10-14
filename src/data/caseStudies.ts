@@ -8,9 +8,18 @@ export interface CaseStudyField {
   detail: string;
 }
 
+export interface CaseStudySEO {
+  title: string;
+  description: string;
+  canonical: string;
+  ogImage: string;
+  jsonLd: Record<string, unknown>;
+}
+
 export interface CaseStudy {
   id: string;
   slugs: string[];
+  seo: CaseStudySEO;
   title: string;
   subtitle: string;
   category: string;
@@ -45,7 +54,30 @@ export interface CaseStudy {
 export const CASE_STUDIES: CaseStudy[] = [
   {
     id: 'saylani-student-registration',
-    slugs: ['saylani-student-registration', 'saylani-registration'],
+    slugs: ['saylani-registration', 'saylani-student-registration'],
+    seo: {
+      title: 'Saylani Student Registration Case Study | Mudassir Javed',
+      description:
+        'Case study on automated student data collection, client-side input validation, image preprocessing, and dynamic credential badge generation by Mudassir Javed.',
+      canonical: 'https://mudassiranalyst.vercel.app/projects/saylani-registration',
+      ogImage: 'https://mudassiranalyst.vercel.app/images/projects/saylani-registration.webp',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Saylani Student Registration System Case Study',
+        name: 'Saylani Student Registration System',
+        description:
+          'Case study on automated student data collection, client-side input validation, image preprocessing, and dynamic credential badge generation by Mudassir Javed.',
+        url: 'https://mudassiranalyst.vercel.app/projects/saylani-registration',
+        image: 'https://mudassiranalyst.vercel.app/images/projects/saylani-registration.webp',
+        author: {
+          '@type': 'Person',
+          name: 'Mudassir Javed',
+          url: 'https://mudassiranalyst.vercel.app/',
+        },
+        inLanguage: 'en-US',
+      },
+    },
     title: 'Saylani Student Registration System',
     subtitle: 'Automated Student Data Collection, Dynamic Image Preprocessing, and Digital Credential Generation',
     category: 'Data Collection & Automation',
@@ -142,7 +174,30 @@ export const CASE_STUDIES: CaseStudy[] = [
   },
   {
     id: 'job-application-system',
-    slugs: ['job-application-system', 'job-application'],
+    slugs: ['job-application', 'job-application-system'],
+    seo: {
+      title: 'Job Application System Case Study | Mudassir Javed',
+      description:
+        'Case study on multi-step progressive form architecture, field-level validation gates, and real-time completion tracking engineered by Mudassir Javed.',
+      canonical: 'https://mudassiranalyst.vercel.app/projects/job-application',
+      ogImage: 'https://mudassiranalyst.vercel.app/images/projects/job-application.webp',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Job Application Data Collection System Case Study',
+        name: 'Job Application Data Collection System',
+        description:
+          'Case study on multi-step progressive form architecture, field-level validation gates, and real-time completion tracking engineered by Mudassir Javed.',
+        url: 'https://mudassiranalyst.vercel.app/projects/job-application',
+        image: 'https://mudassiranalyst.vercel.app/images/projects/job-application.webp',
+        author: {
+          '@type': 'Person',
+          name: 'Mudassir Javed',
+          url: 'https://mudassiranalyst.vercel.app/',
+        },
+        inLanguage: 'en-US',
+      },
+    },
     title: 'Job Application Data Collection System',
     subtitle: 'Multi-Step Progressive Form Architecture, Field-Level Validation Gates, and Real-Time Completion Tracking',
     category: 'Structured Data & Form Design',
@@ -235,6 +290,29 @@ export const CASE_STUDIES: CaseStudy[] = [
   {
     id: 'barish-alert',
     slugs: ['barish-alert'],
+    seo: {
+      title: 'Barish Alert Weather App Case Study | Mudassir Javed',
+      description:
+        'Case study on meteorological API telemetry ingestion, dynamic unit transformations, exponential backoff retries, and dashboard reporting by Mudassir Javed.',
+      canonical: 'https://mudassiranalyst.vercel.app/projects/barish-alert',
+      ogImage: 'https://mudassiranalyst.vercel.app/images/projects/barish-alert.webp',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Barish Alert Weather Application Case Study',
+        name: 'Barish Alert — Weather Application',
+        description:
+          'Case study on meteorological API telemetry ingestion, dynamic unit transformations, exponential backoff retries, and dashboard reporting by Mudassir Javed.',
+        url: 'https://mudassiranalyst.vercel.app/projects/barish-alert',
+        image: 'https://mudassiranalyst.vercel.app/images/projects/barish-alert.webp',
+        author: {
+          '@type': 'Person',
+          name: 'Mudassir Javed',
+          url: 'https://mudassiranalyst.vercel.app/',
+        },
+        inLanguage: 'en-US',
+      },
+    },
     title: 'Barish Alert — Weather Application',
     subtitle: 'Third-Party Meteorological API Ingestion, Dynamic Unit Transformations, and Resilient Multi-Metric Visual Reporting',
     category: 'API Data & Visualization',

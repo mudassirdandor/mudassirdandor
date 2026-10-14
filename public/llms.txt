@@ -1,0 +1,39 @@
+# Mudassir Javed — Data Analyst Portfolio
+
+> Mudassir Javed is a Data Analyst with an MSc in Statistics, specializing in Business Intelligence and Data Analytics. Practical experience across data analytics, technology, and automation.
+
+## Core Profile
+- **Role:** Data Analyst / Business Intelligence Analyst
+- **Education:** Master of Science (MSc) in Statistics, University of Balochistan
+- **Core Competencies:** Business Intelligence, Exploratory Data Analysis, Data Cleaning, Data Validation, Statistical Methods, Automation, REST API Telemetry Ingestion, Dashboard Design
+- **Key Tools:** SQL, Python, Excel, Power BI, Git, JavaScript, Tailwind CSS
+- **Website:** https://mudassiranalyst.vercel.app/
+- **LinkedIn:** https://www.linkedin.com/in/mudassirjaved/
+- **GitHub:** https://github.com/mudassirdandor
+- **Curriculum Vitae (PDF):** https://mudassiranalyst.vercel.app/documents/Mudassir_Javed_CV.pdf
+
+## Selected Projects & Technical Case Studies
+
+### 1. Saylani Student Registration System
+- **Canonical URL:** https://mudassiranalyst.vercel.app/projects/saylani-registration
+- **Focus:** Data Collection & Intake Automation
+- **Role:** Frontend & Workflow Developer
+- **Live Application:** https://saylanireg.netlify.app/
+- **Source Code:** https://github.com/mudassirdandor/saylani-form
+- **Summary:** Automated student data collection system with client-side input validation, dynamic image preprocessing, and digital credential generation.
+
+### 2. Job Application Data Collection System
+- **Canonical URL:** https://mudassiranalyst.vercel.app/projects/job-application
+- **Focus:** Structured Data & Progressive Form Architecture
+- **Role:** Frontend Developer
+- **Live Application:** https://jobapplica.netlify.app/
+- **Source Code:** https://github.com/mudassirdandor/multi-step-form
+- **Summary:** Multi-step employment application workflow with field-level validation gates, real-time completion tracking, and pre-submission data verification.
+
+### 3. Barish Alert — Weather Application
+- **Canonical URL:** https://mudassiranalyst.vercel.app/projects/barish-alert
+- **Focus:** API Data Ingestion & Metric Reporting
+- **Role:** Frontend & API Integration Developer
+- **Live Application:** https://barishalert.netlify.app/
+- **Source Code:** https://github.com/mudassirdandor/weatherapp
+- **Summary:** Responsive weather intelligence dashboard that ingests live meteorological data and 5-day forecasts via OpenWeatherMap APIs with client-side unit transformations, exponential backoff retries, and local caching.

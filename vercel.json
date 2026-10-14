@@ -1,4 +1,16 @@
 {
+  "redirects": [
+    {
+      "source": "/projects/saylani-student-registration",
+      "destination": "/projects/saylani-registration",
+      "permanent": true
+    },
+    {
+      "source": "/projects/job-application-system",
+      "destination": "/projects/job-application",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",

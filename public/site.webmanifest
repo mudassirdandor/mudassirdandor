@@ -1,0 +1,16 @@
+{
+  "name": "Mudassir Javed — Data Analyst",
+  "short_name": "Mudassir Javed",
+  "description": "Mudassir Javed is a Data Analyst with an MSc in Statistics, specializing in Business Intelligence and Data Analytics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F7F4",
+  "theme_color": "#25483C",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
