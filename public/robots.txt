@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mudassiranalyst.vercel.app/sitemap.xml
+Sitemap: https://mudassirdandor.vercel.app/sitemap.xml

@@ -26,9 +26,9 @@ assert(fs.existsSync(llmsPath), 'public/llms.txt must exist');
 const llmsContent = fs.readFileSync(llmsPath, 'utf8');
 assert(llmsContent.includes('Mudassir Javed'), 'llms.txt must mention Mudassir Javed');
 assert(llmsContent.includes('MSc in Statistics'), 'llms.txt must mention education');
-assert(llmsContent.includes('https://mudassiranalyst.vercel.app/projects/saylani-registration'), 'Saylani URL missing');
-assert(llmsContent.includes('https://mudassiranalyst.vercel.app/projects/job-application'), 'Job Application URL missing');
-assert(llmsContent.includes('https://mudassiranalyst.vercel.app/projects/barish-alert'), 'Barish Alert URL missing');
+assert(llmsContent.includes('https://mudassirdandor.vercel.app/projects/saylani-registration'), 'Saylani URL missing');
+assert(llmsContent.includes('https://mudassirdandor.vercel.app/projects/job-application'), 'Job Application URL missing');
+assert(llmsContent.includes('https://mudassirdandor.vercel.app/projects/barish-alert'), 'Barish Alert URL missing');
 assert(llmsContent.includes('/documents/Mudassir_Javed_CV.pdf'), 'CV link missing');
 console.log('  PASS: llms.txt valid and grounded.');
 
@@ -63,10 +63,10 @@ assert(indexHtml.includes('<link rel="manifest" href="/site.webmanifest" />'), '
 assert(indexHtml.includes('<meta name="theme-color" content="#25483C" />'), 'Theme color #25483C missing in index.html');
 assert(indexHtml.includes('property="og:title"'), 'og:title missing in index.html');
 assert(indexHtml.includes('property="og:description"'), 'og:description missing in index.html');
-assert(indexHtml.includes('property="og:image" content="https://mudassiranalyst.vercel.app/images/og-portfolio.png"'), 'og:image mismatch in index.html');
-assert(indexHtml.includes('property="og:url" content="https://mudassiranalyst.vercel.app/"'), 'og:url missing in index.html');
+assert(indexHtml.includes('property="og:image" content="https://mudassirdandor.vercel.app/images/og-portfolio.png"'), 'og:image mismatch in index.html');
+assert(indexHtml.includes('property="og:url" content="https://mudassirdandor.vercel.app/"'), 'og:url missing in index.html');
 assert(indexHtml.includes('name="twitter:card" content="summary_large_image"'), 'twitter:card missing in index.html');
-assert(indexHtml.includes('name="twitter:image" content="https://mudassiranalyst.vercel.app/images/og-portfolio.png"'), 'twitter:image mismatch in index.html');
+assert(indexHtml.includes('name="twitter:image" content="https://mudassirdandor.vercel.app/images/og-portfolio.png"'), 'twitter:image mismatch in index.html');
 assert(indexHtml.includes('id="schema-json-ld"'), 'script#schema-json-ld missing in index.html');
 
 // Validate index.html JSON-LD
@@ -77,9 +77,9 @@ assert.strictEqual(indexJsonLd['@context'], 'https://schema.org', 'Index JSON-LD
 assert(Array.isArray(indexJsonLd['@graph']), 'Index JSON-LD must contain @graph');
 const websiteNode = indexJsonLd['@graph'].find((n) => n['@type'] === 'WebSite');
 const personNode = indexJsonLd['@graph'].find((n) => n['@type'] === 'Person');
-assert(websiteNode && websiteNode.url === 'https://mudassiranalyst.vercel.app/', 'WebSite schema node invalid');
+assert(websiteNode && websiteNode.url === 'https://mudassirdandor.vercel.app/', 'WebSite schema node invalid');
 assert(personNode && personNode.name === 'Mudassir Javed', 'Person schema node invalid');
-assert.strictEqual(personNode.image, 'https://mudassiranalyst.vercel.app/images/og-portfolio.png', 'Person image mismatch');
+assert.strictEqual(personNode.image, 'https://mudassirdandor.vercel.app/images/og-portfolio.png', 'Person image mismatch');
 console.log('  PASS: index.html tags and JSON-LD valid.');
 
 // 5. Verify dist static pre-rendered shells
@@ -89,20 +89,20 @@ const routes = [
   {
     slug: 'saylani-registration',
     title: 'Saylani Student Registration Case Study | Mudassir Javed',
-    canonical: 'https://mudassiranalyst.vercel.app/projects/saylani-registration',
-    image: 'https://mudassiranalyst.vercel.app/images/projects/saylani-registration.webp',
+    canonical: 'https://mudassirdandor.vercel.app/projects/saylani-registration',
+    image: 'https://mudassirdandor.vercel.app/images/projects/saylani-registration.webp',
   },
   {
     slug: 'job-application',
     title: 'Job Application System Case Study | Mudassir Javed',
-    canonical: 'https://mudassiranalyst.vercel.app/projects/job-application',
-    image: 'https://mudassiranalyst.vercel.app/images/projects/job-application.webp',
+    canonical: 'https://mudassirdandor.vercel.app/projects/job-application',
+    image: 'https://mudassirdandor.vercel.app/images/projects/job-application.webp',
   },
   {
     slug: 'barish-alert',
     title: 'Barish Alert Weather App Case Study | Mudassir Javed',
-    canonical: 'https://mudassiranalyst.vercel.app/projects/barish-alert',
-    image: 'https://mudassiranalyst.vercel.app/images/projects/barish-alert.webp',
+    canonical: 'https://mudassirdandor.vercel.app/projects/barish-alert',
+    image: 'https://mudassirdandor.vercel.app/images/projects/barish-alert.webp',
   },
 ];
 
@@ -194,14 +194,14 @@ server.listen(0, '127.0.0.1', async () => {
     const rootRes = await httpGet(port, '/');
     assert.strictEqual(rootRes.statusCode, 200);
     assert(rootRes.body.includes('<title>Mudassir Javed | Data Analyst | Business Intelligence &amp; Data Analytics</title>'));
-    assert(rootRes.body.includes('property="og:image" content="https://mudassiranalyst.vercel.app/images/og-portfolio.png"'));
+    assert(rootRes.body.includes('property="og:image" content="https://mudassirdandor.vercel.app/images/og-portfolio.png"'));
     console.log('  PASS: HTTP GET / served 200 with homepage metadata and og-portfolio.png.');
 
     // 6.2 Test Saylani Canonical Path
     const saylaniRes = await httpGet(port, '/projects/saylani-registration');
     assert.strictEqual(saylaniRes.statusCode, 200);
     assert(saylaniRes.body.includes('<title>Saylani Student Registration Case Study | Mudassir Javed</title>'));
-    assert(saylaniRes.body.includes('property="og:image" content="https://mudassiranalyst.vercel.app/images/projects/saylani-registration.webp"'));
+    assert(saylaniRes.body.includes('property="og:image" content="https://mudassirdandor.vercel.app/images/projects/saylani-registration.webp"'));
     console.log('  PASS: HTTP GET /projects/saylani-registration served 200 with case study metadata.');
 
     // 6.3 Test Saylani Alias 308 Redirect

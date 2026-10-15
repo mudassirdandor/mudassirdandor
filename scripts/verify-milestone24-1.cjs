@@ -10,7 +10,7 @@ assert(fs.existsSync(robotsPath), 'public/robots.txt must exist');
 const robotsContent = fs.readFileSync(robotsPath, 'utf8');
 assert(robotsContent.includes('User-agent: *'), 'robots.txt must allow User-agent: *');
 assert(robotsContent.includes('Allow: /'), 'robots.txt must contain Allow: /');
-assert(robotsContent.includes('Sitemap: https://mudassiranalyst.vercel.app/sitemap.xml'), 'robots.txt must point to sitemap.xml');
+assert(robotsContent.includes('Sitemap: https://mudassirdandor.vercel.app/sitemap.xml'), 'robots.txt must point to sitemap.xml');
 assert(!robotsContent.includes('Disallow: /'), 'robots.txt must not block public routes');
 console.log('✔ public/robots.txt verified (valid directives and sitemap URL)');
 
@@ -22,10 +22,10 @@ assert(sitemapContent.startsWith('<?xml'), 'sitemap.xml must have XML declaratio
 assert(sitemapContent.includes('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'), 'sitemap.xml must have valid namespace');
 
 const expectedUrls = [
-  'https://mudassiranalyst.vercel.app/',
-  'https://mudassiranalyst.vercel.app/projects/saylani-registration',
-  'https://mudassiranalyst.vercel.app/projects/job-application',
-  'https://mudassiranalyst.vercel.app/projects/barish-alert'
+  'https://mudassirdandor.vercel.app/',
+  'https://mudassirdandor.vercel.app/projects/saylani-registration',
+  'https://mudassirdandor.vercel.app/projects/job-application',
+  'https://mudassirdandor.vercel.app/projects/barish-alert'
 ];
 
 const locMatches = Array.from(sitemapContent.matchAll(/<loc>(.*?)<\/loc>/g)).map(m => m[1]);
@@ -44,7 +44,7 @@ const indexPath = path.resolve('index.html');
 const indexHtml = fs.readFileSync(indexPath, 'utf8');
 assert(indexHtml.includes('<title>Mudassir Javed | Data Analyst | Business Intelligence &amp; Data Analytics</title>'), 'index.html must have approved title');
 assert(indexHtml.includes('<meta name="description"'), 'index.html must have meta description');
-assert(indexHtml.includes('<link rel="canonical" href="https://mudassiranalyst.vercel.app/" />'), 'index.html must have canonical link');
+assert(indexHtml.includes('<link rel="canonical" href="https://mudassirdandor.vercel.app/" />'), 'index.html must have canonical link');
 assert(!indexHtml.includes('noindex'), 'index.html must not contain noindex');
 console.log('✔ index.html verified (canonical link, approved title & description, indexable)');
 
@@ -59,7 +59,7 @@ CASE_STUDIES.forEach((cs, i) => {
   assert(cs.seo, `Case study ${cs.id} must have seo object`);
   assert(cs.seo.title && cs.seo.title.length > 20, `Case study ${cs.id} must have descriptive title`);
   assert(cs.seo.description && cs.seo.description.length > 50, `Case study ${cs.id} must have descriptive description`);
-  assert.strictEqual(cs.seo.canonical, `https://mudassiranalyst.vercel.app/projects/${expectedSlug}`, `Case study ${cs.id} canonical must match expected canonical URL`);
+  assert.strictEqual(cs.seo.canonical, `https://mudassirdandor.vercel.app/projects/${expectedSlug}`, `Case study ${cs.id} canonical must match expected canonical URL`);
   console.log(`✔ Case Study [${expectedSlug}] SEO: Title (${cs.seo.title.length}c), Desc (${cs.seo.description.length}c)`);
 });
 

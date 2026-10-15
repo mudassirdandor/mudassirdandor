@@ -760,4 +760,44 @@ Complete the search and discovery layer for `https://mudassiranalyst.vercel.app`
 
 `COMPLETED (Milestone 24.2 Final)`
 
+---
 
+## Milestone 24.3 — Primary Domain SEO Migration
+
+### Objective
+Migrate all active SEO configuration, canonical URLs, structured data, crawler discovery files, and pre-rendering scripts from the previous domain (`https://mudassiranalyst.vercel.app`) to the new primary domain (`https://mudassirdandor.vercel.app`), following the GitHub repository rename and Vercel project alignment.
+
+### Scope & Preflight
+- Confirmed local workspace path `C:\Users\malik\Documents\antigravity_portfolio` with canonical remote `https://github.com/mudassirdandor/mudassirdandor.git` on branch `main`.
+- Audited all repository occurrences of `mudassiranalyst.vercel.app`.
+- Preserved historical audit trail entries in `docs/progress-log.md` (Milestones 24.1 & 24.2).
+- Preserved all existing routes, alias 308 redirects in `vercel.json`, and visual design.
+
+### Changes Implemented
+1. **HTML & Metadata:**
+   - Updated `index.html` canonical `<link rel="canonical" href="https://mudassirdandor.vercel.app/" />`.
+   - Updated Open Graph and Twitter tags: `og:url`, `og:image`, `twitter:image` pointing to `https://mudassirdandor.vercel.app/images/og-portfolio.png`.
+   - Updated `index.html` static JSON-LD (`WebSite` and `Person` schema `@id`, `url`, and `image`).
+2. **Application Components & Dynamic Head Management:**
+   - Updated `src/App.tsx` `HOMEPAGE_JSON_LD` and `HomePage` metadata props (`canonical`, `ogUrl`, `ogImage`, `twitterImage`).
+   - Updated `src/components/sections/CaseStudyNotFound.tsx` fallback canonical URL to `https://mudassirdandor.vercel.app/`.
+3. **Case Study Data:**
+   - Updated `src/data/caseStudies.ts` SEO metadata and `TechArticle` JSON-LD for all 3 canonical case studies (`saylani-registration`, `job-application`, `barish-alert`) to reference `https://mudassirdandor.vercel.app`.
+4. **Crawler Discovery Files:**
+   - Updated `public/robots.txt` Sitemap directive to `Sitemap: https://mudassirdandor.vercel.app/sitemap.xml`.
+   - Updated `public/sitemap.xml` canonical `<loc>` tags for all 4 indexable routes.
+   - Updated `public/llms.txt` references (Website, CV download link, and 3 case study URLs) to `https://mudassirdandor.vercel.app`.
+5. **Static Prerendering Shells & Test Automation:**
+   - Updated `scripts/prerender-seo-shells.cjs` canonical and image URL generators.
+   - Updated `scripts/verify-milestone24-1.cjs` assertions to validate `https://mudassirdandor.vercel.app`.
+   - Updated `scripts/verify-milestone24-2.cjs` assertions to validate `https://mudassirdandor.vercel.app`.
+
+### Verification Results
+- `node scripts/verify-milestone24-1.cjs` — PASS (all 6 assertion groups verified with new domain).
+- `node scripts/verify-milestone24-2.cjs` — PASS (all 6 test suites including local HTTP server verified with new domain).
+- `pnpm typecheck` — PASS (0 errors).
+- `pnpm lint` — PASS (0 warnings, 0 errors).
+- `pnpm build` — PASS (all 3 static SEO shells generated with new canonical origin).
+
+### Status
+`COMPLETED (Milestone 24.3 Final)`

@@ -14,7 +14,7 @@ export function CaseStudyNotFound({ attemptedSlug }: CaseStudyNotFoundProps) {
     title: 'Case Study Not Found | Mudassir Javed',
     description:
       'The requested project case study could not be found. Explore verified data analytics and workflow case studies by Mudassir Javed.',
-    canonical: 'https://mudassiranalyst.vercel.app/',
+    canonical: 'https://mudassirdandor.vercel.app/',
     noindex: true,
   });
 

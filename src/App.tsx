@@ -20,22 +20,22 @@ const HOMEPAGE_JSON_LD = {
   '@graph': [
     {
       '@type': 'WebSite',
-      '@id': 'https://mudassiranalyst.vercel.app/#website',
-      url: 'https://mudassiranalyst.vercel.app/',
+      '@id': 'https://mudassirdandor.vercel.app/#website',
+      url: 'https://mudassirdandor.vercel.app/',
       name: 'Mudassir Javed | Data Analyst Portfolio',
       description:
         'Portfolio of Mudassir Javed, Data Analyst specializing in Business Intelligence, data analytics, and automation.',
       publisher: {
-        '@id': 'https://mudassiranalyst.vercel.app/#person',
+        '@id': 'https://mudassirdandor.vercel.app/#person',
       },
     },
     {
       '@type': 'Person',
-      '@id': 'https://mudassiranalyst.vercel.app/#person',
+      '@id': 'https://mudassirdandor.vercel.app/#person',
       name: 'Mudassir Javed',
       jobTitle: 'Data Analyst',
-      url: 'https://mudassiranalyst.vercel.app/',
-      image: 'https://mudassiranalyst.vercel.app/images/og-portfolio.png',
+      url: 'https://mudassirdandor.vercel.app/',
+      image: 'https://mudassirdandor.vercel.app/images/og-portfolio.png',
       alumniOf: {
         '@type': 'EducationalOrganization',
         name: 'University of Balochistan',
@@ -63,17 +63,17 @@ function HomePage() {
     title: 'Mudassir Javed | Data Analyst | Business Intelligence & Data Analytics',
     description:
       'Mudassir Javed is a Data Analyst with an MSc in Statistics, specializing in Business Intelligence and Data Analytics, with practical experience across data, technology, and automation.',
-    canonical: 'https://mudassiranalyst.vercel.app/',
+    canonical: 'https://mudassirdandor.vercel.app/',
     ogTitle: 'Mudassir Javed | Data Analyst | Business Intelligence & Data Analytics',
     ogDescription:
       'Mudassir Javed is a Data Analyst with an MSc in Statistics, specializing in Business Intelligence and Data Analytics, with practical experience across data, technology, and automation.',
-    ogUrl: 'https://mudassiranalyst.vercel.app/',
-    ogImage: 'https://mudassiranalyst.vercel.app/images/og-portfolio.png',
+    ogUrl: 'https://mudassirdandor.vercel.app/',
+    ogImage: 'https://mudassirdandor.vercel.app/images/og-portfolio.png',
     ogType: 'website',
     twitterTitle: 'Mudassir Javed | Data Analyst | Business Intelligence & Data Analytics',
     twitterDescription:
       'Mudassir Javed is a Data Analyst with an MSc in Statistics, specializing in Business Intelligence and Data Analytics, with practical experience across data, technology, and automation.',
-    twitterImage: 'https://mudassiranalyst.vercel.app/images/og-portfolio.png',
+    twitterImage: 'https://mudassirdandor.vercel.app/images/og-portfolio.png',
     jsonLd: HOMEPAGE_JSON_LD,
   });
 

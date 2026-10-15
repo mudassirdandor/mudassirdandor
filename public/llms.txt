@@ -7,15 +7,15 @@
 - **Education:** Master of Science (MSc) in Statistics, University of Balochistan
 - **Core Competencies:** Business Intelligence, Exploratory Data Analysis, Data Cleaning, Data Validation, Statistical Methods, Automation, REST API Telemetry Ingestion, Dashboard Design
 - **Key Tools:** SQL, Python, Excel, Power BI, Git, JavaScript, Tailwind CSS
-- **Website:** https://mudassiranalyst.vercel.app/
+- **Website:** https://mudassirdandor.vercel.app/
 - **LinkedIn:** https://www.linkedin.com/in/mudassirjaved/
 - **GitHub:** https://github.com/mudassirdandor
-- **Curriculum Vitae (PDF):** https://mudassiranalyst.vercel.app/documents/Mudassir_Javed_CV.pdf
+- **Curriculum Vitae (PDF):** https://mudassirdandor.vercel.app/documents/Mudassir_Javed_CV.pdf
 
 ## Selected Projects & Technical Case Studies
 
 ### 1. Saylani Student Registration System
-- **Canonical URL:** https://mudassiranalyst.vercel.app/projects/saylani-registration
+- **Canonical URL:** https://mudassirdandor.vercel.app/projects/saylani-registration
 - **Focus:** Data Collection & Intake Automation
 - **Role:** Frontend & Workflow Developer
 - **Live Application:** https://saylanireg.netlify.app/
@@ -23,7 +23,7 @@
 - **Summary:** Automated student data collection system with client-side input validation, dynamic image preprocessing, and digital credential generation.
 
 ### 2. Job Application Data Collection System
-- **Canonical URL:** https://mudassiranalyst.vercel.app/projects/job-application
+- **Canonical URL:** https://mudassirdandor.vercel.app/projects/job-application
 - **Focus:** Structured Data & Progressive Form Architecture
 - **Role:** Frontend Developer
 - **Live Application:** https://jobapplica.netlify.app/
@@ -31,7 +31,7 @@
 - **Summary:** Multi-step employment application workflow with field-level validation gates, real-time completion tracking, and pre-submission data verification.
 
 ### 3. Barish Alert — Weather Application
-- **Canonical URL:** https://mudassiranalyst.vercel.app/projects/barish-alert
+- **Canonical URL:** https://mudassirdandor.vercel.app/projects/barish-alert
 - **Focus:** API Data Ingestion & Metric Reporting
 - **Role:** Frontend & API Integration Developer
 - **Live Application:** https://barishalert.netlify.app/

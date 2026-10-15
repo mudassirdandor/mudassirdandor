@@ -59,8 +59,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       title: 'Saylani Student Registration Case Study | Mudassir Javed',
       description:
         'Case study on automated student data collection, client-side input validation, image preprocessing, and dynamic credential badge generation by Mudassir Javed.',
-      canonical: 'https://mudassiranalyst.vercel.app/projects/saylani-registration',
-      ogImage: 'https://mudassiranalyst.vercel.app/images/projects/saylani-registration.webp',
+      canonical: 'https://mudassirdandor.vercel.app/projects/saylani-registration',
+      ogImage: 'https://mudassirdandor.vercel.app/images/projects/saylani-registration.webp',
       jsonLd: {
         '@context': 'https://schema.org',
         '@type': 'TechArticle',
@@ -68,12 +68,12 @@ export const CASE_STUDIES: CaseStudy[] = [
         name: 'Saylani Student Registration System',
         description:
           'Case study on automated student data collection, client-side input validation, image preprocessing, and dynamic credential badge generation by Mudassir Javed.',
-        url: 'https://mudassiranalyst.vercel.app/projects/saylani-registration',
-        image: 'https://mudassiranalyst.vercel.app/images/projects/saylani-registration.webp',
+        url: 'https://mudassirdandor.vercel.app/projects/saylani-registration',
+        image: 'https://mudassirdandor.vercel.app/images/projects/saylani-registration.webp',
         author: {
           '@type': 'Person',
           name: 'Mudassir Javed',
-          url: 'https://mudassiranalyst.vercel.app/',
+          url: 'https://mudassirdandor.vercel.app/',
         },
         inLanguage: 'en-US',
       },
@@ -179,8 +179,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       title: 'Job Application System Case Study | Mudassir Javed',
       description:
         'Case study on multi-step progressive form architecture, field-level validation gates, and real-time completion tracking engineered by Mudassir Javed.',
-      canonical: 'https://mudassiranalyst.vercel.app/projects/job-application',
-      ogImage: 'https://mudassiranalyst.vercel.app/images/projects/job-application.webp',
+      canonical: 'https://mudassirdandor.vercel.app/projects/job-application',
+      ogImage: 'https://mudassirdandor.vercel.app/images/projects/job-application.webp',
       jsonLd: {
         '@context': 'https://schema.org',
         '@type': 'TechArticle',
@@ -188,12 +188,12 @@ export const CASE_STUDIES: CaseStudy[] = [
         name: 'Job Application Data Collection System',
         description:
           'Case study on multi-step progressive form architecture, field-level validation gates, and real-time completion tracking engineered by Mudassir Javed.',
-        url: 'https://mudassiranalyst.vercel.app/projects/job-application',
-        image: 'https://mudassiranalyst.vercel.app/images/projects/job-application.webp',
+        url: 'https://mudassirdandor.vercel.app/projects/job-application',
+        image: 'https://mudassirdandor.vercel.app/images/projects/job-application.webp',
         author: {
           '@type': 'Person',
           name: 'Mudassir Javed',
-          url: 'https://mudassiranalyst.vercel.app/',
+          url: 'https://mudassirdandor.vercel.app/',
         },
         inLanguage: 'en-US',
       },
@@ -294,8 +294,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       title: 'Barish Alert Weather App Case Study | Mudassir Javed',
       description:
         'Case study on meteorological API telemetry ingestion, dynamic unit transformations, exponential backoff retries, and dashboard reporting by Mudassir Javed.',
-      canonical: 'https://mudassiranalyst.vercel.app/projects/barish-alert',
-      ogImage: 'https://mudassiranalyst.vercel.app/images/projects/barish-alert.webp',
+      canonical: 'https://mudassirdandor.vercel.app/projects/barish-alert',
+      ogImage: 'https://mudassirdandor.vercel.app/images/projects/barish-alert.webp',
       jsonLd: {
         '@context': 'https://schema.org',
         '@type': 'TechArticle',
@@ -303,12 +303,12 @@ export const CASE_STUDIES: CaseStudy[] = [
         name: 'Barish Alert — Weather Application',
         description:
           'Case study on meteorological API telemetry ingestion, dynamic unit transformations, exponential backoff retries, and dashboard reporting by Mudassir Javed.',
-        url: 'https://mudassiranalyst.vercel.app/projects/barish-alert',
-        image: 'https://mudassiranalyst.vercel.app/images/projects/barish-alert.webp',
+        url: 'https://mudassirdandor.vercel.app/projects/barish-alert',
+        image: 'https://mudassirdandor.vercel.app/images/projects/barish-alert.webp',
         author: {
           '@type': 'Person',
           name: 'Mudassir Javed',
-          url: 'https://mudassiranalyst.vercel.app/',
+          url: 'https://mudassirdandor.vercel.app/',
         },
         inLanguage: 'en-US',
       },
