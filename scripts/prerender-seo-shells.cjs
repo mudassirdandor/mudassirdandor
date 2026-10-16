@@ -84,6 +84,30 @@ const routes = [
       inLanguage: 'en-US',
     },
   },
+  {
+    slug: 'respondent-data-collection',
+    title: 'Respondent Data Collection Case Study | Mudassir Javed',
+    description:
+      'Case study on automated respondent data collection, Google Sheets integration, and Google Apps Script email notification workflows by Mudassir Javed.',
+    canonical: 'https://mudassirdandor.vercel.app/projects/respondent-data-collection',
+    ogImage: 'https://mudassirdandor.vercel.app/images/projects/respondent-chatbot.webp',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'TechArticle',
+      headline: 'Respondent Data Collection Chatbot & Workflow Case Study',
+      name: 'Respondent Data Collection Chatbot',
+      description:
+        'Case study on automated respondent data collection, Google Sheets integration, and Google Apps Script email notification workflows by Mudassir Javed.',
+      url: 'https://mudassirdandor.vercel.app/projects/respondent-data-collection',
+      image: 'https://mudassirdandor.vercel.app/images/projects/respondent-chatbot.webp',
+      author: {
+        '@type': 'Person',
+        name: 'Mudassir Javed',
+        url: 'https://mudassirdandor.vercel.app/',
+      },
+      inLanguage: 'en-US',
+    },
+  },
 ];
 
 function escapeHtml(str) {

@@ -281,7 +281,7 @@ export function CaseStudyPage({ study }: CaseStudyProps) {
                       className="p-4 rounded-xl border border-border-subtle bg-porcelain/60 flex items-start gap-3"
                     >
                       <CheckCircle2 className="w-4 h-4 text-pine mt-0.5 shrink-0" aria-hidden="true" />
-                      <span className="text-xs sm:text-sm text-text-secondary leading-normal">
+                      <span className="text-xs sm:text-sm text-text-secondary leading-normal break-words [overflow-wrap:anywhere]">
                         {out}
                       </span>
                     </div>

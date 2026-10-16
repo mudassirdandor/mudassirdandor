@@ -25,19 +25,20 @@ const expectedUrls = [
   'https://mudassirdandor.vercel.app/',
   'https://mudassirdandor.vercel.app/projects/saylani-registration',
   'https://mudassirdandor.vercel.app/projects/job-application',
-  'https://mudassirdandor.vercel.app/projects/barish-alert'
+  'https://mudassirdandor.vercel.app/projects/barish-alert',
+  'https://mudassirdandor.vercel.app/projects/respondent-data-collection'
 ];
 
 const locMatches = Array.from(sitemapContent.matchAll(/<loc>(.*?)<\/loc>/g)).map(m => m[1]);
-assert.strictEqual(locMatches.length, 4, `sitemap.xml must contain exactly 4 canonical URLs (found ${locMatches.length})`);
+assert.strictEqual(locMatches.length, 5, `sitemap.xml must contain exactly 5 canonical URLs (found ${locMatches.length})`);
 for (const url of expectedUrls) {
   assert(locMatches.includes(url), `sitemap.xml must include canonical URL: ${url}`);
 }
 assert(!sitemapContent.includes('#'), 'sitemap.xml must not contain URL fragments');
 assert(!sitemapContent.includes('saylani-student-registration'), 'sitemap.xml must not include alias URLs');
 assert(!sitemapContent.includes('job-application-system'), 'sitemap.xml must not include alias URLs');
-assert(!sitemapContent.includes('respondent-chatbot'), 'sitemap.xml must not include deferred chatbot route');
-console.log('✔ public/sitemap.xml verified (exactly 4 canonical URLs, no aliases or fragments)');
+assert(!sitemapContent.includes('respondent-data-collection-chatbot'), 'sitemap.xml must not include alias URLs');
+console.log('✔ public/sitemap.xml verified (exactly 5 canonical URLs, no aliases or fragments)');
 
 // 3. Verify index.html head tags
 const indexPath = path.resolve('index.html');
@@ -50,9 +51,9 @@ console.log('✔ index.html verified (canonical link, approved title & descripti
 
 // 4. Verify caseStudies.ts canonical slugs and SEO metadata
 const { CASE_STUDIES } = require('../src/data/caseStudies.ts');
-assert.strictEqual(CASE_STUDIES.length, 3, 'Must have 3 qualified case studies');
+assert.strictEqual(CASE_STUDIES.length, 4, 'Must have 4 qualified case studies');
 
-const expectedCanonicalSlugs = ['saylani-registration', 'job-application', 'barish-alert'];
+const expectedCanonicalSlugs = ['saylani-registration', 'job-application', 'barish-alert', 'respondent-data-collection'];
 CASE_STUDIES.forEach((cs, i) => {
   const expectedSlug = expectedCanonicalSlugs[i];
   assert.strictEqual(cs.slugs[0], expectedSlug, `Case study ${cs.id} canonical slug must be ${expectedSlug} at index 0`);
@@ -70,6 +71,8 @@ const redirSaylani = vercelConfig.redirects.find(r => r.source === '/projects/sa
 assert(redirSaylani && redirSaylani.destination === '/projects/saylani-registration' && redirSaylani.permanent === true, 'vercel.json must redirect saylani-student-registration to saylani-registration');
 const redirJob = vercelConfig.redirects.find(r => r.source === '/projects/job-application-system');
 assert(redirJob && redirJob.destination === '/projects/job-application' && redirJob.permanent === true, 'vercel.json must redirect job-application-system to job-application');
+const redirRespondent = vercelConfig.redirects.find(r => r.source === '/projects/respondent-data-collection-chatbot');
+assert(redirRespondent && redirRespondent.destination === '/projects/respondent-data-collection' && redirRespondent.permanent === true, 'vercel.json must redirect respondent-data-collection-chatbot to respondent-data-collection');
 assert(Array.isArray(vercelConfig.rewrites) && vercelConfig.rewrites.some(r => r.source === '/(.*)' && r.destination === '/'), 'vercel.json must retain SPA rewrite');
 console.log('✔ vercel.json verified (alias 301/308 redirects + SPA rewrites preserved)');
 

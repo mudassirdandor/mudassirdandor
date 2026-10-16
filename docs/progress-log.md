@@ -801,3 +801,57 @@ Migrate all active SEO configuration, canonical URLs, structured data, crawler d
 
 ### Status
 `COMPLETED (Milestone 24.3 Final)`
+
+---
+
+## Milestone 25 — Respondent Data Collection Case Study & Domain Reference Cleanup
+
+### Objective
+Publish the fourth complete case study for the Respondent Data Collection project at canonical route `/projects/respondent-data-collection`, connect all four project cards on the homepage, ensure cross-viewport responsive fidelity with zero horizontal overflow, integrate the project into SEO/sitemap/prerender systems, and verify zero active references to the separate `mudassiranalyst.vercel.app` domain.
+
+### Implementation Summary
+1. **Case Study Content Architecture:**
+   - Authored the comprehensive 8-section case study in `src/data/caseStudies.ts` with ID `respondent-data-collection` and aliases `['respondent-data-collection', 'respondent-data-collection-chatbot']`.
+   - Grounded all details in verified evidence: web intake interface with embedded Dialogflow assistant, serverless Google Apps Script processing, structured record storage in Google Sheets, and automated notification routing to the project owner's inbox.
+   - Strictly avoided unverified metrics, private code exposure (.gs scripts), or claims that visitors receive confirmations.
+2. **Homepage & Navigation Integration:**
+   - Updated `src/data/projects.ts` to map the Respondent Data Collection card to `id: 'respondent-data-collection'`.
+   - Verified that all four project cards on the homepage seamlessly link to their respective canonical case studies (`saylani-registration`, `respondent-data-collection`, `job-application`, `barish-alert`).
+   - Retained working breadcrumbs and bi-directional previous/next case study navigation.
+3. **SEO, Sitemap & Prerendering Shells:**
+   - Added canonical entry for `/projects/respondent-data-collection` to `public/sitemap.xml` (now exactly 5 canonical URLs).
+   - Added section 4 to `public/llms.txt`.
+   - Updated `scripts/prerender-seo-shells.cjs` to generate static shell at `dist/projects/respondent-data-collection/index.html` with full `TechArticle` JSON-LD schema, canonical tags, and Open Graph tags.
+   - Added permanent 308 redirect in `vercel.json` for `/projects/respondent-data-collection-chatbot` -> `/projects/respondent-data-collection`.
+4. **Responsive Overflow Hardening:**
+   - Hardened `src/components/sections/CaseStudy.tsx` output items with `break-words [overflow-wrap:anywhere]`.
+   - Verified 100% horizontal containment across 320px, 390px, 768px, 1024px, and 1440px viewports with zero horizontal overflow (`scrollWidth === clientWidth`).
+5. **Domain Reference Audit:**
+   - Confirmed zero active references to `mudassiranalyst.vercel.app` across all source files, public assets, templates, and scripts.
+   - Preserved legitimate historical audit entries in past milestone changelogs.
+
+### Files Created / Modified
+- `src/data/caseStudies.ts` (modified) — Added fourth case study dataset for `respondent-data-collection`.
+- `src/data/projects.ts` (modified) — Aligned project card ID and description with verified automation workflow.
+- `src/components/sections/CaseStudy.tsx` (modified) — Added break-words styling to prevent mobile overflow on URLs.
+- `public/sitemap.xml` (modified) — Added 5th canonical URL.
+- `public/llms.txt` (modified) — Added 4th project documentation summary.
+- `public/images/projects/respondent-data-collection.webp` (created) — Mirrored project preview asset.
+- `vercel.json` (modified) — Added 308 redirect from `/projects/respondent-data-collection-chatbot` to `/projects/respondent-data-collection`.
+- `scripts/prerender-seo-shells.cjs` (modified) — Added fourth route shell configuration.
+- `scripts/verify-milestone24-1.cjs` (modified) — Updated assertions for 5 sitemap URLs and 4 case studies.
+- `scripts/verify-milestone24-2.cjs` (modified) — Added respondent static shell and live HTTP redirect tests.
+- `scripts/verify-milestone25.cjs` (created) — Dedicated Milestone 25 verification suite.
+- `docs/progress-log.md` (modified) — Appended Milestone 25 completion record.
+
+### Verification Summary
+- **TypeScript:** `pnpm typecheck` — PASS (0 errors).
+- **ESLint:** `pnpm lint` — PASS (0 errors, 0 warnings).
+- **Production Build:** `pnpm build` — PASS (all 4 project SEO shells generated in `dist/`).
+- **Milestone 24.1 Verification:** `node scripts/verify-milestone24-1.cjs` — PASS.
+- **Milestone 24.2 Verification:** `node scripts/verify-milestone24-2.cjs` — PASS.
+- **Milestone 25 Verification:** `node scripts/verify-milestone25.cjs` — PASS (all 7 suites passed).
+- **CDP Headless Browser QA:** Tested viewports 320, 390, 768, 1024, 1440 — zero overflow, direct navigation verified, alias redirect verified.
+
+### Status
+`COMPLETED (Milestone 25 Final)`

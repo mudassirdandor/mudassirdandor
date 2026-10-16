@@ -29,6 +29,7 @@ assert(llmsContent.includes('MSc in Statistics'), 'llms.txt must mention educati
 assert(llmsContent.includes('https://mudassirdandor.vercel.app/projects/saylani-registration'), 'Saylani URL missing');
 assert(llmsContent.includes('https://mudassirdandor.vercel.app/projects/job-application'), 'Job Application URL missing');
 assert(llmsContent.includes('https://mudassirdandor.vercel.app/projects/barish-alert'), 'Barish Alert URL missing');
+assert(llmsContent.includes('https://mudassirdandor.vercel.app/projects/respondent-data-collection'), 'Respondent URL missing');
 assert(llmsContent.includes('/documents/Mudassir_Javed_CV.pdf'), 'CV link missing');
 console.log('  PASS: llms.txt valid and grounded.');
 
@@ -47,6 +48,8 @@ const projectImages = [
   'public/images/projects/saylani-registration.webp',
   'public/images/projects/job-application.webp',
   'public/images/projects/barish-alert.webp',
+  'public/images/projects/respondent-chatbot.webp',
+  'public/images/projects/respondent-data-collection.webp',
 ];
 for (const img of projectImages) {
   const p = path.join(rootDir, img);
@@ -103,6 +106,12 @@ const routes = [
     title: 'Barish Alert Weather App Case Study | Mudassir Javed',
     canonical: 'https://mudassirdandor.vercel.app/projects/barish-alert',
     image: 'https://mudassirdandor.vercel.app/images/projects/barish-alert.webp',
+  },
+  {
+    slug: 'respondent-data-collection',
+    title: 'Respondent Data Collection Case Study | Mudassir Javed',
+    canonical: 'https://mudassirdandor.vercel.app/projects/respondent-data-collection',
+    image: 'https://mudassirdandor.vercel.app/images/projects/respondent-chatbot.webp',
   },
 ];
 
@@ -227,6 +236,18 @@ server.listen(0, '127.0.0.1', async () => {
     assert.strictEqual(barishRes.statusCode, 200);
     assert(barishRes.body.includes('<title>Barish Alert Weather App Case Study | Mudassir Javed</title>'));
     console.log('  PASS: HTTP GET /projects/barish-alert served 200 with case study metadata.');
+
+    // 6.7 Test Respondent Data Collection Canonical Path
+    const respondentRes = await httpGet(port, '/projects/respondent-data-collection');
+    assert.strictEqual(respondentRes.statusCode, 200);
+    assert(respondentRes.body.includes('<title>Respondent Data Collection Case Study | Mudassir Javed</title>'));
+    console.log('  PASS: HTTP GET /projects/respondent-data-collection served 200 with case study metadata.');
+
+    // 6.8 Test Respondent Data Collection Alias 308 Redirect
+    const respondentAliasRes = await httpGet(port, '/projects/respondent-data-collection-chatbot');
+    assert.strictEqual(respondentAliasRes.statusCode, 308);
+    assert.strictEqual(respondentAliasRes.headers.location, '/projects/respondent-data-collection');
+    console.log('  PASS: HTTP GET /projects/respondent-data-collection-chatbot returned 308 redirect to /projects/respondent-data-collection.');
 
     console.log('\n=== All Milestone 24.2 assertions & HTTP server tests passed successfully! ===');
   } catch (err) {

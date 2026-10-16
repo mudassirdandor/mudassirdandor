@@ -32,11 +32,11 @@ export const PROJECTS: Project[] = [
     imageAlt: 'Saylani Student Registration System interface with conversational chatbot assistant',
   },
   {
-    id: 'respondent-data-collection-chatbot',
+    id: 'respondent-data-collection',
     title: 'Respondent Data Collection Chatbot',
     category: 'Data Collection · Automation · Workflow',
     description:
-      'An integrated chatbot workflow that collects respondent and donor information, stores structured records in Google Sheets, and sends automated email confirmations to respondents and HR.',
+      'An integrated chatbot workflow that collects respondent and donor information, stores structured records in Google Sheets, and dispatches automated email notifications to the project owner upon submission.',
     capabilities: [
       'Structured Data Collection',
       'Dialogflow',

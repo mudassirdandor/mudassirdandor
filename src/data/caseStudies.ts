@@ -406,6 +406,127 @@ export const CASE_STUDIES: CaseStudy[] = [
     keyTakeaway:
       'Highlights experience working with real-time external API pipelines: error-resilient fetching, data transformation and unit conversions, in-memory caching, and multi-variable metric presentation.',
   },
+  {
+    id: 'respondent-data-collection',
+    slugs: ['respondent-data-collection', 'respondent-data-collection-chatbot'],
+    seo: {
+      title: 'Respondent Data Collection Case Study | Mudassir Javed',
+      description:
+        'Case study on automated respondent data collection, Google Sheets integration, and Google Apps Script email notification workflows by Mudassir Javed.',
+      canonical: 'https://mudassirdandor.vercel.app/projects/respondent-data-collection',
+      ogImage: 'https://mudassirdandor.vercel.app/images/projects/respondent-chatbot.webp',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Respondent Data Collection Chatbot & Workflow Case Study',
+        name: 'Respondent Data Collection Chatbot',
+        description:
+          'Case study on automated respondent data collection, Google Sheets integration, and Google Apps Script email notification workflows by Mudassir Javed.',
+        url: 'https://mudassirdandor.vercel.app/projects/respondent-data-collection',
+        image: 'https://mudassirdandor.vercel.app/images/projects/respondent-chatbot.webp',
+        author: {
+          '@type': 'Person',
+          name: 'Mudassir Javed',
+          url: 'https://mudassirdandor.vercel.app/',
+        },
+        inLanguage: 'en-US',
+      },
+    },
+    title: 'Respondent Data Collection Chatbot',
+    subtitle: 'Structured Donor & Respondent Data Intake, Google Sheets Record Archival, and Automated Notification Routing',
+    category: 'Data Collection & Automation',
+    role: 'Frontend & Automation Developer',
+    liveUrl: 'https://saylani-rotibank-mu.vercel.app/',
+    githubUrl: 'https://github.com/mudassirdandor/Saylani_rotibank',
+    image: '/images/projects/respondent-chatbot.webp',
+    imageAlt: 'Respondent and Donor Data Collection Chatbot with conversational interaction interface',
+    overview:
+      'A web-based data collection portal and conversational interface developed to capture respondent and donor inquiries. The system combines an intuitive web interface with an embedded Dialogflow conversational assistant, automated submission processing via Google Apps Script, structured record storage in Google Sheets, and automated notification routing to the project owner\'s inbox. Designed to test real-world automated intake pipelines without administrative overhead.',
+    problemContext: [
+      'Community assistance and donation intake workflows typically rely on manual messaging or unassisted web forms that suffer from high drop-off and incomplete inputs.',
+      'Manual monitoring of spreadsheets or contact forms introduces administrative latency that delays outreach to donors and respondents.',
+      'The project required an accessible, low-friction conversational interface that captures verified respondent attributes and dispatches immediate notification alerts upon submission.',
+    ],
+    dataAndInputs: {
+      description:
+        'The interface and conversational workflow collect structured respondent contact, inquiry, and donation intent details:',
+      source: 'Direct user interaction via web application interface and embedded Dialogflow conversational assistant',
+      fields: [
+        { name: 'Respondent Name', detail: 'Full personal or organization name for identity attribution' },
+        { name: 'Contact Email', detail: 'Email address used for record tracking and verification' },
+        { name: 'Phone Number', detail: 'Contact number for direct donor or respondent coordination' },
+        { name: 'Inquiry Category', detail: 'Type of engagement (donation offer, food assistance, or volunteer interest)' },
+        { name: 'Contribution Details', detail: 'Specific food items, quantity, or logistical preferences for intake' },
+        { name: 'Location / City', detail: 'Geographic reference for local distribution and resource routing' },
+        { name: 'Submission Timestamp', detail: 'ISO standard datetime recorded automatically upon trigger execution' },
+      ],
+    },
+    approachAndWorkflow: {
+      summary:
+        'End-to-end data pipeline connecting user interaction, automation scripts, spreadsheet persistence, and notification dispatch.',
+      steps: [
+        {
+          title: '1. Conversational Intake & Form Interaction',
+          description:
+            'Visitors navigate the web application and interact with the conversational assistant or submission interface to submit respondent details and contribution information.',
+        },
+        {
+          title: '2. Submission Validation & Parameter Extraction',
+          description:
+            'Inputs are captured and structured into key-value pairs representing respondent identity, contact information, and contribution attributes.',
+        },
+        {
+          title: '3. Google Apps Script Trigger Execution',
+          description:
+            'Upon form completion, a configured Google Apps Script webhook/trigger receives the submission payload for automated serverless processing.',
+        },
+        {
+          title: '4. Google Sheets Record Storage',
+          description:
+            'The automation appends a new chronological record into a designated Google Spreadsheet, creating a permanent, audit-ready data repository.',
+        },
+        {
+          title: '5. Owner Email Notification Dispatch',
+          description:
+            'Google Apps Script executes automated email notification routing to dispatch an instant summary of the submission details directly to the project owner\'s inbox.',
+        },
+      ],
+    },
+    processingAndAnalysis: {
+      summary:
+        'Data handling, transformation, and automation mechanics applied during the submission lifecycle:',
+      points: [
+        'Payload Normalization: Incoming conversational parameters are cleansed of redundant whitespace and mapped to standard spreadsheet column definitions.',
+        'Append-Only Auditing: Submissions are appended as discrete chronological rows with automated timestamping to maintain data integrity.',
+        'Serverless Automation Trigger: Google Apps Script acts as a lightweight serverless middleware connecting the frontend intake to cloud spreadsheets without requiring dedicated backend server hosting.',
+        'Notification Templating: The automation formats submission fields into a clear, scannable notification message sent to the owner inbox.',
+        'Demo Environment Consideration: As a demonstration deployment, the live application demonstrates the interaction flow while notification dispatch is scoped to the verified project owner.',
+      ],
+    },
+    resultsAndOutputs: {
+      summary:
+        'Verified deliverables and operational capabilities of the deployed system:',
+      outputs: [
+        'Live interactive demonstration hosted on Vercel at saylani-rotibank-mu.vercel.app.',
+        'Open-source frontend repository published on GitHub (mudassirdandor/Saylani_rotibank).',
+        'Embedded Dialogflow virtual assistant for interactive conversational guidance.',
+        'Structured automated intake pipeline logging entries into Google Sheets.',
+        'Automated email notification workflow alerting the project owner upon new respondent submission.',
+        'Zero-maintenance serverless automation eliminating manual data transcription.',
+      ],
+    },
+    toolsAndTechnologies: [
+      'Google Apps Script',
+      'Google Sheets',
+      'Dialogflow Messenger',
+      'JavaScript (ES6+)',
+      'Tailwind CSS',
+      'HTML5 / CSS3',
+      'Vercel Hosting',
+    ],
+    keyTakeaway:
+      'Demonstrates the integration of conversational intake with cloud automation tools (Google Apps Script & Google Sheets) to create self-managing data pipelines that capture structured information and deliver instant notifications without infrastructure maintenance.',
+  },
 ];
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {

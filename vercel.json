@@ -9,6 +9,11 @@
       "source": "/projects/job-application-system",
       "destination": "/projects/job-application",
       "permanent": true
+    },
+    {
+      "source": "/projects/respondent-data-collection-chatbot",
+      "destination": "/projects/respondent-data-collection",
+      "permanent": true
     }
   ],
   "rewrites": [
