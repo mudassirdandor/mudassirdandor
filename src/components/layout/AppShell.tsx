@@ -8,7 +8,7 @@ export interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <div className="min-h-screen flex flex-col bg-background text-text-primary antialiased">
+    <div className="min-h-screen flex flex-col bg-background text-text-primary antialiased pb-16 md:pb-0">
       <Header />
       <main id="main-content" className="flex-1 w-full">
         {children}

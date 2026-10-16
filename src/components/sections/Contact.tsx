@@ -603,7 +603,7 @@ export function Contact() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-pine hover:bg-pine-hover active:bg-[#152a22] text-porcelain font-display font-semibold text-sm sm:text-base py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm hover:shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pine disabled:opacity-60 cursor-pointer"
+                    className="w-full bg-pine hover:bg-pine-hover active:bg-[#152a22] text-porcelain font-display font-semibold text-sm sm:text-base py-3.5 px-6 rounded-full flex items-center justify-center gap-2 transition-all shadow-sm hover:shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pine disabled:opacity-60 cursor-pointer"
                   >
                     <span>{isSubmitting ? 'Opening Email App...' : 'Open Email App'}</span>
                     <Mail className="w-4 h-4" aria-hidden="true" />

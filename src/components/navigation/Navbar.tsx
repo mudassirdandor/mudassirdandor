@@ -1,182 +1,186 @@
-import { useState, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
-import { Menu, X } from 'lucide-react';
-import { NAV_ITEMS, NAV_CTA, BRAND_INFO } from '../../data/navigation';
+import { useState, useEffect } from 'react';
+import { User, Layers, Briefcase, Award, Mail } from 'lucide-react';
+import { DESKTOP_NAV_ITEMS, MOBILE_NAV_ITEMS, NAV_CTA, BRAND_INFO } from '../../data/navigation';
 import { Link } from '../../context/RouterContext';
 
+function getMobileIcon(name?: string) {
+  switch (name) {
+    case 'User':
+      return User;
+    case 'Layers':
+      return Layers;
+    case 'Briefcase':
+      return Briefcase;
+    case 'Award':
+      return Award;
+    case 'Mail':
+      return Mail;
+    default:
+      return User;
+  }
+}
+
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleButtonRef = useRef<HTMLButtonElement>(null);
-  const drawerRef = useRef<HTMLDivElement>(null);
-  const wasOpenRef = useRef(false);
+  const [isDesktopVisible, setIsDesktopVisible] = useState(true);
+  const [isMobileVisible, setIsMobileVisible] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('about');
 
-  // Focus management, scroll locking, Escape handling, and focus trap
+  // Desktop hide-on-downscroll & Mobile reveal-beyond-hero
   useEffect(() => {
-    if (isOpen) {
-      wasOpenRef.current = true;
-      document.body.style.overflow = 'hidden';
+    let lastScrollY = window.scrollY;
+    let ticking = false;
 
-      // Move focus into the drawer upon opening
-      const focusTimer = requestAnimationFrame(() => {
-        if (drawerRef.current) {
-          const focusables = drawerRef.current.querySelectorAll<HTMLElement>(
-            'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-          );
-          if (focusables.length > 0) {
-            focusables[0].focus();
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+
+          // Desktop behavior:
+          // Visible near top (<= 80px), hides after meaningful downward scrolling (> 15px),
+          // reveals on upward scrolling (< -15px)
+          if (currentScrollY <= 80) {
+            setIsDesktopVisible(true);
           } else {
-            drawerRef.current.focus();
-          }
-        }
-      });
-
-      // Trap focus within drawer and handle Escape key
-      function handleKeyDown(e: KeyboardEvent) {
-        if (e.key === 'Escape') {
-          e.preventDefault();
-          setIsOpen(false);
-          return;
-        }
-
-        if (e.key === 'Tab' && drawerRef.current) {
-          const focusables = Array.from(
-            drawerRef.current.querySelectorAll<HTMLElement>(
-              'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
-            )
-          );
-
-          if (focusables.length === 0) return;
-
-          const first = focusables[0];
-          const last = focusables[focusables.length - 1];
-
-          if (e.shiftKey) {
-            if (document.activeElement === first || !drawerRef.current.contains(document.activeElement)) {
-              e.preventDefault();
-              last.focus();
-            }
-          } else {
-            if (document.activeElement === last || !drawerRef.current.contains(document.activeElement)) {
-              e.preventDefault();
-              first.focus();
+            const diff = currentScrollY - lastScrollY;
+            if (diff > 15) {
+              setIsDesktopVisible(false);
+            } else if (diff < -15) {
+              setIsDesktopVisible(true);
             }
           }
+
+          // Mobile behavior:
+          // Unobtrusive near top, appears after scrolling beyond Hero (> 360px)
+          setIsMobileVisible(currentScrollY > 360);
+
+          lastScrollY = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // IntersectionObserver to track active section for mobile navigation
+  useEffect(() => {
+    const sectionIds = ['about', 'expertise', 'work', 'credentials', 'contact'];
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length > 0) {
+          visible.sort((a, b) => Math.abs(a.boundingClientRect.top) - Math.abs(b.boundingClientRect.top));
+          setActiveSection(visible[0].target.id);
         }
+      },
+      {
+        rootMargin: '-20% 0px -40% 0px',
+        threshold: [0, 0.25, 0.5, 0.75, 1],
       }
+    );
 
-      window.addEventListener('keydown', handleKeyDown);
-
-      return () => {
-        cancelAnimationFrame(focusTimer);
-        window.removeEventListener('keydown', handleKeyDown);
-        document.body.style.overflow = '';
-      };
-    } else {
-      // Restore focus to toggle button when closed
-      if (wasOpenRef.current) {
-        wasOpenRef.current = false;
-        toggleButtonRef.current?.focus();
-      }
-      document.body.style.overflow = '';
-    }
-  }, [isOpen]);
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <div className="flex items-center justify-between w-full h-16 md:h-20">
-      {/* Brand Identity */}
-      <Link
-        href="/#home"
-        className="group flex items-center gap-2 sm:gap-2.5 shrink-0 focus-visible:outline-2 focus-visible:outline-focus rounded-sm py-1"
+    <>
+      {/* ============================================================== */}
+      {/* DESKTOP FLOATING NAVBAR (Apple-Style Centered Capsule Pill)     */}
+      {/* ============================================================== */}
+      <header
+        className={`fixed top-3 sm:top-4 z-50 w-full px-3 sm:px-4 pointer-events-none hidden md:flex justify-center transition-all duration-300 ease-out motion-reduce:transition-none motion-reduce:transform-none ${
+          isDesktopVisible
+            ? 'translate-y-0 opacity-100'
+            : '-translate-y-24 opacity-0 pointer-events-none focus-within:translate-y-0 focus-within:opacity-100 focus-within:pointer-events-auto'
+        }`}
       >
-        <span className="font-display font-bold text-base sm:text-lg tracking-tight text-text-primary group-hover:text-accent transition-colors whitespace-nowrap">
-          {BRAND_INFO.name}
-        </span>
-        <span className="hidden sm:inline-block font-mono text-[11px] text-text-tertiary border border-border-subtle bg-surface px-1.5 py-0.5 rounded whitespace-nowrap">
-          {BRAND_INFO.role}
-        </span>
-      </Link>
+        <div className="w-full max-w-4xl flex justify-center">
+          <div className="pointer-events-auto flex items-center justify-between gap-3 sm:gap-5 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-surface/90 backdrop-blur-xl border border-border-subtle shadow-xs hover:border-soft-green/40 transition-all duration-200">
+            {/* Brand Wordmark */}
+            <Link
+              href="/#home"
+              className="group flex items-center gap-2 shrink-0 focus-visible:outline-2 focus-visible:outline-focus rounded-full px-1.5 py-0.5"
+            >
+              <span className="w-2 h-2 rounded-full bg-soft-green" aria-hidden="true" />
+              <span className="font-display font-bold text-xs sm:text-sm tracking-tight text-pine group-hover:text-pine-hover transition-colors whitespace-nowrap">
+                {BRAND_INFO.name}
+              </span>
+            </Link>
 
-      {/* Desktop Navigation */}
-      <nav
-        aria-label="Primary Navigation"
-        className="hidden lg:flex items-center gap-4 xl:gap-8"
-      >
-        {NAV_ITEMS.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors focus-visible:outline-2 focus-visible:outline-focus rounded-sm py-1"
-          >
-            {item.label}
-          </Link>
-        ))}
-        <Link
-          href={NAV_CTA.href}
-          className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-accent hover:bg-accent-hover rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-focus"
-        >
-          {NAV_CTA.label}
-        </Link>
-      </nav>
-
-      {/* Mobile Menu Toggle Button */}
-      <button
-        ref={toggleButtonRef}
-        type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
-        aria-expanded={isOpen}
-        aria-controls="mobile-navigation"
-        aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
-        className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-text-secondary hover:text-text-primary hover:bg-surface-elevated transition-colors focus-visible:outline-2 focus-visible:outline-focus"
-      >
-        {isOpen ? (
-          <X className="w-5 h-5" aria-hidden="true" />
-        ) : (
-          <Menu className="w-5 h-5" aria-hidden="true" />
-        )}
-      </button>
-
-      {/* Mobile Navigation Drawer portaled to document.body to avoid header stacking context constraints */}
-      {isOpen &&
-        typeof document !== 'undefined' &&
-        createPortal(
-          <div
-            ref={drawerRef}
-            id="mobile-navigation"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Mobile Navigation Menu"
-            tabIndex={-1}
-            className="fixed inset-x-0 top-16 bottom-0 z-50 bg-background/98 backdrop-blur-2xl border-t border-border-subtle lg:hidden flex flex-col justify-between p-6 overflow-y-auto animate-in fade-in duration-200 motion-reduce:animate-none"
-          >
-            <nav aria-label="Mobile Navigation" className="flex flex-col gap-4 pt-2">
-              {NAV_ITEMS.map((item) => (
+            {/* 4 Essential Desktop Destinations */}
+            <nav
+              aria-label="Primary Desktop Navigation"
+              className="flex items-center gap-1 lg:gap-1.5 px-1 border-l border-border-subtle/80 pl-3 sm:pl-4"
+            >
+              {DESKTOP_NAV_ITEMS.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="text-lg font-medium text-text-secondary hover:text-text-primary transition-colors py-2 border-b border-border-subtle focus-visible:outline-2 focus-visible:outline-focus rounded-sm"
+                  className="px-2.5 py-1 text-xs font-medium text-text-secondary hover:text-pine hover:bg-eucalyptus/30 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-focus whitespace-nowrap"
                 >
                   {item.label}
                 </Link>
               ))}
             </nav>
 
-            <div className="pt-6 pb-4">
+            {/* Single Primary Contact CTA */}
+            <div className="flex items-center shrink-0 border-l border-border-subtle/80 pl-3">
               <Link
                 href={NAV_CTA.href}
-                onClick={() => setIsOpen(false)}
-                className="w-full flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-accent hover:bg-accent-hover rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-focus"
+                className="inline-flex items-center justify-center px-3.5 py-1 text-xs font-medium text-porcelain bg-pine hover:bg-pine-hover rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-focus shadow-2xs whitespace-nowrap"
               >
                 {NAV_CTA.label}
               </Link>
-              <p className="mt-4 text-center font-mono text-xs text-text-tertiary">
-                {BRAND_INFO.statement}
-              </p>
             </div>
-          </div>,
-          document.body
-        )}
-    </div>
+          </div>
+        </div>
+      </header>
+
+      {/* ============================================================== */}
+      {/* MOBILE FLOATING BOTTOM NAVBAR (5 Icons, Appears beyond Hero)   */}
+      {/* ============================================================== */}
+      <nav
+        aria-label="Mobile Navigation"
+        className={`fixed bottom-3 inset-x-0 z-50 pointer-events-none flex justify-center px-4 md:hidden transition-all duration-300 ease-out motion-reduce:transition-none motion-reduce:transform-none ${
+          isMobileVisible
+            ? 'translate-y-0 opacity-100'
+            : 'translate-y-24 opacity-0 pointer-events-none'
+        }`}
+        style={{ marginBottom: 'max(0px, env(safe-area-inset-bottom))' }}
+      >
+        <div className="pointer-events-auto flex items-center justify-between gap-1 sm:gap-2 px-3 py-1.5 rounded-full bg-surface/95 backdrop-blur-xl border border-border-subtle shadow-lg">
+          {MOBILE_NAV_ITEMS.map((item) => {
+            const sectionTarget = item.href.replace('#', '');
+            const isActive = activeSection === sectionTarget;
+            const Icon = getMobileIcon(item.iconName);
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-label={item.label}
+                className={`flex items-center justify-center min-w-[48px] min-h-[48px] w-12 h-12 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-focus ${
+                  isActive
+                    ? 'text-pine bg-eucalyptus/60 font-semibold shadow-2xs'
+                    : 'text-text-tertiary hover:text-pine hover:bg-eucalyptus/30'
+                }`}
+              >
+                <Icon className="w-5 h-5" aria-hidden="true" />
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+    </>
   );
 }
 

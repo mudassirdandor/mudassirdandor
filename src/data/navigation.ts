@@ -1,6 +1,7 @@
 export interface NavItem {
   label: string;
   href: string;
+  iconName?: 'User' | 'Layers' | 'Briefcase' | 'Award' | 'Mail';
 }
 
 export interface SocialLink {
@@ -9,15 +10,22 @@ export interface SocialLink {
   ariaLabel: string;
 }
 
-export const NAV_ITEMS: NavItem[] = [
-  { label: 'Home', href: '#home' },
+export const DESKTOP_NAV_ITEMS: NavItem[] = [
   { label: 'About', href: '#about' },
+  { label: 'Expertise', href: '#expertise' },
   { label: 'Work', href: '#work' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Education', href: '#education' },
   { label: 'Credentials', href: '#credentials' },
-  { label: 'Contact', href: '#contact' },
 ];
+
+export const MOBILE_NAV_ITEMS: NavItem[] = [
+  { label: 'About', href: '#about', iconName: 'User' },
+  { label: 'Expertise', href: '#expertise', iconName: 'Layers' },
+  { label: 'Work', href: '#work', iconName: 'Briefcase' },
+  { label: 'Credentials', href: '#credentials', iconName: 'Award' },
+  { label: 'Contact', href: '#contact', iconName: 'Mail' },
+];
+
+export const NAV_ITEMS: NavItem[] = DESKTOP_NAV_ITEMS;
 
 export const NAV_CTA: NavItem = {
   label: "Let's Talk",

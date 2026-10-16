@@ -6,7 +6,7 @@ import { Chip } from '../ui/Chip';
 
 export function Hero() {
   return (
-    <SectionFrame id="home" className="relative overflow-hidden pt-8 pb-16 sm:pt-12 sm:pb-20 md:pt-16 md:pb-24 lg:pt-20 lg:pb-28">
+    <SectionFrame id="home" className="relative overflow-hidden pt-24 pb-16 sm:pt-28 sm:pb-20 md:pt-32 md:pb-24 lg:pt-36 lg:pb-28">
       {/* ============================================================== */}
       {/* LIGHTWEIGHT HERO BACKGROUND (Milestone 20.3)                   */}
       {/* Zero pointer tracking, pure CSS atmospheric glow & static grid */}
@@ -89,7 +89,7 @@ export function Hero() {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 w-full sm:w-auto">
               <a
                 href="#work"
-                className="group inline-flex items-center justify-center px-6 py-3.5 text-sm sm:text-base font-medium text-white bg-accent hover:bg-accent-hover rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-focus shadow-xs"
+                className="group inline-flex items-center justify-center px-6 py-3.5 text-sm sm:text-base font-medium text-white bg-accent hover:bg-accent-hover rounded-full transition-all duration-200 focus-visible:outline-2 focus-visible:outline-focus shadow-xs hover:shadow-sm"
               >
                 <span>View My Work</span>
                 <ArrowDown className="w-4 h-4 ml-2 transition-transform group-hover:translate-y-0.5" aria-hidden="true" />
@@ -97,7 +97,7 @@ export function Hero() {
 
               <a
                 href="#contact"
-                className="inline-flex items-center justify-center px-6 py-3.5 text-sm sm:text-base font-medium text-text-primary bg-surface/80 hover:bg-surface border border-border-base hover:border-border-hover rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-focus"
+                className="inline-flex items-center justify-center px-6 py-3.5 text-sm sm:text-base font-medium text-text-primary bg-surface/90 hover:bg-surface border border-border-base hover:border-border-hover rounded-xl transition-all duration-200 focus-visible:outline-2 focus-visible:outline-focus shadow-xs"
               >
                 <MessageSquare className="w-4 h-4 mr-2 text-text-tertiary" aria-hidden="true" />
                 <span>Let's Talk</span>

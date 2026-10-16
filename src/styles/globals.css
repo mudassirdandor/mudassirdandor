@@ -13,6 +13,8 @@
   --color-eucalyptus: #DCE7DF;
   --color-pine: #25483C;
   --color-pine-hover: #1B362C;
+  --color-forest: #376653;
+  --color-sage: #B5CDBB;
   --color-soft-green: #7DAA91;
   --color-dark-charcoal: #26312B;
   --color-muted-gray: #69756D;
@@ -62,6 +64,8 @@
   --eucalyptus: #DCE7DF;
   --pine: #25483C;
   --pine-hover: #1B362C;
+  --forest: #376653;
+  --sage: #B5CDBB;
   --soft-green: #7DAA91;
   --dark-charcoal: #26312B;
   --muted-gray: #69756D;
@@ -136,6 +140,7 @@
   html {
     color-scheme: light;
     scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
     -webkit-text-size-adjust: 100%;
   }
 

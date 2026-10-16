@@ -911,3 +911,80 @@ Perform a focused remediation pass on the `mudassirdandor` portfolio addressing 
 
 ### Status
 `COMPLETED (Milestone 25.1 Final)`
+
+---
+
+## Milestone 25.2 — Visual Refinement, Profile Integration & Navigation Polish
+
+### Objective
+Refine the Mudassir Javed portfolio to establish a premium, editorial, modern visual hierarchy, integrate the professional portrait into an editorial two-column About layout, polish the navigation into an Apple-inspired centered floating pill with 5 core destinations, refine the section surface hierarchy, and unify micro-motion consistency without redesigning the architecture or adding dependencies.
+
+### Implementation Summary
+1. **Professional Identity & Portrait Asset Integration:**
+   - Verified original portrait in `donotpush/myprofile1.jpeg` (768 × 1234 px) and confirmed strict gitignore protection via `.gitignore`.
+   - Converted asset to high-fidelity, optimized WebP format at `public/images/profile/mudassir-javed.webp` (768 × 1234 px, 73.8 KB) using native browser canvas pipeline with zero npm package overhead.
+   - Rebuilt `src/components/sections/About.tsx` with an editorial two-column layout:
+     - Left column (5 desktop columns): Rectangular portrait card with softly rounded corners, subtle sage framing (`bg-sage/20`), natural 4:5 / 3:4 aspect ratio, accessible alt text `alt="Portrait of Mudassir Javed"`, and factual location and title metadata ("Mudassir Javed", "Quetta, Pakistan", "Data Analyst · Business Intelligence & Data Analytics").
+     - Right column (7 desktop columns): Professional analytical narrative, quote statement, MSc in Statistics credential card from University of Balochistan (2023), and the 4-step Analytical Journey stepper.
+     - Mobile: Seamless single-column responsive stacking.
+
+2. **Apple-Inspired Floating Centered Pill Navigation:**
+   - Redesigned `src/components/layout/Header.tsx` as a centered floating container (`sticky top-3 sm:top-4 z-50 pointer-events-none flex justify-center`).
+   - Rebuilt `src/components/navigation/Navbar.tsx` as a compact floating pill (`rounded-full bg-surface/90 backdrop-blur-xl border border-border-subtle shadow-xs hover:border-soft-green/40`).
+   - Streamlined primary navigation in `src/data/navigation.ts` to 5 essential destinations:
+     1. About (`#about`)
+     2. Expertise (`#expertise`)
+     3. Work (`#work`)
+     4. Credentials (`#credentials`)
+     5. Contact (`#contact`)
+   - Configured brand wordmark linking to `/#home` with an accent dot indicator.
+   - Integrated compact primary CTA pill "Let's Talk" (`#contact`).
+   - Retained full mobile drawer navigation with complete focus trapping, Escape key dismissal, body scroll-lock, and ARIA dialog semantics.
+
+3. **Design Tokens & Surface Strategy:**
+   - Added Forest Green (`--color-forest: #376653`) and Sage (`--color-sage: #B5CDBB`) to Tailwind `@theme` and `:root` variables in `src/styles/globals.css`.
+   - Added `scroll-padding-top: 5rem;` to `html` for smooth sticky navbar offset clearance.
+   - Implemented coordinated section surface rhythm:
+     - Hero: Clean porcelain background with increased top padding (`pt-20 sm:pt-24 md:pt-28 lg:pt-32`) to provide comfortable breathing room below the floating pill navbar.
+     - About: Coordinated light ground (`bg-surface/50`) with sage framing.
+     - Expertise: Subtle sage tint (`bg-sage/10`).
+     - Skills: Subtle sage tint (`bg-sage/15`).
+     - Selected Work: High-contrast porcelain ground (`bg-porcelain`) with white project cards.
+
+4. **Motion Hierarchy & Performance Consistency:**
+   - Updated Selected Work project cards with fast 240ms transition duration token, 50ms stagger delays (`index * 50ms`), subtle hover elevation (`hover:-translate-y-1 hover:shadow-md hover:border-soft-green/70`), and restrained image zoom (`group-hover:scale-[1.015]`).
+   - Maintained full reduced-motion support (`motion-reduce:transform-none`, `motion-reduce:transition-none`).
+   - Strictly preserved genuine WebP project screenshots without skeleton loaders or fake loading states.
+
+5. **Stale Domain & Credibility Audit:**
+   - Confirmed 0 active references to `mudassiranalyst.vercel.app` across all source code and public assets.
+   - Preserved all factual qualifications without ungrounded satisfaction percentages or metrics.
+
+### Files Created / Modified
+- `src/styles/globals.css` (modified) — Added `--color-forest`, `--color-sage`, and `scroll-padding-top: 5rem;`.
+- `src/data/navigation.ts` (modified) — Streamlined `NAV_ITEMS` to 5 primary destinations (About, Expertise, Work, Credentials, Contact).
+- `src/components/layout/Header.tsx` (modified) — Converted header to a floating centered container.
+- `src/components/navigation/Navbar.tsx` (modified) — Redesigned as compact Apple-style floating pill with brand link and Let's Talk CTA.
+- `src/components/sections/About.tsx` (modified) — Implemented editorial two-column layout with WebP portrait, factual caption, MSc in Statistics credential, and Analytical Journey.
+- `src/components/sections/Hero.tsx` (modified) — Adjusted top padding for floating navbar breathing room; rounded CTA buttons to `rounded-xl`.
+- `src/components/sections/Expertise.tsx` (modified) — Applied `bg-sage/10` surface tint.
+- `src/components/sections/Skills.tsx` (modified) — Applied `bg-sage/15` surface tint.
+- `src/components/sections/Projects.tsx` (modified) — Applied `bg-porcelain` surface and 240ms / 50ms stagger hover transitions.
+- `public/images/profile/mudassir-javed.webp` (created) — Optimized portrait WebP asset (768 × 1234 px, 73.8 KB).
+- `.gitignore` (modified) — Verified `donotpush` gitignore rule.
+- `scripts/verify-milestone25-2.cjs` (created) — Dedicated automated verification suite covering portrait, navigation, design tokens, section layout, and domain audits.
+- `docs/progress-log.md` (modified) — Appended Milestone 25.2 completion entry.
+
+### Verification Summary
+- **TypeScript:** `tsc -b` — PASS (0 errors).
+- **ESLint:** `eslint .` — PASS (0 errors, 0 warnings).
+- **Production Build:** `vite build && prerender-seo-shells.cjs` — PASS (all 4 project SEO shells generated in `dist/`).
+- **Milestone 23 Verification:** `node scripts/verify-milestone23.cjs` — PASS.
+- **Milestone 24.1 Verification:** `node scripts/verify-milestone24-1.cjs` — PASS.
+- **Milestone 24.2 Verification:** `node scripts/verify-milestone24-2.cjs` — PASS.
+- **Milestone 25 Verification:** `node scripts/verify-milestone25.cjs` — PASS.
+- **Milestone 25.1 Verification:** `node scripts/verify-milestone25-1.cjs` — PASS.
+- **Milestone 25.2 Verification:** `node scripts/verify-milestone25-2.cjs` — PASS (all 7 assertion suites passed).
+
+### Status
+`COMPLETED (Milestone 25.2 Final)`

@@ -9,7 +9,7 @@ import { Chip } from '../ui/Chip';
 
 export function Certifications() {
   return (
-    <SectionFrame id="credentials" className="border-t border-border-subtle bg-eucalyptus/30 py-16 sm:py-20 md:py-24 lg:py-28">
+    <SectionFrame id="credentials" className="border-t border-border-subtle py-16 sm:py-20 md:py-24 lg:py-28">
       <Container>
         {/* Section Header */}
         <div className="flex flex-col items-start max-w-2xl mb-10 sm:mb-12">

@@ -25,12 +25,20 @@ function GithubIcon({ className = 'w-3.5 h-3.5' }: { className?: string }) {
 }
 
 export function Projects() {
+  // Sticky top offsets for the desktop project card stacking sequence (inspired by Professional Philosophy)
+  const stickyTopOffsets = [
+    'lg:top-24',
+    'lg:top-28',
+    'lg:top-32',
+    'lg:top-36',
+  ];
+
   return (
     <SectionFrame id="work" className="border-t border-border-subtle py-16 sm:py-20 md:py-24 lg:py-28">
       <Container>
         {/* Section Header */}
         <div className="flex flex-col items-start max-w-2xl mb-12 sm:mb-16">
-          <span className="font-mono text-xs text-pine tracking-wider uppercase mb-3">
+          <span className="font-mono text-xs text-forest tracking-wider uppercase mb-3">
             // Selected Work
           </span>
           <h2 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl text-pine tracking-tight leading-snug mb-4">
@@ -41,8 +49,8 @@ export function Projects() {
           </p>
         </div>
 
-        {/* Expressive Split-Card Layout with Alternating Visual Rhythm */}
-        <div className="flex flex-col gap-10 md:gap-14 lg:gap-16">
+        {/* Scroll-Driven Stacking Cards Sequence on Desktop / Sequential Flow on Narrow Screens */}
+        <div className="relative flex flex-col gap-8 md:gap-12 lg:gap-16 pb-20 sm:pb-28 lg:pb-36">
           {PROJECTS.map((project, index) => {
             const isEven = index % 2 === 0;
             const caseStudy = getCaseStudyBySlug(project.id);
@@ -50,7 +58,10 @@ export function Projects() {
             return (
               <article
                 key={project.id}
-                className="group p-6 sm:p-8 lg:p-10 rounded-2xl md:rounded-[28px] border border-border-subtle bg-surface hover:border-soft-green transition-all duration-300 shadow-sm hover:shadow-md overflow-hidden"
+                style={{
+                  transitionDuration: '240ms',
+                }}
+                className={`group p-6 sm:p-8 lg:p-10 rounded-2xl md:rounded-[28px] border border-border-subtle bg-surface/98 backdrop-blur-md shadow-md hover:shadow-xl hover:border-soft-green/70 transition-all duration-240 lg:sticky ${stickyTopOffsets[index]} motion-reduce:static motion-reduce:transform-none overflow-hidden`}
               >
                 <div
                   className={`flex flex-col ${
@@ -170,7 +181,7 @@ export function Projects() {
                             alt={project.imageAlt}
                             width={2560}
                             height={1600}
-                            className="w-full h-full object-cover object-top hover:scale-[1.02] transition-transform duration-300"
+                            className="w-full h-full object-cover object-top group-hover:scale-[1.015] transition-transform duration-240 motion-reduce:transform-none"
                             loading="lazy"
                             decoding="async"
                           />
@@ -189,7 +200,7 @@ export function Projects() {
                             alt={project.imageAlt}
                             width={2560}
                             height={1600}
-                            className="w-full h-full object-cover object-top hover:scale-[1.02] transition-transform duration-300"
+                            className="w-full h-full object-cover object-top group-hover:scale-[1.015] transition-transform duration-240 motion-reduce:transform-none"
                             loading="lazy"
                             decoding="async"
                           />
