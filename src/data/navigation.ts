@@ -66,3 +66,10 @@ export const BRAND_INFO = {
   statement: 'Mudassir Javed — Data Analyst | Business Intelligence & Data Analytics',
   narrative: 'Statistics → Data → Insights → Decisions',
 };
+
+export const WHATSAPP_CONFIG = {
+  rawNumber: '03112777061',
+  internationalNumber: '923112777061',
+  url: 'https://wa.me/923112777061?text=Hello%2C%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20professional%20opportunity.',
+};
+

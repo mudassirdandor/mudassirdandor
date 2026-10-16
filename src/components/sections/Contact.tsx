@@ -6,18 +6,17 @@ import {
   Users,
   Handshake,
   MapPin,
-  Send,
   Lock,
   FileText,
-  Globe,
+  Briefcase,
   ArrowRight,
   BarChart3,
-  CheckCircle2,
   AlertCircle,
   ExternalLink,
 } from 'lucide-react';
 import { Container } from '../layout/Container';
 import { SectionFrame } from '../layout/SectionFrame';
+import { WHATSAPP_CONFIG } from '../../data/navigation';
 
 const GOOGLE_MAPS_QUETTA_URL =
   'https://www.google.com/maps/search/?api=1&query=Quetta%2C%20Balochistan%2C%20Pakistan';
@@ -266,9 +265,11 @@ export function Contact() {
             <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-5 gap-y-2.5 mb-8 text-xs sm:text-sm">
               {/* WhatsApp CTA */}
               <a
-                href="mailto:mudassirdandor@gmail.com?subject=WhatsApp%20Chat%20Request%20-%20Mudassir%20Javed&body=Hi%20Mudassir,%20I%20would%20like%20to%20connect%20with%20you%20on%20WhatsApp."
+                href={WHATSAPP_CONFIG.url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-porcelain/90 hover:text-white transition-colors group focus-visible:outline-2 focus-visible:outline-white rounded py-1"
-                aria-label="Connect via WhatsApp (opens email request to connect on WhatsApp)"
+                aria-label="Connect with Mudassir Javed on WhatsApp (opens in new tab)"
               >
                 <div className="w-6 h-6 rounded-full bg-[#25D366]/20 flex items-center justify-center text-[#25D366] group-hover:bg-[#25D366] group-hover:text-white transition-all flex-shrink-0">
                   <WhatsAppIcon className="w-3.5 h-3.5" />
@@ -396,7 +397,7 @@ export function Contact() {
                     Start a Conversation
                   </h3>
                   <p className="text-xs sm:text-sm text-muted-gray mt-1 leading-relaxed">
-                    Fill out the form and I'll get back to you.
+                    Fill out the details below to compose your message. Submitting will open your email application with your message prepared for mudassirdandor@gmail.com.
                   </p>
                 </div>
 
@@ -585,13 +586,13 @@ export function Contact() {
                   {/* Submission Status Notice */}
                   {submittedLink && (
                     <div className="p-3.5 rounded-lg bg-soft-green/15 border border-soft-green/40 text-dark-charcoal text-xs sm:text-sm flex items-start gap-2.5">
-                      <CheckCircle2 className="w-4 h-4 text-pine flex-shrink-0 mt-0.5" aria-hidden="true" />
+                      <Mail className="w-4 h-4 text-pine flex-shrink-0 mt-0.5" aria-hidden="true" />
                       <div>
-                        <p className="font-semibold text-pine">Opening your email client...</p>
+                        <p className="font-semibold text-pine">Opening your email app...</p>
                         <p className="text-muted-gray mt-0.5 text-xs">
-                          Your message is prepared for mudassirdandor@gmail.com. If your client didn't launch automatically,{' '}
+                          Your message is formatted for mudassirdandor@gmail.com. If your email app didn't open automatically,{' '}
                           <a href={submittedLink} className="underline text-pine font-medium hover:text-pine-hover">
-                            click here to send
+                            click here to open it
                           </a>.
                         </p>
                       </div>
@@ -604,14 +605,14 @@ export function Contact() {
                     disabled={isSubmitting}
                     className="w-full bg-pine hover:bg-pine-hover active:bg-[#152a22] text-porcelain font-display font-semibold text-sm sm:text-base py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-all shadow-sm hover:shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pine disabled:opacity-60 cursor-pointer"
                   >
-                    <span>{isSubmitting ? 'Preparing Email...' : 'Send Message'}</span>
-                    <Send className="w-4 h-4" aria-hidden="true" />
+                    <span>{isSubmitting ? 'Opening Email App...' : 'Open Email App'}</span>
+                    <Mail className="w-4 h-4" aria-hidden="true" />
                   </button>
 
-                  {/* Privacy Note */}
+                  {/* Submission Clarification Note */}
                   <div className="flex items-center justify-center gap-1.5 text-xs text-muted-gray text-center pt-1">
                     <Lock className="w-3.5 h-3.5 text-muted-gray flex-shrink-0" aria-hidden="true" />
-                    <span>Your information will only be used to respond to your message.</span>
+                    <span>This form prepares your message and launches your email app to send directly.</span>
                   </div>
                 </form>
               </div>
@@ -738,17 +739,17 @@ export function Contact() {
               •
             </span>
 
-            {/* Portfolio */}
+            {/* Featured Projects */}
             <a
               href="#work"
               className="inline-flex items-center gap-2.5 text-porcelain/85 hover:text-white transition-colors group focus-visible:outline-2 focus-visible:outline-white rounded py-1"
-              aria-label="Explore portfolio projects"
+              aria-label="Navigate to Featured Projects section"
             >
               <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-soft-green group-hover:border-soft-green/40 group-hover:bg-soft-green/10 transition-all flex-shrink-0">
-                <Globe className="w-4 h-4 text-soft-green" aria-hidden="true" />
+                <Briefcase className="w-4 h-4 text-soft-green" aria-hidden="true" />
               </div>
               <span className="font-medium text-xs sm:text-sm text-porcelain group-hover:text-white">
-                Portfolio
+                Featured Projects
               </span>
               <ArrowRight className="w-3 h-3 text-eucalyptus/40 group-hover:text-soft-green transition-colors" aria-hidden="true" />
             </a>

@@ -855,3 +855,59 @@ Publish the fourth complete case study for the Respondent Data Collection projec
 
 ### Status
 `COMPLETED (Milestone 25 Final)`
+
+---
+
+## Milestone 25.1 — Contact, Accessibility & Credibility Fixes
+
+### Objective
+Perform a focused remediation pass on the `mudassirdandor` portfolio addressing confirmed functional, accessibility, and credibility issues based on the Muse AI review, while maintaining the approved design, visual layout, and completed milestones.
+
+### Implementation Summary
+1. **WhatsApp Contact Links:**
+   - Configured the owner's supplied WhatsApp number (`03112777061`) into standard international format (`923112777061`) without leading zero or plus sign.
+   - Centralized `WHATSAPP_CONFIG` in `src/data/navigation.ts` with direct chat link and professional prefilled inquiry text: `https://wa.me/923112777061?text=Hello%2C%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20professional%20opportunity.`.
+   - Updated the primary WhatsApp CTA in `src/components/sections/Contact.tsx` from an outdated `mailto:` link to `WHATSAPP_CONFIG.url`, with `target="_blank"`, `rel="noopener noreferrer"`, and an updated accessible `aria-label`.
+   - Preserved all button styling, emerald icon badges, and hover animations.
+
+2. **Honest Contact Form Behavior:**
+   - Clarified the contact form subtitle in `src/components/sections/Contact.tsx` to state that submitting prepares an email message for `mudassirdandor@gmail.com` and launches the visitor's default email application.
+   - Updated the submit button action text from "Send Message" to "Open Email App" (with fallback "Opening Email App..."), accurately reflecting client-side email client handoff.
+   - Updated the post-submission status notice to explicitly indicate email client preparation, with a direct click-to-open fallback link.
+   - Preserved all existing form validation rules (name, valid email regex, subject, message under 1000 characters) and visual styling.
+
+3. **Credibility & Trust Claims Audit:**
+   - Scanned all source files for unsubstantiated claims (such as "100% client satisfaction", fake ratings, or ungrounded statistics). Confirmed zero unsupported claims exist in active source code.
+   - All professional narrative content remains strictly grounded in real qualifications (MSc in Statistics, verified project architectures, and demonstrated skills).
+
+4. **Animated Headline Accessibility:**
+   - Audited the hero section (`src/components/sections/Hero.tsx`) heading hierarchy. Confirmed the main heading is rendered as a clean, single semantic `<h1>` element ("Turning Data Into Clear, Actionable Insight.") without duplicate text, phantom screen reader nodes, or text-ticker artifacts.
+   - Verified that the complex SVG illustration (`HeroIllustration.tsx`) and atmospheric background are explicitly marked `aria-hidden="true"`, ensuring assistive technology focuses strictly on readable content.
+
+5. **Dynamic Footer Copyright:**
+   - Verified `src/components/layout/Footer.tsx` uses dynamic JavaScript `const currentYear = new Date().getFullYear()` in `© {currentYear} Mudassir Javed. All rights reserved.`, ensuring accuracy without manual annual updates.
+
+6. **Self-Referential Link Remediation:**
+   - In `src/components/sections/Contact.tsx` ("Other Ways to Connect"), updated the link previously labeled "Portfolio" pointing to `#work` to be truthfully labeled "Featured Projects", with `Briefcase` icon and `aria-label="Navigate to Featured Projects section"`.
+
+7. **Navigation Review:**
+   - Reviewed desktop and mobile navigation structures (`src/components/navigation/Navbar.tsx` and `src/data/navigation.ts`).
+   - Confirmed key destinations (About, Work/Projects, Experience, Education, Credentials, Contact, and primary CTA "Let's Talk") remain clear, accessible, and responsive.
+
+### Files Created / Modified
+- `src/data/navigation.ts` (modified) — Exported `WHATSAPP_CONFIG` with international phone formatting and prefilled message.
+- `src/components/sections/Contact.tsx` (modified) — Updated WhatsApp CTA to `wa.me`, updated contact form action text to "Open Email App", clarified email handoff notices, and updated self-referential link to "Featured Projects".
+- `scripts/verify-milestone25-1.cjs` (created) — Dedicated automated test suite verifying WhatsApp destinations, form honesty, claim audits, headline accessibility, footer year, and link labeling.
+- `docs/progress-log.md` (modified) — Recorded Milestone 25.1 completion entry.
+
+### Verification Summary
+- **TypeScript:** `pnpm typecheck` — PASS (0 errors).
+- **ESLint:** `pnpm lint` — PASS (0 warnings, 0 errors).
+- **Production Build:** `pnpm build` — PASS (built successfully; generated all static SEO shells in `dist/`).
+- **Milestone 24.1 Verification:** `node scripts/verify-milestone24-1.cjs` — PASS.
+- **Milestone 24.2 Verification:** `node scripts/verify-milestone24-2.cjs` — PASS.
+- **Milestone 25 Verification:** `node scripts/verify-milestone25.cjs` — PASS.
+- **Milestone 25.1 Verification:** `node scripts/verify-milestone25-1.cjs` — PASS (all 7 assertion suites passed).
+
+### Status
+`COMPLETED (Milestone 25.1 Final)`
