@@ -988,3 +988,57 @@ Refine the Mudassir Javed portfolio to establish a premium, editorial, modern vi
 
 ### Status
 `COMPLETED (Milestone 25.2 Final)`
+
+---
+
+## 2026-10-18 — Milestone 26: Professional Portfolio README Redesign
+
+### Objective
+Redesign the root `README.md` of the GitHub repository (`mudassirdandor/mudassirdandor`) to serve as an attractive, credible, professional landing page for recruiters, hiring managers, collaborators, and visitors. Showcase professional positioning, portfolio preview, 4 verified projects with genuine screenshots, structured technical toolkit, education & credentials, and direct contact options.
+
+### Actions Taken
+1. **Branded Header & Identity:**
+   - Centered masthead with professional title: *Data Analyst | Business Intelligence & Data Analytics*.
+   - Approved tagline: *"Turning Data Into Clear, Actionable Insight."*
+   - Branded Shields.io badges in Deep Pine (`#25483C`) linking to Live Portfolio, LinkedIn, GitHub, Email, and WhatsApp.
+   - Header banner utilizing existing Open Graph asset (`public/images/og-portfolio.png`).
+
+2. **About Me:**
+   - Established academic foundation: MSc in Statistics, University of Balochistan (2023).
+   - Documented full analytical progression: Statistics & Research → Data Collection & Preparation → Business Intelligence & Reporting → Insights & Decision Support.
+   - Included core guiding statement: *"Statistics gives me the analytical foundation. Technology gives me the ability to build practical solutions around it."*
+
+3. **Live Portfolio Preview:**
+   - Visual preview referencing tracked repository asset (`public/images/og-portfolio.png`), linking directly to `https://mudassirdandor.vercel.app`.
+
+4. **Featured Projects Showcase:**
+   - Showcased all 4 verified projects with tracked WebP screenshots, live demo links, repository links, focus areas, and key capabilities:
+     1. **Saylani Student Registration System** (`public/images/projects/saylani-registration.webp`)
+     2. **Respondent Data Collection Chatbot** (`public/images/projects/respondent-chatbot.webp`)
+     3. **Job Application Data Collection System** (`public/images/projects/job-application.webp`)
+     4. **Barish Alert — Weather Application** (`public/images/projects/barish-alert.webp`)
+   - All descriptions strictly verified against actual functionality and repository documentation without unverified metrics or claims.
+
+5. **Technical Toolkit:**
+   - Organized into 4 logical analytical domains: Data Analysis & Programming, Business Intelligence & Visualization, Productivity & Data Preparation, and Platforms & Technical Workflows.
+
+6. **Education & Featured Credentials:**
+   - Academic credential: MSc in Statistics (University of Balochistan, 2023).
+   - Featured Google Professional Certificates: Google Data Analytics, Google Advanced Data Analytics, Google Business Intelligence.
+   - Summarized 40+ professional certifications & badges.
+
+7. **Connect & Collaborate:**
+   - Verified contact options: Portfolio, LinkedIn, GitHub, Email (`mudassirdandor@gmail.com`), and WhatsApp (`https://wa.me/923112777061`).
+
+### Files Created / Modified
+- `README.md` (modified) — Complete redesign into a professional GitHub portfolio landing page.
+- `docs/progress-log.md` (modified) — Appended Milestone 26 log entry.
+
+### Exclusions & Constraints Followed
+- No terminal commands launched (skipped per explicit instruction).
+- No "Run locally", installation, or dependency setup sections added.
+- No changes made to `.gitignore`, `donotpush/`, or production code.
+- No commit, push, or deployment executed.
+
+### Status
+`COMPLETED (Milestone 26)`

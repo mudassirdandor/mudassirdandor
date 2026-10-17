@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { User, Layers, Briefcase, Award, Mail } from 'lucide-react';
 import { DESKTOP_NAV_ITEMS, MOBILE_NAV_ITEMS, NAV_CTA, BRAND_INFO } from '../../data/navigation';
 import { Link } from '../../context/RouterContext';
@@ -25,7 +25,23 @@ export function Navbar() {
   const [isMobileVisible, setIsMobileVisible] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('about');
 
-  // Desktop hide-on-downscroll & Mobile reveal-beyond-hero
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isInteractingRef = useRef(false);
+  const isFocusedRef = useRef(false);
+
+  // Helper to schedule or refresh the idle-hide timer (2.5 seconds)
+  const startIdleTimer = (delay = 2500) => {
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+    }
+    idleTimerRef.current = setTimeout(() => {
+      if (!isInteractingRef.current && !isFocusedRef.current) {
+        setIsMobileVisible(false);
+      }
+    }, delay);
+  };
+
+  // Scroll listener: Desktop hide/reveal & Mobile show-while-scrolling, hide-when-idle
   useEffect(() => {
     let lastScrollY = window.scrollY;
     let ticking = false;
@@ -34,6 +50,7 @@ export function Navbar() {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const currentScrollY = window.scrollY;
+          const diff = currentScrollY - lastScrollY;
 
           // Desktop behavior:
           // Visible near top (<= 80px), hides after meaningful downward scrolling (> 15px),
@@ -41,7 +58,6 @@ export function Navbar() {
           if (currentScrollY <= 80) {
             setIsDesktopVisible(true);
           } else {
-            const diff = currentScrollY - lastScrollY;
             if (diff > 15) {
               setIsDesktopVisible(false);
             } else if (diff < -15) {
@@ -50,8 +66,18 @@ export function Navbar() {
           }
 
           // Mobile behavior:
-          // Unobtrusive near top, appears after scrolling beyond Hero (> 360px)
-          setIsMobileVisible(currentScrollY > 360);
+          // Appears as soon as meaningful scrolling begins, remains visible during continuous scrolling,
+          // and hides approximately 2.5 seconds after scrolling stops.
+          // Hidden initially at the top of the page.
+          const isAtTopBoundary = currentScrollY <= 15;
+          const isMeaningfulScroll = isAtTopBoundary ? diff > 10 : Math.abs(diff) > 2;
+
+          if (isMeaningfulScroll) {
+            setIsMobileVisible(true);
+            if (!isInteractingRef.current && !isFocusedRef.current) {
+              startIdleTimer(2500);
+            }
+          }
 
           lastScrollY = currentScrollY;
           ticking = false;
@@ -61,7 +87,12 @@ export function Navbar() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (idleTimerRef.current) {
+        clearTimeout(idleTimerRef.current);
+      }
+    };
   }, []);
 
   // IntersectionObserver to track active section for mobile navigation
@@ -90,6 +121,60 @@ export function Navbar() {
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
   }, []);
+
+  // Interaction handlers to prevent hiding while interacting or focused
+  const handlePointerDown = () => {
+    isInteractingRef.current = true;
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+    }
+    setIsMobileVisible(true);
+  };
+
+  const handlePointerUp = () => {
+    isInteractingRef.current = false;
+    if (!isFocusedRef.current) {
+      startIdleTimer(2500);
+    }
+  };
+
+  const handlePointerEnter = () => {
+    isInteractingRef.current = true;
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+    }
+    setIsMobileVisible(true);
+  };
+
+  const handlePointerLeave = () => {
+    isInteractingRef.current = false;
+    if (!isFocusedRef.current) {
+      startIdleTimer(2500);
+    }
+  };
+
+  const handleFocus = () => {
+    isFocusedRef.current = true;
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+    }
+    setIsMobileVisible(true);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLElement>) => {
+    const nextTarget = e.relatedTarget as Node | null;
+    if (!e.currentTarget.contains(nextTarget)) {
+      isFocusedRef.current = false;
+      if (!isInteractingRef.current) {
+        startIdleTimer(2500);
+      }
+    }
+  };
+
+  const handleNavClick = () => {
+    setIsMobileVisible(true);
+    startIdleTimer(2500);
+  };
 
   return (
     <>
@@ -146,14 +231,20 @@ export function Navbar() {
       </header>
 
       {/* ============================================================== */}
-      {/* MOBILE FLOATING BOTTOM NAVBAR (5 Icons, Appears beyond Hero)   */}
+      {/* MOBILE FLOATING BOTTOM NAVBAR (Show While Scrolling, Hide Idle) */}
       {/* ============================================================== */}
       <nav
         aria-label="Mobile Navigation"
-        className={`fixed bottom-3 inset-x-0 z-50 pointer-events-none flex justify-center px-4 md:hidden transition-all duration-300 ease-out motion-reduce:transition-none motion-reduce:transform-none ${
+        onPointerDown={handlePointerDown}
+        onPointerUp={handlePointerUp}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        className={`fixed bottom-3 inset-x-0 z-50 flex justify-center px-4 md:hidden transition-all duration-300 ease-out motion-reduce:transition-none motion-reduce:transform-none ${
           isMobileVisible
-            ? 'translate-y-0 opacity-100'
-            : 'translate-y-24 opacity-0 pointer-events-none'
+            ? 'translate-y-0 opacity-100 pointer-events-auto'
+            : 'translate-y-16 opacity-0 pointer-events-none focus-within:translate-y-0 focus-within:opacity-100 focus-within:pointer-events-auto'
         }`}
         style={{ marginBottom: 'max(0px, env(safe-area-inset-bottom))' }}
       >
@@ -168,13 +259,21 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 aria-label={item.label}
-                className={`flex items-center justify-center min-w-[48px] min-h-[48px] w-12 h-12 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-focus ${
+                aria-current={isActive ? 'location' : undefined}
+                onClick={handleNavClick}
+                className={`relative flex items-center justify-center min-w-[48px] min-h-[48px] w-12 h-12 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-focus ${
                   isActive
                     ? 'text-pine bg-eucalyptus/60 font-semibold shadow-2xs'
                     : 'text-text-tertiary hover:text-pine hover:bg-eucalyptus/30'
                 }`}
               >
                 <Icon className="w-5 h-5" aria-hidden="true" />
+                {isActive && (
+                  <span
+                    className="absolute bottom-1 w-1 h-1 rounded-full bg-pine"
+                    aria-hidden="true"
+                  />
+                )}
               </Link>
             );
           })}
