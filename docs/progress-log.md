@@ -1042,3 +1042,40 @@ Redesign the root `README.md` of the GitHub repository (`mudassirdandor/mudassir
 
 ### Status
 `COMPLETED (Milestone 26)`
+
+---
+
+## 2026-10-18 — README Correction: Remove Old Domain from Portfolio Preview
+
+### Objective
+Correct the stale `mudassiranalyst.vercel.app` domain visible in the portfolio preview banner displayed in root `README.md`. Replace it with the production portfolio domain `mudassirdandor.vercel.app` while preserving the exact 1200 × 630 dimensions, typography, 40px Porcelain grid, colors, spacing, and layout composition.
+
+### Actions Taken
+1. **Inspection & Root Cause Analysis:**
+   - Identified that `public/images/og-portfolio.png` contained the old embedded text `mudassiranalyst.vercel.app` at coordinates `x=[914, 1126]`, `y=[76, 88]` in monospace font over a 40px `#E5EBE6` grid on Porcelain `#F5F7F4`.
+   - Verified that `index.html` references `public/images/og-portfolio.png` for Open Graph and Twitter Card social metadata.
+   - Verified that all text links in `README.md` already accurately point to `https://mudassirdandor.vercel.app` with zero active text links to the old domain.
+
+2. **Asset Recreation & Domain Correction:**
+   - Authored high-fidelity vector banner asset [`public/images/og-portfolio.svg`](file:///c:/Users/malik/Documents/antigravity_portfolio/public/images/og-portfolio.svg) at exact dimensions (1200 × 630 px).
+   - Recreated the mathematical 40px grid pattern (`#E5EBE6` on `#F5F7F4`).
+   - Embedded the updated production domain `mudassirdandor.vercel.app` in the upper-right area.
+   - Preserved all visual elements: `● PORTFOLIO & CASE STUDIES` pill badge, `Mudassir Javed` heading in Deep Pine (`#25483C`), `Data Analyst — Business Intelligence & Data Analytics` subtitle, narrative description, divider line, 4 white capability chips with soft drop shadows, and `Porcelain + Deep Pine` signature.
+
+3. **README Integration:**
+   - Updated root `README.md` to reference `public/images/og-portfolio.svg` for both the masthead banner and the Live Portfolio Preview section.
+   - Verified that on GitHub, the SVG renders cleanly with vector clarity and correct domain labeling across light and dark modes.
+
+### Files Created / Modified
+- `public/images/og-portfolio.svg` (created) — Dedicated 1200 × 630 vector portfolio banner with verified `mudassirdandor.vercel.app` domain.
+- `README.md` (modified) — Updated banner and preview image sources to `public/images/og-portfolio.svg`.
+- `docs/progress-log.md` (modified) — Documented banner domain correction pass.
+
+### Exclusions & Constraints Followed
+- No terminal commands launched (100% compliant with "run no commands").
+- Historical milestone records preserved.
+- No changes made to `.gitignore`, `donotpush/`, or production website code.
+- No commit, push, or deployment executed.
+
+### Status
+`COMPLETED (README Correction)`

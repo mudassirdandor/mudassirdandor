@@ -16,7 +16,7 @@ Quetta, Pakistan
 <br />
 
 <a href="https://mudassirdandor.vercel.app">
-  <img src="public/images/og-portfolio.png" alt="Mudassir Javed — Portfolio Banner" width="100%" />
+  <img src="public/images/og-portfolio.svg" alt="Mudassir Javed — Portfolio Banner" width="100%" />
 </a>
 
 </div>
@@ -43,7 +43,7 @@ The portfolio showcases interactive case studies, analytical capabilities, crede
 
 <div align="center">
   <a href="https://mudassirdandor.vercel.app">
-    <img src="public/images/og-portfolio.png" alt="Mudassir Javed Data Analyst Portfolio Preview" width="850" />
+    <img src="public/images/og-portfolio.svg" alt="Mudassir Javed Data Analyst Portfolio Preview" width="850" />
   </a>
   <p><em>Explore interactive case studies, methodology, and credentials at <a href="https://mudassirdandor.vercel.app">mudassirdandor.vercel.app</a></em></p>
 </div>
